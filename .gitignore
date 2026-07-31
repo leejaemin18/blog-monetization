@@ -21,6 +21,11 @@ __pycache__/
 .venv/
 venv/
 
+# Node (크롬 확장 프록시)
+node_modules/
+extension/proxy/node_modules/
+package-lock.json
+
 # OS/에디터
 .DS_Store
 Thumbs.db

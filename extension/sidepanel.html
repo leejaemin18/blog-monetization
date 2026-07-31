@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>제휴 글 초안 어시스턴트</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font: 14px/1.5 'Noto Sans KR', system-ui, sans-serif; margin: 0; padding: 14px; }
+    h1 { font-size: 15px; margin: 0 0 4px; }
+    p.sub { margin: 0 0 12px; color: #6b7280; font-size: 12px; }
+    label { display: block; font-weight: 600; margin: 10px 0 4px; }
+    input, select, textarea { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font: inherit; }
+    textarea { min-height: 260px; white-space: pre-wrap; }
+    .row { display: flex; gap: 8px; }
+    .row > * { flex: 1; }
+    button { margin-top: 12px; padding: 9px 12px; border: 0; border-radius: 6px; background: #2563eb; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+    button.secondary { background: #374151; }
+    button:disabled { opacity: .5; cursor: default; }
+    .btns { display: flex; gap: 8px; }
+    .note { margin-top: 10px; font-size: 12px; color: #b45309; }
+    .status { margin-top: 8px; font-size: 12px; color: #6b7280; min-height: 16px; }
+  </style>
+</head>
+<body>
+  <h1>제휴 글 초안 어시스턴트</h1>
+  <p class="sub">스타일 가이드에 맞는 초안을 만듭니다. 발행은 검수 후 직접 하세요.</p>
+
+  <label for="title">제목</label>
+  <input id="title" placeholder="예: 쿠쿠 14인용 식기세척기 설치 후기 (소음·전기세)" />
+
+  <label for="keywords">핵심 키워드 (쉼표로 구분)</label>
+  <input id="keywords" placeholder="예: 쿠쿠 14인용 식기세척기 설치, 소음, 전기세" />
+
+  <div class="row">
+    <div>
+      <label for="channel">채널</label>
+      <select id="channel">
+        <option value="wordpress">워드프레스(세컨/서드)</option>
+        <option value="naver">네이버 블로그</option>
+      </select>
+    </div>
+    <div>
+      <label for="program">제휴</label>
+      <select id="program">
+        <option value="쿠팡 파트너스">쿠팡 파트너스</option>
+        <option value="네이버 쇼핑 커넥트">네이버 쇼핑 커넥트</option>
+        <option value="Trip.com Partners">Trip.com Partners</option>
+      </select>
+    </div>
+  </div>
+
+  <label for="niche">니치/메모 (선택)</label>
+  <input id="niche" placeholder="예: 가전 모델 리뷰 / 여행 할인쿠폰" />
+
+  <button id="gen">초안 생성</button>
+  <div class="status" id="status"></div>
+
+  <label for="out" style="margin-top:14px;">생성 결과 (검수·수정 후 사용)</label>
+  <textarea id="out" placeholder="여기에 생성된 초안이 나옵니다. 링크 자리표시자는 실제 딥링크로 교체하세요."></textarea>
+
+  <div class="btns">
+    <button id="insert" class="secondary">에디터에 삽입</button>
+    <button id="copy" class="secondary">복사</button>
+  </div>
+
+  <p class="note">⚠️ AI 초안은 사실·링크·광고표시·저작권을 사람이 최종 검수 후 발행하세요. 자동 발행 기능은 없습니다.</p>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>

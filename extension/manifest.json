@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "제휴 글 초안 어시스턴트 (검토용 프로토타입)",
+  "version": "0.1.0",
+  "description": "제목·키워드로 스타일 가이드 준수 제휴 글 초안을 생성해 에디터에 삽입합니다. 발행은 사람이 검수 후 수동으로.",
+  "permissions": ["activeTab", "scripting", "sidePanel", "storage"],
+  "host_permissions": [
+    "http://localhost:8787/*",
+    "https://*/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "side_panel": { "default_path": "sidepanel.html" },
+  "action": { "default_title": "제휴 글 초안 어시스턴트" },
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
