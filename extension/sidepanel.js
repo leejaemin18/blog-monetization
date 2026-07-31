@@ -1,5 +1,31 @@
 const $ = (id) => document.getElementById(id);
 
+// ── 설정(API 키·모델·프록시) 로드/저장 ─────────────────────────────
+async function loadSettings() {
+  const s = await chrome.storage.local.get(["apiKey", "model", "proxyUrl"]);
+  $("apiKey").value = s.apiKey || "";
+  $("model").value = s.model || "claude-opus-5";
+  $("proxyUrl").value = s.proxyUrl || "";
+  // 키가 없으면 설정 패널을 펼쳐서 먼저 입력하도록 유도.
+  if (!s.apiKey && !s.proxyUrl) $("settings").open = true;
+}
+
+$("saveSettings").addEventListener("click", async () => {
+  await chrome.storage.local.set({
+    apiKey: $("apiKey").value.trim(),
+    model: $("model").value,
+    proxyUrl: $("proxyUrl").value.trim(),
+  });
+  $("settingsStatus").textContent = "저장했습니다.";
+  setTimeout(() => ($("settingsStatus").textContent = ""), 2000);
+});
+
+$("toggleSettings").addEventListener("click", () => {
+  $("settings").open = !$("settings").open;
+});
+
+loadSettings();
+
 $("gen").addEventListener("click", async () => {
   const payload = {
     title: $("title").value.trim(),

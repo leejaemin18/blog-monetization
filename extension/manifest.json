@@ -1,10 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "제휴 글 초안 어시스턴트 (검토용 프로토타입)",
-  "version": "0.1.0",
-  "description": "제목·키워드로 스타일 가이드 준수 제휴 글 초안을 생성해 에디터에 삽입합니다. 발행은 사람이 검수 후 수동으로.",
+  "name": "제휴 글 초안 어시스턴트 (개인용)",
+  "version": "0.2.0",
+  "description": "제목·키워드로 스타일 가이드 준수 제휴 글 초안을 생성해 에디터에 삽입합니다. 서버 없이 내 API 키로 바로 사용. 발행은 사람이 검수 후 수동으로.",
   "permissions": ["activeTab", "scripting", "sidePanel", "storage"],
   "host_permissions": [
+    "https://api.anthropic.com/*",
     "http://localhost:8787/*",
     "https://*/*"
   ],

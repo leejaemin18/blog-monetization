@@ -16,15 +16,44 @@
     .row > * { flex: 1; }
     button { margin-top: 12px; padding: 9px 12px; border: 0; border-radius: 6px; background: #2563eb; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
     button.secondary { background: #374151; }
+    button.link { margin: 0; padding: 0; background: none; color: #6b7280; font-size: 12px; font-weight: 600; }
     button:disabled { opacity: .5; cursor: default; }
     .btns { display: flex; gap: 8px; }
     .note { margin-top: 10px; font-size: 12px; color: #b45309; }
     .status { margin-top: 8px; font-size: 12px; color: #6b7280; min-height: 16px; }
+    details.settings { margin: 4px 0 8px; border: 1px solid #e5e7eb; border-radius: 6px; padding: 6px 10px; }
+    details.settings summary { cursor: pointer; font-weight: 600; font-size: 13px; }
+    details.settings .hint { font-size: 11px; color: #6b7280; margin: 6px 0 2px; }
+    .topbar { display: flex; align-items: baseline; justify-content: space-between; }
   </style>
 </head>
 <body>
-  <h1>제휴 글 초안 어시스턴트</h1>
+  <div class="topbar">
+    <h1>제휴 글 초안 어시스턴트</h1>
+    <button id="toggleSettings" class="link" type="button">⚙ 설정</button>
+  </div>
   <p class="sub">스타일 가이드에 맞는 초안을 만듭니다. 발행은 검수 후 직접 하세요.</p>
+
+  <details class="settings" id="settings">
+    <summary>⚙ 설정 (API 키 · 모델)</summary>
+    <label for="apiKey">Anthropic API 키</label>
+    <input id="apiKey" type="password" placeholder="sk-ant-..." autocomplete="off" />
+    <p class="hint">이 컴퓨터에만 저장됩니다(chrome.storage.local). 개인용 확장에서만 사용하고, 스토어 배포·공유 금지.</p>
+
+    <label for="model">모델</label>
+    <select id="model">
+      <option value="claude-opus-5">품질 우선 (claude-opus-5)</option>
+      <option value="claude-sonnet-5">균형 (claude-sonnet-5)</option>
+      <option value="claude-haiku-4-5-20251001">저렴·빠름 (claude-haiku-4-5)</option>
+    </select>
+
+    <label for="proxyUrl">프록시 URL (선택)</label>
+    <input id="proxyUrl" placeholder="예: http://localhost:8787/generate" autocomplete="off" />
+    <p class="hint">입력하면 API 키 대신 이 프록시로 위임합니다(키를 서버가 쥐는 방식). 비워두면 위 API 키로 직접 호출.</p>
+
+    <button id="saveSettings" type="button">설정 저장</button>
+    <div class="status" id="settingsStatus"></div>
+  </details>
 
   <label for="title">제목</label>
   <input id="title" placeholder="예: 쿠쿠 14인용 식기세척기 설치 후기 (소음·전기세)" />
