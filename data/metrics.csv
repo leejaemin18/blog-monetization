@@ -1,0 +1,5 @@
+date,blog,impressions,clicks,conversions,revenue_won,posts_published,external_inflow,notes
+# 성과 기록. 남의 수익 인증이 아니라 본인 숫자로 판단하기 위한 표.
+# 주의: 노출수·클릭수·CTR은 쿠팡 정책상 외부 공개 금지. 이 파일은 개인용이며 커밋 시 비공개 유지.
+# revenue_won은 확정 정산 기준. clicks/conversions는 내부 참고용.
+2026-07-31,affiliate,0,0,0,0,0,0,프로젝트 시작

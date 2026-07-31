@@ -1,0 +1,29 @@
+# 비밀정보 — 절대 커밋 금지
+secrets/
+*.secret
+*credentials*
+*password*
+.env
+.env.*
+
+# 개인 성과 데이터 (쿠팡 정책상 노출·클릭·CTR 외부 공개 금지)
+# 필요 시 주석 해제해서 로컬 전용으로 유지
+# data/metrics.csv
+
+# 초안 (발행 전 개인 작업물). 예시 파일(예시-*)만 저장소에 포함
+drafts/*.md
+!drafts/.gitkeep
+!drafts/예시-*.md
+
+# 파이썬
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS/에디터
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
