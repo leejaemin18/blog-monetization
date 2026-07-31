@@ -104,6 +104,47 @@ def c_income_promise(text, is_affiliate):
     return None
 
 
+# ---- 최상급/과장 (광고법 + 네이버 저품질) ----
+SUPERLATIVES = [r"최고", r"무조건", r"100\s*%", r"완벽", r"유일", r"강력\s*추천", r"초특가"]
+
+
+@check("WARN", "최상급/과장 표현")
+def c_superlative(text, is_affiliate):
+    hits = [re.search(p, text).group(0) for p in SUPERLATIVES if re.search(p, text)]
+    if hits:
+        return (f"최상급/과장 표현이 있습니다({', '.join(hits)}). "
+                "광고법 위반·네이버 저품질 유발 소지가 있으니 구체적 사실로 바꾸세요.")
+    return None
+
+
+# ---- 광고 표시 확정성 (공정위) ----
+@check("WARN", "광고 표시 확정 표현")
+def c_disclosure_wording(text, is_affiliate):
+    if not is_affiliate:
+        return None
+    # 대가 발생을 불확정으로 흐리는 표현
+    if re.search(r"수수료를?\s*(받을\s*수\s*있|제공받을\s*수\s*있)", text):
+        return "'받을 수 있음'은 불확정 표현입니다. '수수료를 제공받습니다'처럼 확정 표현으로 바꾸세요."
+    if re.search(r"활동의?\s*일환입니다", text) and not re.search(
+        r"수수료를?\s*(제공)?받", text
+    ):
+        return "'활동의 일환입니다'만으로는 대가 발생이 불명확합니다. 수수료를 받는다는 사실을 명시하세요."
+    return None
+
+
+# ---- 링크 도배 (네이버 저품질) ----
+@check("WARN", "링크 과다/도배")
+def c_link_flood(text, is_affiliate):
+    # markdown 링크 + 원시 URL 대략 카운트
+    md = len(re.findall(r"\]\(https?://", text))
+    raw = len(re.findall(r"https?://", text))
+    links = max(md, raw - md)  # 대략적 실제 링크 수
+    if links >= 6:
+        return (f"링크가 약 {links}개로 많습니다. 한 글당 1~3개를 권장합니다"
+                "(네이버는 외부링크 반복 시 저품질 위험).")
+    return None
+
+
 @check("WARN", "허위 후기 소지")
 def c_fake_review(text, is_affiliate):
     if re.search(r"(직접\s*써\s*보니|사용해\s*보니|제가\s*써\s*본)", text):
