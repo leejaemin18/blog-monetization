@@ -1,0 +1,92 @@
+name,category,url,commission,region,joined,media_registered,verified_at,notes
+# 제휴 프로그램 디렉터리 (docs/24-제휴프로그램-100선). joined/media_registered: y/n.
+# commission은 조사 시점 값이며 변동됨 — 가입 시 재확인. verified_at은 마지막 확인월.
+쿠팡 파트너스,국내커머스,https://partners.coupang.com,기본 3%(재확인),국내,n,n,2026-07,즉시가입 쿠키24h 국내1순위
+네이버 쇼핑 커넥트,국내커머스,https://brandconnect.naver.com,최대 30%(재확인),국내,n,n,2026-07,채널 인증·승인 필요
+올리브영 쇼핑 큐레이터,국내커머스,https://m.oliveyoung.co.kr/m/mtn/affiliate/guide,추천7%/기타3%,국내,n,n,2026-07,앱 링크생성 광고표기 필수
+무신사 큐레이터,국내커머스,https://partner.musinsa.com,최대10%+(재확인),국내,n,n,2026-07,승인형
+알리익스프레스 어필리에이트,해외직구,https://portals.aliexpress.com,최대9%(재확인),글로벌,n,n,2026-07,쿠키72h 한국가능
+하프클럽,국내커머스,https://www.linkprice.com,재확인,국내,n,n,2026-07,네트워크 경유
+에누리,국내커머스,https://www.enuri.com,적립형(재확인),국내,n,n,2026-07,소비자 적립성격
+쿠차,국내커머스,https://www.coocha.co.kr,적립형(재확인),국내,n,n,2026-07,소비자 적립성격
+11번가,국내커머스,https://ads.11st.co.kr,재확인,국내,n,n,2026-07,셀러중심 네트워크 경유
+G마켓/옥션,국내커머스,https://partner.gmarket.com,재확인,국내,n,n,2026-07,셀러중심 네트워크 경유
+텐핑,국내CPA,https://tenping.kr,CPC/CPS/CPA,국내,n,n,2026-07,무료·즉시 등급제 바이럴
+애드픽,국내CPA,https://adpick.co.kr,CPI/CPA/CPS,국내,n,n,2026-07,앱설치·사전예약 강점
+링크프라이스,국내CPA,https://ac.linkprice.net/join,머천트별 CPS/CPA,국내,n,n,2026-07,국내 300+ 머천트 딥링크
+아이라이크클릭,국내CPA,https://www.ilikeclick.com,구매액%,국내,n,n,2026-07,무료 Hmall·이마트
+디비디비딥,국내CPA,https://www.dbdbdeep.com,CPA 건당(재확인),국내,n,n,2026-07,주1회 출금 부업형
+애드릭스,국내CPA,https://www.adlix.co.kr,캠페인별,국내,n,n,2026-07,블로그 없이도 가입
+링크인피알,국내CPA,https://www.linkinpr.com,캠페인별,국내,n,n,2026-07,20년+ 빠른정산
+마케통,국내CPA,https://www.marketong.kr,재확인,국내,n,n,2026-07,CPA 바이럴
+엔비티 링크커머스,국내CPA,https://linkcommerce.co.kr,재확인,국내,n,n,2026-07,2026 출시 재확인
+태그바이,국내체험단,https://www.tagby.io,체험/캠페인,국내,n,n,2026-07,인플루언서·체험단
+레뷰,국내체험단,https://www.revu.net,제품+일부페이,국내,n,n,2026-07,국내 최대 체험단
+리더스CPA,국내CPA,https://pf.kakao.com/_xixebTd,건당,국내,n,n,2026-07,⚠️미지급 보도 신규가입 주의
+네이버 애드포스트,국내광고,https://adpost.naver.com,광고배분,국내,n,n,2026-07,제휴아님 블로그90일+ 조건
+카카오 애드핏,국내광고,https://adfit.kakao.com/info,광고배분,국내,n,n,2026-07,제휴아님 매체광고
+Trip.com Partners,여행,https://kr.trip.com/partners/,최대7%(재확인),글로벌,n,n,2026-07,국문우수 자체+Awin
+Agoda 파트너,여행,https://partners.agoda.com,최대7% 누진(재확인),글로벌,n,n,2026-07,웹사이트 필요
+Booking.com Affiliate,여행,https://www.booking.com/affiliate-program/v2/index.html,예약수익 25~40%(재확인),글로벌,n,n,2026-07,체크아웃 기준
+Expedia TAAP,여행,https://partner.expediagroup.com,예약가액(재확인),글로벌,n,n,2026-07,여행사/에이전트
+Hotels.com,여행,https://www.flexoffers.com,4~6%(재확인),글로벌,n,n,2026-07,FlexOffers 경유
+KAYAK Affiliate,여행,https://www.kayak.com,매출 최대50%(재확인),글로벌,n,n,2026-07,CJ경유 메타서치
+trivago,여행,https://www.flexoffers.com,CPC(재확인),글로벌,n,n,2026-07,네트워크 경유
+Klook Affiliate,여행,https://affiliate.klook.com/,액티5~6.5% eSIM20%(재확인),글로벌,n,n,2026-07,자체+Involve
+KKday KKpartners,여행,https://kkpartners.kkday.com/,3~8%(재확인),글로벌,n,n,2026-07,자체+Involve
+GetYourGuide,여행,https://partner.getyourguide.com/,최소8% 쿠키31일(재확인),글로벌,n,n,2026-07,크리에이터/웹
+마이리얼트립 파트너,여행,https://www.myrealtrip.com/promotions/mktpartner-beta-apply,매출~50%(재확인),국내,n,n,2026-07,서비스 내 신청
+와그 파트너,여행,https://partners.waug.com/,재확인,국내,n,n,2026-07,링크형
+여기어때 파트너,여행,https://affiliate.yeogi.com/,재확인,국내,n,n,2026-07,숙박·레저
+야놀자 파트너,여행,https://partner.yanolja.com/,재확인,국내,n,n,2026-07,주로 숙박운영자용
+하나투어 파트너스,여행,https://www.hanatourcompany.com/kr/business/b2b-business/partners,재확인,국내,n,n,2026-07,B2B 심사
+모두투어 비즈모두,여행,https://biz.modetour.com/Mobile/Partner.aspx,재확인,국내,n,n,2026-07,법인 제휴
+에어비앤비 Associates,여행,https://affiliate.withairbnb.com/,재확인,글로벌,n,n,2026-07,대형매체 초대제
+Airalo 이심,여행,https://partners.airalo.com/solutions/affiliates,~10%(재확인),글로벌,n,n,2026-07,Impact 경유
+말톡,여행,https://maaltalk.com/,재확인,국내,n,n,2026-07,이심/로밍
+DiscoverCars,여행,https://www.discovercars.com/affiliate,렌탈이익~70% 쿠키365일(재확인),글로벌,n,n,2026-07,렌터카 고수익
+VisitorsCoverage,여행,https://www.visitorscoverage.com/affiliate-partnership/,최대40%/건$150(재확인),글로벌,n,n,2026-07,여행자보험
+Amazon Associates,글로벌네트워크,https://affiliate-program.amazon.com/,최대10% 품목별(재확인),글로벌,n,n,2026-07,180일내 3건 판매조건
+CJ Affiliate,글로벌네트워크,https://signup.cj.com/member/signup/publisher/,광고주별(재확인),글로벌,n,n,2026-07,대형브랜드
+Awin,글로벌네트워크,https://ui.awin.com/publisher-signup/en/awin,광고주별(재확인),글로벌,n,n,2026-07,3만+브랜드 심사$1
+Rakuten Advertising,글로벌네트워크,https://rakutenadvertising.com/,광고주별(재확인),글로벌,n,n,2026-07,구 LinkShare
+Impact.com,글로벌네트워크,https://impact.com/partners/,광고주별(재확인),글로벌,n,n,2026-07,Walmart·Adidas
+ClickBank,글로벌네트워크,https://www.clickbank.com/create-your-affiliate-account/,디지털50~75%(재확인),글로벌,n,n,2026-07,즉시승인
+Partnerize,글로벌네트워크,https://partnerize.com/partners,광고주별(재확인),글로벌,n,n,2026-07,Pepperjam 통합
+FlexOffers,글로벌네트워크,https://www.flexoffers.com/sign-up/,광고주별(재확인),글로벌,n,n,2026-07,12000+ 프로그램
+Sovrn Commerce,글로벌네트워크,https://www.sovrn.com/commerce/,광고주별(재확인),글로벌,n,n,2026-07,자동링크화 JS
+Skimlinks,글로벌네트워크,https://www.skimlinks.com/signup/,광고주별(재확인),글로벌,n,n,2026-07,자동링크화 에디토리얼
+iHerb Affiliate,해외직구,https://www.iherb.com/info/affiliates,10%~최대25%(재확인),글로벌,n,n,2026-07,Partnerize 쿠키7일
+Temu 제휴,해외직구,https://www.temu.com/affiliate_recruit.html,품목별(재확인),글로벌,n,n,2026-07,80+개국
+Shein 제휴,해외직구,https://us.shein.com/campaigns/shein_affiliateprograminvite,10~20%(재확인),글로벌,n,n,2026-07,주로 앱 내 가입
+Banggood,해외직구,https://www.banggood.com/Affiliate-login.html,최대25%(재확인),글로벌,n,n,2026-07,쿠키30일
+YesStyle,해외직구,https://www.yesstyle.com/en/affiliate-program.html,최대10~15%(재확인),글로벌,n,n,2026-07,Awin/ShareASale
+Qoo10,해외직구,https://www.qoo10.sg/gmkt.inc/SellerAffiliate/,재확인,글로벌,n,n,2026-07,⚠️2024 청산 운영 불투명
+eBay Partner Network,해외직구,https://partnernetwork.ebay.com/,1~4%대(재확인),글로벌,n,n,2026-07,계정 연동
+Walmart Creator,해외직구,https://creator.walmart.com/,최대20%(재확인),글로벌,n,n,2026-07,impact 한국자격 재확인
+Etsy,해외직구,https://www.awin.com/,4~8%(재확인),글로벌,n,n,2026-07,Awin 경유
+Sephora,브랜드,https://www.sephora.com/beauty/affiliates,5~10%(재확인),글로벌,n,n,2026-07,Rakuten 경유
+스타일난다 3CE,브랜드,https://www.flexoffers.com,재확인,글로벌,n,n,2026-07,네트워크 등재
+Nike,브랜드,https://www.nike.com/help/a/nike-affiliate-program,최대15%(재확인),글로벌,n,n,2026-07,지역별 CJ/Awin
+Adidas,브랜드,https://www.adidas.com/us/help/us-company-information/what-is-our-affiliate-program,재확인,글로벌,n,n,2026-07,impact/Awin
+Casetify,브랜드,https://www.casetify.com/,~10.5% 쿠키45일(재확인),글로벌,n,n,2026-07,최소지급$20
+LEGO,브랜드,https://www.lego.com/en-us/page/affiliate-program,~3%(재확인),글로벌,n,n,2026-07,Rakuten 경유
+클래스101,교육구독,https://business.class101.net/affiliate,재확인,국내,n,n,2026-07,제휴 페이지
+인프런,교육구독,https://inflearn.com/partners,재확인,국내,n,n,2026-07,공식 파트너
+패스트캠퍼스,교육구독,https://fastcampus.co.kr/partners,재확인,국내,n,n,2026-07,얼라이언스형
+왓챠 큐레이터,OTT,https://watcha.com,커미션형(재확인),국내,n,n,2026-07,PC웹 신청 본인인증
+리디,교육구독,https://ridibooks.com/partners/,재확인,국내,n,n,2026-07,B2B 중심 개인어필 미확인
+Bluehost,SaaS호스팅,https://www.bluehost.com/affiliates,$65~/건 최대70%(재확인),글로벌,n,n,2026-07,쿠키30일 최소$100
+Hostinger,SaaS호스팅,https://www.hostinger.com/affiliates,40~60%(재확인),글로벌,n,n,2026-07,쿠키30일
+Namecheap,SaaS호스팅,https://www.namecheap.com/affiliates/,20~50%(재확인),글로벌,n,n,2026-07,Impact/CJ/ShareASale
+Canva,SaaS디자인,https://www.canva.com/affiliates/,Pro연~$36(재확인),글로벌,n,n,2026-07,무료가입 커미션 없음
+Rank Math,SaaS,https://rankmath.com/affiliate-terms-and-conditions/,30% 쿠키60일(재확인),글로벌,n,n,2026-07,우리 SEO 플러그인
+Elementor,SaaS,https://elementor.com/affiliates/,45~55%(재확인),글로벌,n,n,2026-07,쿠키45일
+Notion,SaaS,https://notion.com/affiliates,최대$50+20%(재확인),글로벌,n,n,2026-07,⚠️신규모집 중단 재확인
+카페24 유튜브쇼핑,SaaS,https://cafe24.com/youtubeshopping/affiliate-about.html,재확인,국내,n,n,2026-07,크리에이터 조건
+가비아,SaaS호스팅,https://partnercenter.gabia.com,재확인,국내,n,n,2026-07,리셀러/제휴
+아임웹,SaaS,https://imweb.me/reseller,예치금 적립,국내,n,n,2026-07,리셀러형
+토스쇼핑 쉐어링크,금융YMYL,토스 앱 내 쉐어링크,~10%(재확인),국내,n,n,2026-07,🚨YMYL 금융오인 표현금지
+카드고릴라,금융YMYL,https://card-gorilla.com,미확인,국내,n,n,2026-07,🚨YMYL CPA 네트워크 경유
+뱅크샐러드,금융YMYL,https://banksalad.com,미확인,국내,n,n,2026-07,🚨YMYL B2B 중심
+핀크,금융YMYL,https://finnq.com,미확인,국내,n,n,2026-07,🚨YMYL 개인어필 미확인
