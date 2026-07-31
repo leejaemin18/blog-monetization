@@ -1,5 +1,6 @@
-# 블로그 수익화 프로젝트 설정
-# 실행 전 이 파일을 본인 정보로 채우세요. (ID/PW/API 키는 절대 여기 적지 마세요 — .gitignore 참고)
+# 블로그 수익화 프로젝트 설정 (제휴마케팅 중심)
+# 이 프로젝트의 핵심은 세컨/서드 블로그 + 네이버 블로그 제휴 수익화입니다.
+# ID/PW/API 키는 절대 여기 적지 마세요 (.gitignore 참고).
 
 project:
   start_date: "2026-07-31"     # 프로젝트 시작일 (KST)
@@ -7,53 +8,72 @@ project:
 
 # 예산: 수익 0원인 달에도 감당 가능한지 확인 (docs/01-사전준비-비용.md)
 budget:
-  domain_won_per_year: 25000
+  domain_won_per_year: 25000   # 도메인 이미 보유 시 0
   server_won_per_month: 31900
-  extra_blog_won_per_month: 4000   # 서버당 최대 3개
-  keyword_tool_won_per_month: 0    # 사용 안 하면 0
-  monthly_fixed_total_won: 35900   # 위 항목 합산 (본인 구성에 맞게)
+  extra_blog_won_per_month: 4000   # 서버당 최대 3개 (세컨/서드 블로그용)
+  keyword_tool_won_per_month: 0
+  monthly_fixed_total_won: 35900
   can_sustain_6_months: false      # 6개월 고정비 감당 가능하면 true
 
-# 1번 블로그 = 애드센스 승인용 (전문성·일관성·생소한 분야)
-adsense_blog:
-  domain: ""                   # 예: wp-blog.co.kr
-  topic: ""                    # 단일 주제 (예: 콘크리트, 라벨프린터)
-  single_category: ""          # 승인 전까지 카테고리 1개
-  created_at: ""
-  adsense_review_requested_at: ""
-  adsense_status: "미시작"      # 미시작 / 준비중 / 심사중 / 승인 / 거절
-  search_engines_registered:   # 등록 완료한 검색엔진
-    naver: false
-    google: false
-    bing: false
-    daum: false
+# ── 참고 전용 ─────────────────────────────────────────────
+# 애드센스 기반 블로그(1~3강)는 별도 프로젝트에서 관리. 여기서는 상태만 참조.
+adsense_blog_reference:
+  managed_in: "제이통관블로그 워드프레스 프로젝트"
+  domain: ""                   # 알고 있으면 기록 (참고용)
+  adsense_status: "심사중"      # 미시작/심사중/승인/거절
+  note: "이 저장소에서는 개설·세팅 방법만 참고(docs/10). 실제 운영은 다른 프로젝트."
 
-# 2번 블로그 = 제휴마케팅용 (서브도메인 활용 가능)
-affiliate_blog:
+# ── 이 프로젝트의 핵심: 제휴 수익화 블로그 ────────────────
+# 세컨 블로그 (워드프레스, 서브도메인 활용 가능)
+second_blog:
+  platform: "wordpress"
   domain: ""                   # 예: coupon.wp-blog.co.kr
   is_subdomain: true
   theme: ""                    # 제휴 방향 (예: 여행 할인쿠폰, 가전 모델 리뷰)
-  categories: []               # 예: [AI쿠폰, 여행쿠폰, 게임쿠폰]
+  categories: []               # 예: [여행쿠폰, 게임쿠폰, AI쿠폰]
   created_at: ""
+  programs: []                 # 예: [쿠팡 파트너스, 네이버 쇼핑 커넥트]
   search_engines_registered:
     naver: false
     google: false
     bing: false
     daum: false
 
+# 서드 블로그 (선택, 다른 니치로 확장. 세컨이 궤도에 오른 뒤)
+third_blog:
+  platform: "wordpress"
+  domain: ""                   # 예: review.wp-blog.co.kr
+  is_subdomain: true
+  theme: ""
+  categories: []
+  created_at: ""
+  programs: []
+  search_engines_registered:
+    naver: false
+    google: false
+    bing: false
+    daum: false
+
+# 네이버 블로그 (무료. 제휴링크 + 애드포스트 수익화)
+naver_blog:
+  url: ""                      # 예: https://blog.naver.com/내아이디
+  monetization: []             # 예: [제휴링크, 애드포스트]
+  adpost_joined: false         # 네이버 애드포스트 가입 여부
+  created_at: ""
+  note: "쿠팡 등 제휴링크는 반드시 미디어 등록 + 광고표시. 애드포스트는 별개 승인."
+
 # 사용할 제휴 프로그램 (상세는 data/offers.csv)
 affiliate_programs:
   - name: "쿠팡 파트너스"
     joined: false
-    media_registered: false    # 홍보 채널 미디어 등록 완료 여부
+    media_registered: false    # 홍보 채널(세컨/서드/네이버블로그) 미디어 등록 완료 여부
   - name: "네이버 쇼핑 커넥트"
     joined: false
   - name: "Trip.com Partners"
     joined: false
 
-# 외부 유입에 사용할 채널 (반드시 미디어로 등록 + 정책 준수)
+# 외부 유입/홍보 채널 (반드시 미디어로 등록 + 정책 준수)
 external_channels:
-  naver_blog: ""
   naver_cafe: ""
   threads: ""
   youtube: ""
@@ -61,4 +81,4 @@ external_channels:
 # 목표 (남의 수익 인증이 아니라 본인 기준)
 goals:
   first_affiliate_post_by: ""
-  monthly_revenue_target_won: 0   # 무리하지 않은 현실 목표
+  monthly_revenue_target_won: 0

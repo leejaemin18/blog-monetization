@@ -1,6 +1,7 @@
 id,blog,title,category,keyword,type,status,published_at,scheduled_at,url,ad_disclosure,affiliate_program,notes
-# 콘텐츠 대장. type: 애드센스승인용/제휴/외부유입. status: 초안/검수중/예약/발행/거절대응
+# 콘텐츠 대장. blog: second/third/naver (애드센스 블로그는 별도 프로젝트라 여기서 관리 안 함)
+# type: 제휴/외부유입.  status: 초안/검수중/예약/발행/거절대응
 # ad_disclosure: 광고표시 문구 삽입 여부(y/n). 제휴 글은 반드시 y.
 # 아래는 형식 예시입니다.
-A001,adsense,라벨프린터 라벨이 안 나올 때 점검 순서,프린터,라벨프린터 급지 오류,애드센스승인용,초안,,,,,n,,
-C001,affiliate,Trip.com 렌터카 할인코드 쿠폰 포함 2026년 7월 최신,여행쿠폰,Trip.com 렌터카 할인코드,제휴,초안,,,,y,Trip.com Partners,공식 쿠폰 재확인 후 발행
+C001,second,Trip.com 렌터카 할인코드 쿠폰 포함 2026년 7월 최신,여행쿠폰,Trip.com 렌터카 할인코드,제휴,초안,,,,y,Trip.com Partners,공식 쿠폰 재확인 후 발행
+N001,naver,쿠쿠 14인용 식기세척기 설치 공간 체크,가전리뷰,쿠쿠 14인용 식기세척기 설치,제휴,초안,,,,y,쿠팡 파트너스,네이버 독자용으로 재작성(복제 금지)

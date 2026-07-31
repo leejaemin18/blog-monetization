@@ -49,6 +49,43 @@ def load_yaml_flat(path):
     return out
 
 
+def parse_programs(path):
+    """affiliate_programs 리스트를 읽어 [(name, joined, media_registered)] 반환.
+    flat 파서가 리스트를 건너뛰므로 별도 처리."""
+    if not os.path.exists(path):
+        return []
+    out = []
+    in_section = False
+    cur = None
+    with open(path, encoding="utf-8") as f:
+        for raw in f:
+            line = raw.rstrip("\n")
+            if not line.strip() or line.lstrip().startswith("#"):
+                continue
+            indent = len(line) - len(line.lstrip(" "))
+            s = line.strip()
+            if indent == 0:
+                in_section = s.startswith("affiliate_programs:")
+                if cur:
+                    out.append(cur)
+                    cur = None
+                continue
+            if not in_section:
+                continue
+            if s.startswith("- name:"):
+                if cur:
+                    out.append(cur)
+                val = s.split(":", 1)[1].strip().strip('"').strip("'")
+                cur = [val, False, False]
+            elif cur and s.startswith("joined:"):
+                cur[1] = s.split(":", 1)[1].strip().lower() in ("true", "1", "yes")
+            elif cur and s.startswith("media_registered:"):
+                cur[2] = s.split(":", 1)[1].strip().lower() in ("true", "1", "yes")
+    if cur:
+        out.append(cur)
+    return [tuple(x) for x in out]
+
+
 def read_csv(path):
     if not os.path.exists(path):
         return []
@@ -64,21 +101,25 @@ def bar(done, total, width=24):
 
 
 def phase_status(cfg):
-    """설정 기반으로 단계별 완료 여부 추정."""
+    """설정 기반으로 단계별 완료 여부 추정 (제휴 수익화 중심)."""
     def truthy(k):
         return str(cfg.get(k, "")).lower() in ("true", "1", "yes")
 
+    def program_joined(name):
+        # affiliate_programs 리스트는 flat 파서가 건너뛰므로, joined 플래그를 종합 판단
+        return False  # 상세는 아래 프로그램 섹션에서 표시
+
     phases = []
-    phases.append(("Day0 사전준비·예산",
-                   truthy("budget.can_sustain_6_months") and bool(cfg.get("adsense_blog.topic"))))
-    phases.append(("Day1-2 1번 블로그 개설",
-                   bool(cfg.get("adsense_blog.created_at"))))
-    se = [truthy(f"adsense_blog.search_engines_registered.{s}") for s in ("naver", "google", "bing", "daum")]
-    phases.append(("  └ 검색엔진 등록(1번)", all(se)))
-    phases.append(("Day3-5 애드센스 검토요청",
-                   bool(cfg.get("adsense_blog.adsense_review_requested_at"))))
-    phases.append(("Day5 2번 블로그 개설",
-                   bool(cfg.get("affiliate_blog.created_at"))))
+    phases.append(("Day0 채널전략·니치·예산",
+                   truthy("budget.can_sustain_6_months") and bool(cfg.get("second_blog.theme"))))
+    phases.append(("Day1-2 세컨 블로그 개설",
+                   bool(cfg.get("second_blog.created_at"))))
+    se = [truthy(f"second_blog.search_engines_registered.{s}") for s in ("naver", "google", "bing", "daum")]
+    phases.append(("  └ 검색엔진 등록(세컨)", all(se)))
+    phases.append(("Day3+ 네이버 블로그 수익화",
+                   bool(cfg.get("naver_blog.created_at")) or truthy("naver_blog.adpost_joined")))
+    phases.append(("Day10+ 서드 블로그 확장",
+                   bool(cfg.get("third_blog.created_at"))))
     return phases
 
 
@@ -105,9 +146,20 @@ def main():
     for name, done in phase_status(cfg):
         print(f"   {'✅' if done else '⬜'} {name}")
 
-    # 애드센스 상태
-    st = cfg.get("adsense_blog.adsense_status", "미시작")
-    print(f"\n▶ 애드센스 상태: {st}")
+    # 애드센스 (참고 전용 — 다른 프로젝트에서 관리)
+    st = cfg.get("adsense_blog_reference.adsense_status", "")
+    if st:
+        mng = cfg.get("adsense_blog_reference.managed_in", "별도 프로젝트")
+        print(f"\n▶ 애드센스(참고): {st}  ─ {mng}에서 관리")
+
+    # 제휴 프로그램 가입 현황 (리스트는 flat 파서가 못 읽으므로 원본 재파싱)
+    progs = parse_programs(os.path.join(DATA, "niche.yaml"))
+    if progs:
+        print("\n▶ 제휴 프로그램")
+        for name, joined, media in progs:
+            mark = "✅" if joined else "⬜"
+            extra = " (미디어 등록✅)" if media else (" (미디어 미등록)" if joined else "")
+            print(f"   {mark} {name}{extra}")
 
     # 콘텐츠
     print("\n▶ 콘텐츠 대장")
