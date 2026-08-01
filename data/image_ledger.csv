@@ -1,0 +1,6 @@
+id,article_slug,image_role,file_name,alt_text,prompt,source,license,placement,status,notes
+# 이미지 대장 — ChatGPT(Codex)가 이미지 생성 시 한 줄씩 기록.
+# image_role: 썸네일/본문. source: ChatGPT생성/직접촬영/쿠팡대표이미지.
+# license: 상업이용가능 여부와 근거. placement: 글에서 들어갈 위치(예: 본문2, 도입 아래).
+# status: 생성/검토중/승인/교체필요. 아래는 형식 예시입니다.
+IMG001,dishwasher-install-review,썸네일,dishwasher-thumb.jpg,주방에 설치한 은색 식기세척기,"비율 16:9, 모던 주방의 은색 식기세척기, 밝은 자연광, 우상단 텍스트여백, 실사",ChatGPT생성,상업이용가능(생성물·로고없음),썸네일,생성,금지어·실존로고 없음 확인
