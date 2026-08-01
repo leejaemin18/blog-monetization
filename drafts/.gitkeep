@@ -1,0 +1,3 @@
+# 이 폴더에 글 초안(.md)을 작성하고 발행 전 검사하세요.
+# python3 tools/compliance.py drafts/내글.md
+# 초안은 .gitignore로 커밋에서 제외됩니다 (이 .gitkeep 제외).

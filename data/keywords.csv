@@ -1,0 +1,8 @@
+keyword,search_volume,buy_intent,relevance,differentiation,competition_ease,policy_safety,platform,angle,status,notes
+# 점수 컬럼(buy_intent~policy_safety)은 1~5. 클수록 좋음. competition_ease는 경쟁이 낮을수록 높은 점수.
+# python3 tools/kwscore.py 실행 시 총점·우선순위(A/B/C/D)가 자동 계산됩니다.
+# 아래는 5강 예시 데이터입니다. 본인 키워드로 교체하세요.
+ABC-1234 후기,180,5,5,4,3,5,쿠팡,모델명 리뷰,후보,모델번호 롱테일 예시
+식기세척기 추천,5000,3,5,3,1,5,쿠팡,비교표 TOP5,후보,검색량 크지만 경쟁 심함
+Trip.com 렌터카 할인코드 쿠폰 2026년 7월,3000,5,5,4,2,4,Trip.com,할인코드 테이블,후보,시점+동의어 조합
+쿠쿠 14인용 식기세척기 설치,90,5,5,5,4,5,쿠팡,설치 가이드,후보,구매 직전 문제해결형

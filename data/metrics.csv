@@ -1,0 +1,7 @@
+date,blog,impressions,clicks,conversions,revenue_won,posts_published,external_inflow,notes
+# 채널별 성과 기록. blog: second/third/naver. 남의 수익 인증이 아니라 내 숫자로 판단.
+# 주의: 노출수·클릭수·CTR은 쿠팡 정책상 외부 공개 금지. 이 파일은 개인용(로컬 유지).
+# 네이버 블로그는 제휴 수익과 애드포스트 수익을 notes로 구분하면 좋음.
+# revenue_won은 확정 정산 기준. clicks/conversions는 내부 참고용.
+2026-07-31,second,0,0,0,0,0,0,프로젝트 시작
+2026-07-31,naver,0,0,0,0,0,0,프로젝트 시작

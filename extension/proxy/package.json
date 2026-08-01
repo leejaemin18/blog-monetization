@@ -1,0 +1,13 @@
+{
+  "name": "affiliate-draft-proxy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "제휴 글 초안 생성용 백엔드 프록시 (API 키 보관). 학습·검토용 최소 예제.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.0"
+  }
+}

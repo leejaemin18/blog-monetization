@@ -1,0 +1,6 @@
+date,item,source_url,finding,verdict
+# 정책·수수료 확인 기록. 월 1회 이상 갱신 (docs/90-정책-준수-가이드.md 7번).
+# verdict: 확인 / 재확인필요 / 변경됨
+2026-07-31,쿠팡 기본 수수료,https://partners.coupang.com/#help/operating-policy,별도 정함 없으면 3%·제외상품 존재,확인
+2026-07-31,쿠팡 월 지급 상한,https://partners.coupang.com/#help/operating-policy,월 3000만원·초과분 이월 또는 미지급,확인
+2026-07-31,경제적 이해관계 공개,https://www.law.go.kr/admRulInfoP.do?admRulSeq=2100000280130,제목/첫부분에 명확 표시 요구,확인

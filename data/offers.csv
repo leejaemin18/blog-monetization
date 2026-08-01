@@ -1,0 +1,6 @@
+program,product,commission,deeplink,coupon_code,discount,valid_until,official_source,verified_at,notes
+# 제휴 오퍼 관리. valid_until은 YYYY-MM-DD. python3 tools/offers.py로 만료 임박 항목을 확인하세요.
+# commission/discount는 반드시 official_source에서 확인하고 verified_at(확인일)을 기록.
+쿠팡 파트너스,전 상품(별도 정함 없음),3%,,,,,,https://partners.coupang.com/#help/operating-policy,2026-07-31,별도 정함 없으면 3%·제외상품 존재
+Trip.com Partners,렌터카,재확인필요,,TRIPRENT,최대 8%,2026-09-30,https://kr.trip.com/partners/index,2026-07-31,강의 예시값·발행 전 공식 재확인
+Trip.com Partners,항공권,재확인필요,,,신규 최대 22000원,2026-08-31,https://kr.trip.com/partners/index,2026-07-31,강의 예시값·발행 전 공식 재확인

@@ -1,0 +1,54 @@
+<!--
+  할인코드 테이블 템플릿 (6강)
+  사용법: 워드프레스 글 편집 → "/html" 입력 → HTML 블록 → 이 코드 붙여넣기
+  교체할 값: {{제휴링크}} {{할인율}} {{쿠폰코드}} {{마감일}} {{설명}}
+  ⚠️ 발행 전 반드시:
+     1) 공식 홈페이지에서 할인율·쿠폰코드·마감일을 오늘 확인 (data/offers.csv 기록)
+     2) 링크 클릭 시 리퍼럴 코드가 붙고 의도한 페이지로 가는지 테스트 (모바일 포함)
+     3) 글 첫 부분에 광고 표시 문구 삽입 (templates/광고표시-문구.md)
+-->
+<div style="max-width:680px;margin:24px auto;font-family:'Noto Sans KR',sans-serif;">
+  <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb;
+         border-radius:10px;overflow:hidden;">
+    <thead>
+      <tr style="background:#2563eb;color:#fff;text-align:left;">
+        <th style="padding:12px 14px;">구분</th>
+        <th style="padding:12px 14px;">혜택</th>
+        <th style="padding:12px 14px;">유효기간</th>
+        <th style="padding:12px 14px;text-align:center;">바로가기</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 행 1 -->
+      <tr style="border-top:1px solid #eef2f7;">
+        <td style="padding:12px 14px;font-weight:600;">항공권</td>
+        <td style="padding:12px 14px;">{{설명1}} (코드: <code>{{쿠폰코드1}}</code>)</td>
+        <td style="padding:12px 14px;color:#dc2626;">~{{마감일1}}</td>
+        <td style="padding:12px 14px;text-align:center;">
+          <a href="{{제휴링크1}}" target="_blank" rel="nofollow sponsored noopener"
+             style="display:inline-block;background:#2563eb;color:#fff;text-decoration:none;
+             padding:8px 16px;border-radius:6px;font-size:14px;">할인받기</a>
+        </td>
+      </tr>
+      <!-- 행 2 -->
+      <tr style="border-top:1px solid #eef2f7;background:#fafbfc;">
+        <td style="padding:12px 14px;font-weight:600;">렌터카</td>
+        <td style="padding:12px 14px;">{{설명2}} (코드: <code>{{쿠폰코드2}}</code>)</td>
+        <td style="padding:12px 14px;color:#dc2626;">~{{마감일2}}</td>
+        <td style="padding:12px 14px;text-align:center;">
+          <a href="{{제휴링크2}}" target="_blank" rel="nofollow sponsored noopener"
+             style="display:inline-block;background:#2563eb;color:#fff;text-decoration:none;
+             padding:8px 16px;border-radius:6px;font-size:14px;">할인받기</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;color:#6b7280;margin:8px 4px 0;">
+    ※ 할인 혜택·쿠폰은 공식 페이지 기준이며 예고 없이 변경될 수 있습니다.
+    확인일: {{확인일}} · 실제 적용 금액은 결제 화면에서 확인하세요.
+  </p>
+</div>
+<!--
+  rel="nofollow sponsored" : 광고/제휴 링크에 권장되는 속성 (구글 공식).
+  강의의 "모든 외부 링크 nofollow"와 달리, 제휴 링크에는 sponsored 를 함께 씁니다.
+-->

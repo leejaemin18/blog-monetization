@@ -1,0 +1,120 @@
+name: ChatGPT 협업 자동호출
+
+# 협업 이벤트가 생기면 GitHub가 자동으로 ChatGPT(OpenAI API)를 호출해
+# AGENTS.md 규칙 기준으로 의견을 코멘트로 남긴다.
+#
+# 동작 조건:
+#   - 저장소 Settings > Secrets and variables > Actions 에 OPENAI_API_KEY 추가 (필수)
+#   - (선택) 변수 OPENAI_MODEL 로 모델 지정. 기본값 gpt-4o
+#
+# 트리거:
+#   - 이슈 생성 / collab 라벨 부착  (회의 시작)
+#   - PR 생성·재오픈·리뷰준비 완료   (원고 검토 요청)
+#   - 코멘트에 "@chatgpt" 멘션       (수동 재호출)
+
+on:
+  issues:
+    types: [opened, labeled]
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  chatgpt:
+    # 봇 루프 방지 + 관련 이벤트만 실행
+    if: >
+      github.actor != 'github-actions[bot]' &&
+      (
+        github.event_name == 'pull_request' ||
+        github.event_name == 'issues' ||
+        (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@chatgpt'))
+      )
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ask ChatGPT (Codex)
+        uses: actions/github-script@v7
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
+        with:
+          script: |
+            const fs = require('fs');
+            const apiKey = process.env.OPENAI_API_KEY;
+            if (!apiKey) {
+              core.setFailed('OPENAI_API_KEY 시크릿이 없습니다. Settings > Secrets and variables > Actions 에 추가하세요.');
+              return;
+            }
+
+            // 봇이 만든 이벤트면 무시(무한 루프 방지)
+            if (context.payload.sender && context.payload.sender.type === 'Bot') return;
+
+            // 이벤트별로 제목/본문/번호 추출
+            let title = '', body = '', issueNumber;
+            if (context.eventName === 'pull_request') {
+              title = context.payload.pull_request.title;
+              body = context.payload.pull_request.body || '';
+              issueNumber = context.payload.pull_request.number;
+            } else if (context.eventName === 'issues') {
+              // 라벨 부착 이벤트면 collab 라벨일 때만 반응
+              if (context.payload.action === 'labeled' && context.payload.label?.name !== 'collab') return;
+              title = context.payload.issue.title;
+              body = context.payload.issue.body || '';
+              issueNumber = context.payload.issue.number;
+            } else if (context.eventName === 'issue_comment') {
+              title = context.payload.issue.title;
+              body = context.payload.comment.body || '';
+              issueNumber = context.payload.issue.number;
+            }
+
+            // AGENTS.md 를 시스템 지침으로 주입
+            let agents = '';
+            try { agents = fs.readFileSync('AGENTS.md', 'utf8'); } catch (e) {}
+
+            const system = [
+              '너는 이 저장소의 ChatGPT(Codex) 협업자다.',
+              '아래 AGENTS.md 규칙을 지켜 이미지·구조·저작권 관점에서 구체적 의견을 한국어로 작성하라.',
+              '원고에 CODEX_IMAGE_BRIEF 주석이 있으면 그 이미지를 어떻게 만들지(비율·장면·텍스트여백·톤) 제안하라.',
+              '실행 불가한 것(실제 이미지 첨부 등)은 무엇이 필요한지 명확히 밝혀라.',
+              '',
+              '=== AGENTS.md ===',
+              agents
+            ].join('\n');
+
+            const userMsg = `제목: ${title}\n\n내용:\n${body}`;
+
+            const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+              method: 'POST',
+              headers: { 'content-type': 'application/json', 'authorization': `Bearer ${apiKey}` },
+              body: JSON.stringify({
+                model: process.env.OPENAI_MODEL || 'gpt-4o',
+                messages: [
+                  { role: 'system', content: system },
+                  { role: 'user', content: userMsg }
+                ]
+              })
+            });
+
+            if (!resp.ok) {
+              const t = await resp.text().catch(() => '');
+              core.setFailed(`OpenAI 오류 ${resp.status}: ${t.slice(0, 300)}`);
+              return;
+            }
+
+            const data = await resp.json();
+            const answer = data.choices?.[0]?.message?.content?.trim() || '(빈 응답을 받았습니다.)';
+            const footer = '\n\n---\n_🤖 ChatGPT(Codex) 자동 협업 응답 · AGENTS.md 기준. 최종 검수·병합은 사람이._';
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: answer + footer
+            });
