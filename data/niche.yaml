@@ -27,12 +27,18 @@ adsense_blog_reference:
 # 세컨 블로그 (워드프레스, 서브도메인 활용 가능)
 second_blog:
   platform: "wordpress"
-  domain: ""                   # 예: coupon.wp-blog.co.kr
+  domain: ""                   # 예: home.wp-blog.co.kr (서브도메인)
   is_subdomain: true
-  theme: ""                    # 제휴 방향 (예: 여행 할인쿠폰, 가전 모델 리뷰)
-  categories: []               # 예: [여행쿠폰, 게임쿠폰, AI쿠폰]
+  theme: "생활·계절가전 리뷰"   # 확정 (2026-08-01): 쿠팡 파트너스 중심, 객단가↑·사계절 글감
+  categories:                  # 4개 카테고리 구조
+    - 주방가전
+    - 청소·생활가전
+    - 계절가전            # 제습·가습·냉난방
+    - 구매가이드·비교
   created_at: ""
-  programs: []                 # 예: [쿠팡 파트너스, 네이버 쇼핑 커넥트]
+  programs:
+    - 쿠팡 파트너스
+    - 네이버 쇼핑 커넥트
   search_engines_registered:
     naver: false
     google: false
