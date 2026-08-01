@@ -31,7 +31,17 @@ Claude가 원고에 남기고 ChatGPT가 읽습니다.
 - 저작권·광고표시·사실 오류가 하나라도 있으면 병합 보류.
 - 최종 병합 버튼은 **사람**이 누른다(계정 권한).
 
-## ⚠️ 자동 호출은 안 됨
-한쪽 AI가 작업해도 다른 AI가 자동으로 이어받지 않습니다.
-운영자가 상대 AI에게 "상대 작업 확인해"라고 알려주거나, GitHub 자동화(Action 등)를 걸어야
-회의가 이어집니다. 이 흐름을 지키면 실시간은 아니어도 안정적으로 협업됩니다.
+## 🤖 ChatGPT 자동 호출 (GitHub Actions)
+`.github/workflows/chatgpt-collab.yml` 이 다음 이벤트에서 **자동으로 ChatGPT(OpenAI API)를 호출**해
+`AGENTS.md` 기준 의견을 코멘트로 답니다:
+- 이슈 생성 또는 `collab` 라벨 부착 (회의 시작)
+- PR 생성·재오픈·리뷰준비 완료 (원고 검토 요청)
+- 코멘트에 `@chatgpt` 멘션 (수동 재호출)
+
+**작동시키려면 (1회 설정):**
+1. 저장소 **Settings → Secrets and variables → Actions → New repository secret**
+2. 이름 `OPENAI_API_KEY`, 값은 OpenAI API 키(`sk-...`). (선택) 변수 `OPENAI_MODEL` 로 모델 지정, 기본 `gpt-4o`.
+
+> ⚠️ 이 자동화는 **ChatGPT 앱 구독이 아니라 OpenAI API 크레딧**을 씁니다(호출당 소액 과금).
+> 키가 없으면 워크플로우는 안내 메시지와 함께 실패만 하고 아무 코멘트도 달지 않습니다.
+> 최종 검수·병합 버튼은 항상 **사람**이 누릅니다.
