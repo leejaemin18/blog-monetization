@@ -1,0 +1,51 @@
+name: 사이트 점검 (Claude의 눈)
+
+# Claude 세션은 블로그 도메인 접근이 차단되어 있어, GitHub 러너가 대신 사이트를 열어
+# 내용을 로그로 출력한다. Claude는 이 로그를 읽어 사이트 상태를 "본다".
+#
+# 실행: Actions 탭 → 이 워크플로우 → Run workflow (또는 Claude가 API로 트리거)
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "점검할 페이지 URL (기본: 홈)"
+        required: false
+        default: "https://jipsa.jaylog.co.kr/"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 홈페이지 상태·제목·메뉴
+        run: |
+          URL="${{ github.event.inputs.url }}"
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126.0 Safari/537.36"
+          echo "=== HTTP 상태 ==="
+          curl -sS -A "$UA" -o /tmp/page.html -w "status=%{http_code} redirect=%{redirect_url}\n" "$URL" || true
+          echo ""
+          echo "=== <title> / 메타 ==="
+          grep -oiE "<title>[^<]*</title>" /tmp/page.html | head -3 || echo "(title 없음)"
+          grep -oiE 'name="description" content="[^"]*"' /tmp/page.html | head -2 || true
+          echo ""
+          echo "=== 인증 태그 (네이버/빙/구글) ==="
+          grep -oiE '(naver-site-verification|msvalidate\.01|google-site-verification)[^>]*' /tmp/page.html | head -5 || echo "(홈에서 미발견)"
+          echo ""
+          echo "=== 메뉴/링크 상위 30개 ==="
+          grep -oiE '<a [^>]*href="[^"]*"[^>]*>[^<]{1,40}</a>' /tmp/page.html | head -30 || true
+          echo ""
+          echo "=== 본문 텍스트 미리보기 (앞 2000자) ==="
+          sed -e 's/<script[^>]*>.*<\/script>//g' /tmp/page.html | sed -e 's/<[^>]*>/ /g' | tr -s ' \n' ' ' | head -c 2000; echo ""
+
+      - name: robots.txt
+        run: |
+          echo "=== robots.txt ==="
+          curl -sS -A "Mozilla/5.0" "https://jipsa.jaylog.co.kr/robots.txt" || echo "(가져오기 실패)"
+
+      - name: 사이트맵
+        run: |
+          echo "=== sitemap_index.xml ==="
+          curl -sS -A "Mozilla/5.0" "https://jipsa.jaylog.co.kr/sitemap_index.xml" | head -60 || echo "(가져오기 실패)"
+          echo ""
+          echo "=== RSS(/feed) 앞부분 ==="
+          curl -sS -A "Mozilla/5.0" "https://jipsa.jaylog.co.kr/feed" | head -40 || echo "(가져오기 실패)"
