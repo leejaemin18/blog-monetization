@@ -1,0 +1,102 @@
+name: 워드프레스 자동발행 (초안 업로드)
+
+# 저장소의 마크다운 초안을 워드프레스에 REST API로 올린다.
+# 안전장치:
+#   - 기본 status=draft (사이트에 "임시글"로 들어감) → 사람이 딥링크·이미지 확인 후 발행
+#   - status=publish 는 명시적으로 선택했을 때만
+#
+# 1회 설정 (시크릿 3개):
+#   워드프레스 관리자 → 사용자 → 프로필 → "애플리케이션 비밀번호" 새로 발급 후,
+#   저장소 Settings → Secrets and variables → Actions 에 추가:
+#     WP_URL          예: https://jipsa.jaylog.co.kr
+#     WP_USER         워드프레스 로그인 아이디
+#     WP_APP_PASSWORD 애플리케이션 비밀번호 (관리자 비번 아님!)
+#
+# 실행: Actions 탭 → 이 워크플로우 → Run workflow → 초안 경로 입력
+
+on:
+  workflow_dispatch:
+    inputs:
+      draft_path:
+        description: "올릴 초안 경로 (예: drafts/예시-강아지-사료-고르는법.md)"
+        required: true
+      category:
+        description: "카테고리 슬러그 (food/goods/gadget/guide)"
+        required: false
+        default: "food"
+      status:
+        description: "draft(임시글, 권장) 또는 publish"
+        required: false
+        default: "draft"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 마크다운 → HTML 변환 후 업로드
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          DRAFT_PATH: ${{ github.event.inputs.draft_path }}
+          CATEGORY: ${{ github.event.inputs.category }}
+          POST_STATUS: ${{ github.event.inputs.status }}
+        run: |
+          set -e
+          if [ -z "$WP_URL" ] || [ -z "$WP_USER" ] || [ -z "$WP_APP_PASSWORD" ]; then
+            echo "::error::WP_URL / WP_USER / WP_APP_PASSWORD 시크릿을 먼저 등록하세요."
+            exit 1
+          fi
+          if [ ! -f "$DRAFT_PATH" ]; then
+            echo "::error::초안 파일이 없습니다: $DRAFT_PATH"; exit 1
+          fi
+          pip -q install markdown requests
+
+          python3 - <<'PY'
+          import os, re, json, requests, markdown
+
+          path = os.environ["DRAFT_PATH"]
+          raw = open(path, encoding="utf-8").read()
+
+          # HTML 주석(작업 메모·이미지 브리프)은 발행본에서 제거
+          body = re.sub(r"<!--.*?-->", "", raw, flags=re.S)
+
+          # 첫 번째 # 제목 추출
+          m = re.search(r"^#\s+(.+)$", body, flags=re.M)
+          title = m.group(1).strip() if m else os.path.basename(path)
+          if m:
+              body = body.replace(m.group(0), "", 1)
+
+          html = markdown.markdown(body, extensions=["tables", "nl2br"])
+
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"])
+
+          # 카테고리 슬러그 → ID 조회 (없으면 미분류)
+          cat_ids = []
+          slug = os.environ.get("CATEGORY", "").strip()
+          if slug:
+              r = requests.get(f"{base}/wp-json/wp/v2/categories", params={"slug": slug}, auth=auth, timeout=30)
+              if r.ok and r.json():
+                  cat_ids = [r.json()[0]["id"]]
+              else:
+                  print(f"::warning::카테고리 슬러그 '{slug}' 를 찾지 못해 기본 카테고리로 올립니다.")
+
+          payload = {"title": title, "content": html, "status": os.environ.get("POST_STATUS", "draft")}
+          if cat_ids:
+              payload["categories"] = cat_ids
+
+          r = requests.post(f"{base}/wp-json/wp/v2/posts", json=payload, auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::업로드 실패 {r.status_code}: {r.text[:400]}")
+              raise SystemExit(1)
+
+          post = r.json()
+          print("=== 업로드 성공 ===")
+          print("제목:", post.get("title", {}).get("rendered"))
+          print("상태:", post.get("status"))
+          print("편집 주소:", f"{base}/wp-admin/post.php?post={post.get('id')}&action=edit")
+          print("링크:", post.get("link"))
+          PY
