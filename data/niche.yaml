@@ -27,6 +27,8 @@ adsense_blog_reference:
 # 세컨 블로그 (워드프레스, 서브도메인 활용 가능)
 second_blog:
   platform: "wordpress"
+  name: "집사의 발견"          # 확정 (2026-08-02): 중복검색 클리어. 브랜드킷 → docs/26
+  tagline: "까다로운 집사가 직접 고른 반려템"
   domain: ""                   # 예: home.wp-blog.co.kr (서브도메인)
   is_subdomain: true
   theme: "반려동물(강아지·고양이) 라이프"   # 확정 (2026-08-02): 재구매 큰 소모품 + 3%대 수수료 + 감성 신뢰 유입
