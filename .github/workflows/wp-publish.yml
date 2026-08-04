@@ -54,6 +54,21 @@ jobs:
           fi
           pip -q install markdown requests
 
+          # ── 인증 자가진단: 이 자격증명이 실제로 어느 사용자로 인식되는지 확인 ──
+          python3 - <<'DIAG'
+          import os, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          r = requests.get(f"{base}/wp-json/wp/v2/users/me", params={"context": "edit"}, auth=auth, timeout=30)
+          print(f"[진단] users/me → HTTP {r.status_code}")
+          body = r.text[:300]
+          print(f"[진단] 응답: {body}")
+          if r.status_code == 401:
+              # Authorization 헤더가 서버에 도달하는지 확인 (rest_route 우회 경로도 시도)
+              r2 = requests.get(f"{base}/?rest_route=/wp/v2/users/me&context=edit", auth=auth, timeout=30)
+              print(f"[진단] rest_route 우회 → HTTP {r2.status_code}: {r2.text[:200]}")
+          DIAG
+
           python3 - <<'PY'
           import os, re, json, requests, markdown
 
@@ -72,7 +87,8 @@ jobs:
           html = markdown.markdown(body, extensions=["tables", "nl2br"])
 
           base = os.environ["WP_URL"].rstrip("/")
-          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"])
+          # 앱 비밀번호의 공백은 제거해도 유효 — 복붙 실수 방지
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
 
           # 카테고리 슬러그 → ID 조회 (없으면 미분류)
           cat_ids = []
