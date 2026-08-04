@@ -100,19 +100,47 @@ jobs:
               else:
                   print(f"::warning::카테고리 슬러그 '{slug}' 를 찾지 못해 기본 카테고리로 올립니다.")
 
-          payload = {"title": title, "content": html, "status": os.environ.get("POST_STATUS", "draft")}
+          status_ = os.environ.get("POST_STATUS", "draft")
+          payload = {"title": title, "content": html, "status": status_}
           if cat_ids:
               payload["categories"] = cat_ids
 
           r = requests.post(f"{base}/wp-json/wp/v2/posts", json=payload, auth=auth, timeout=60)
-          if not r.ok:
-              print(f"::error::업로드 실패 {r.status_code}: {r.text[:400]}")
-              raise SystemExit(1)
+          if r.ok:
+              post = r.json()
+              print("=== 업로드 성공 (REST) ===")
+              print("제목:", post.get("title", {}).get("rendered"))
+              print("상태:", post.get("status"))
+              print("편집 주소:", f"{base}/wp-admin/post.php?post={post.get('id')}&action=edit")
+              print("링크:", post.get("link"))
+              raise SystemExit(0)
 
-          post = r.json()
-          print("=== 업로드 성공 ===")
-          print("제목:", post.get("title", {}).get("rendered"))
-          print("상태:", post.get("status"))
-          print("편집 주소:", f"{base}/wp-admin/post.php?post={post.get('id')}&action=edit")
-          print("링크:", post.get("link"))
+          print(f"REST 실패 {r.status_code} → XML-RPC로 재시도 (헤더 스트리핑 우회)")
+
+          # ── 폴백: XML-RPC — 인증이 헤더가 아닌 본문에 담겨 CDN이 제거하지 못함 ──
+          import xmlrpc.client
+          srv = xmlrpc.client.ServerProxy(f"{base}/xmlrpc.php")
+          user, pwd = auth
+          content = {"post_type": "post", "post_status": status_,
+                     "post_title": title, "post_content": html}
+          if slug:
+              try:
+                  terms = srv.wp.getTerms(0, user, pwd, "category")
+                  match = [t for t in terms if t.get("slug") == slug]
+                  if match:
+                      content["terms"] = {"category": [int(match[0]["term_id"])]}
+                  else:
+                      print(f"카테고리 '{slug}' 없음 — 기본 카테고리로.")
+              except Exception as e:
+                  print("카테고리 조회 실패(무시):", e)
+          try:
+              post_id = srv.wp.newPost(0, user, pwd, content)
+          except xmlrpc.client.Fault as e:
+              print(f"::error::XML-RPC도 실패: {e.faultCode} {e.faultString[:200]}")
+              print("::error::호스팅이 REST 인증 헤더와 xmlrpc.php를 모두 막고 있습니다. 호스팅 설정(Authorization 헤더 전달 또는 XML-RPC 허용)이 필요합니다.")
+              raise SystemExit(1)
+          print("=== 업로드 성공 (XML-RPC) ===")
+          print("제목:", title)
+          print("상태:", status_)
+          print("편집 주소:", f"{base}/wp-admin/post.php?post={post_id}&action=edit")
           PY
