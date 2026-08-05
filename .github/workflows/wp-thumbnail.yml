@@ -1,0 +1,96 @@
+name: AI 썸네일 생성·교체
+
+# OpenAI 이미지 API로 사진풍 썸네일을 생성해 워드프레스 미디어에 올리고,
+# 해당 글의 대표이미지(featured)로 지정 + 본문 맨 위 커버 이미지 교체.
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id:
+        description: '대상 글 ID'
+        required: true
+      prompt:
+        description: '이미지 프롬프트(영문 권장)'
+        required: true
+      alt:
+        description: '이미지 대체텍스트(alt)'
+        required: false
+        default: '대표 이미지'
+      replace_cover:
+        description: '본문 맨 위 커버(cover.png) 이미지도 교체'
+        required: false
+        default: 'true'
+
+permissions:
+  contents: read
+
+jobs:
+  thumbnail:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 생성 + 업로드 + 지정
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          OPENAI_KEY: ${{ secrets.OPENAI_API_KEY || secrets.OPEN_API_KEY }}
+          POST_ID: ${{ github.event.inputs.post_id }}
+          PROMPT: ${{ github.event.inputs.prompt }}
+          ALT: ${{ github.event.inputs.alt }}
+          REPLACE_COVER: ${{ github.event.inputs.replace_cover }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, re, base64, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          oai = (os.environ.get("OPENAI_KEY") or "").strip()
+          if not oai:
+              print("::error::OpenAI 키 시크릿이 없습니다."); raise SystemExit(1)
+          prompt = os.environ["PROMPT"]
+
+          # 1) 이미지 생성 (gpt-image-1 우선, 실패 시 dall-e-3)
+          def generate():
+              trials = [
+                  {"model": "gpt-image-1", "prompt": prompt, "size": "1536x1024", "n": 1},
+                  {"model": "dall-e-3", "prompt": prompt, "size": "1792x1024", "n": 1, "response_format": "b64_json"},
+              ]
+              for body in trials:
+                  r = requests.post("https://api.openai.com/v1/images/generations",
+                      headers={"Authorization": f"Bearer {oai}", "Content-Type": "application/json"},
+                      json=body, timeout=180)
+                  if r.ok:
+                      print(f"{body['model']} 생성 성공")
+                      return base64.b64decode(r.json()["data"][0]["b64_json"])
+                  print(f"{body['model']} 실패 {r.status_code}: {r.text[:200]}")
+              raise SystemExit("::error::이미지 생성 실패 (키 권한/크레딧 확인)")
+
+          png = generate()
+
+          # 2) 워드프레스 미디어 업로드
+          h = {"Content-Type": "image/png", "Content-Disposition": 'attachment; filename="thumbnail.png"'}
+          r = requests.post(f"{base}/wp-json/wp/v2/media", headers=h, data=png, auth=auth, timeout=120)
+          if not r.ok:
+              print(f"::error::미디어 업로드 실패 {r.status_code}: {r.text[:300]}"); raise SystemExit(1)
+          m = r.json(); mid = m["id"]; murl = m["source_url"]
+          requests.post(f"{base}/wp-json/wp/v2/media/{mid}", json={"alt_text": os.environ.get("ALT", "대표 이미지")}, auth=auth, timeout=30)
+          print(f"업로드: id {mid} {murl}")
+
+          # 3) 대표이미지 지정 (+ 본문 커버 교체)
+          pid = os.environ["POST_ID"].strip()
+          payload = {"featured_media": mid}
+          if (os.environ.get("REPLACE_COVER") or "true").lower() == "true":
+              rg = requests.get(f"{base}/wp-json/wp/v2/posts/{pid}", params={"context": "edit"}, auth=auth, timeout=40)
+              if rg.ok:
+                  raw = rg.json().get("content", {}).get("raw", "")
+                  new = re.sub(r'src="[^"]*cover\.png"', f'src="{murl}"', raw, count=1)
+                  if new != raw:
+                      payload["content"] = new
+                      print("본문 커버 이미지 교체함")
+          r = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}", json=payload, auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::글 업데이트 실패 {r.status_code}: {r.text[:300]}"); raise SystemExit(1)
+          p = r.json()
+          print(f"=== #{pid} 썸네일 교체 완료 ===")
+          print("편집:", f"{base}/wp-admin/post.php?post={pid}&action=edit")
+          PY
