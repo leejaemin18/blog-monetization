@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="750" viewBox="0 0 1000 750" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="750" fill="#FFFCF7"/>
+  <text x="60" y="90" font-size="46" font-weight="800" fill="#33302B">성분표에서 볼 것 <tspan fill="#E8825A">3가지</tspan></text>
+  <rect x="62" y="108" width="90" height="8" rx="4" fill="#2F9C95"/>
+
+  <!-- row 1 -->
+  <g transform="translate(60,170)">
+    <rect x="0" y="0" width="880" height="150" rx="18" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+    <circle cx="70" cy="75" r="38" fill="#E8825A"/>
+    <text x="70" y="90" font-size="42" font-weight="800" fill="#FFFFFF" text-anchor="middle">1</text>
+    <text x="135" y="62" font-size="34" font-weight="700" fill="#33302B">첫 번째 원료가 '고기'인가</text>
+    <text x="135" y="106" font-size="24" fill="#8A8378">닭고기·연어 등 구체적 육류가 맨 앞이면 좋아요</text>
+  </g>
+  <!-- row 2 -->
+  <g transform="translate(60,340)">
+    <rect x="0" y="0" width="880" height="150" rx="18" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+    <circle cx="70" cy="75" r="38" fill="#2F9C95"/>
+    <text x="70" y="90" font-size="42" font-weight="800" fill="#FFFFFF" text-anchor="middle">2</text>
+    <text x="135" y="62" font-size="34" font-weight="700" fill="#33302B">AAFCO '완전균형식' 표기</text>
+    <text x="135" y="106" font-size="24" fill="#8A8378">Complete &amp; Balanced 표기가 있어야 주식으로 OK</text>
+  </g>
+  <!-- row 3 -->
+  <g transform="translate(60,510)">
+    <rect x="0" y="0" width="880" height="150" rx="18" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+    <circle cx="70" cy="75" r="38" fill="#E8825A"/>
+    <text x="70" y="90" font-size="42" font-weight="800" fill="#FFFFFF" text-anchor="middle">3</text>
+    <text x="135" y="62" font-size="34" font-weight="700" fill="#33302B">조단백 · 조지방이 단계에 맞나</text>
+    <text x="135" y="106" font-size="24" fill="#8A8378">퍼피 22.5%/8.5%, 성견 18%/5.5% (AAFCO 최소)</text>
+  </g>
+  <text x="500" y="712" font-size="21" fill="#B9B2A6" text-anchor="middle">집사의 발견 · 등급표보다 성분표</text>
+</svg>

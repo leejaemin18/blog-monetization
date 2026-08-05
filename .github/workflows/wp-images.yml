@@ -1,0 +1,134 @@
+name: 워드프레스 이미지 삽입 (SVG→PNG 업로드 + 글 업데이트)
+
+# assets/images/*.svg 를 PNG로 변환해 워드프레스 미디어에 업로드하고,
+# 초안 마크다운의 [[IMG:키]] 토큰을 실제 <img>로 바꿔 글을 업데이트한다.
+# 대표이미지(featured)는 cover 로 설정.
+
+on:
+  workflow_dispatch:
+    inputs:
+      draft_path:
+        description: '초안 파일 경로'
+        required: true
+      post_id:
+        description: '업데이트할 워드프레스 글 ID (비우면 새 글 생성)'
+        required: false
+      category:
+        description: '새 글일 때 카테고리 슬러그 (선택)'
+        required: false
+      status:
+        description: 'draft 권장 / publish'
+        required: false
+        default: 'draft'
+
+permissions:
+  contents: read
+
+jobs:
+  images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 한글 폰트·SVG 변환기 설치
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq librsvg2-bin fonts-noto-cjk
+
+      - name: SVG → PNG 변환
+        run: |
+          mkdir -p /tmp/png
+          for f in assets/images/*.svg; do
+            name=$(basename "$f" .svg)
+            rsvg-convert "$f" -o "/tmp/png/$name.png"
+            echo "변환: $name.png"
+          done
+          ls -la /tmp/png
+
+      - name: 업로드 + 글 업데이트
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          DRAFT_PATH: ${{ github.event.inputs.draft_path }}
+          POST_ID: ${{ github.event.inputs.post_id }}
+          CATEGORY: ${{ github.event.inputs.category }}
+          POST_STATUS: ${{ github.event.inputs.status }}
+        run: |
+          pip -q install markdown requests
+          python3 - <<'PY'
+          import os, re, glob, json, requests, markdown
+
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+
+          ALT = {
+            "cover": "강아지 사료 고르는 법 — 집사의 발견",
+            "ingredients": "사료 성분표에서 볼 것 3가지 — 첫 원료·AAFCO·조단백",
+            "feeding": "강아지 하루 급여량 계산 — RER·DER 공식",
+          }
+
+          # 1) 각 PNG 업로드 → key: {id, url}
+          media = {}
+          for png in sorted(glob.glob("/tmp/png/*.png")):
+              key = os.path.splitext(os.path.basename(png))[0]
+              data = open(png, "rb").read()
+              h = {"Content-Type": "image/png",
+                   "Content-Disposition": f'attachment; filename="{key}.png"'}
+              r = requests.post(f"{base}/wp-json/wp/v2/media", headers=h, data=data, auth=auth, timeout=90)
+              if not r.ok:
+                  print(f"::error::미디어 업로드 실패({key}) {r.status_code}: {r.text[:300]}")
+                  raise SystemExit(1)
+              m = r.json()
+              media[key] = {"id": m["id"], "url": m["source_url"]}
+              # alt 텍스트 설정
+              requests.post(f"{base}/wp-json/wp/v2/media/{m['id']}",
+                            json={"alt_text": ALT.get(key, key)}, auth=auth, timeout=30)
+              print(f"업로드: {key} → id {m['id']} {m['source_url']}")
+
+          # 2) 마크다운 읽고 토큰 → <img> 치환
+          md = open(os.environ["DRAFT_PATH"], encoding="utf-8").read()
+          md = re.sub(r"<!--.*?-->", "", md, flags=re.S)  # 주석 제거
+
+          def repl(mo):
+              key = mo.group(1)
+              if key in media:
+                  u = media[key]["url"]; a = ALT.get(key, key)
+                  return f'<figure style="text-align:center;margin:1.5em 0"><img src="{u}" alt="{a}" style="max-width:100%;height:auto;border-radius:10px"/></figure>'
+              return ""
+          md = re.sub(r"\[\[IMG:([a-zA-Z0-9_-]+)\]\]", repl, md)
+
+          # 제목 = 첫 # 헤딩
+          lines = md.split("\n")
+          title = os.path.basename(os.environ["DRAFT_PATH"])
+          for i, l in enumerate(lines):
+              if re.match(r"^#\s+", l):
+                  title = re.sub(r"^#\s+", "", l).strip()
+                  del lines[i]; break
+          html = markdown.markdown("\n".join(lines), extensions=["tables", "nl2br"])
+
+          cover_id = media.get("cover", {}).get("id")
+          post_id = (os.environ.get("POST_ID") or "").strip()
+
+          if post_id:
+              payload = {"content": html}
+              if cover_id: payload["featured_media"] = cover_id
+              r = requests.post(f"{base}/wp-json/wp/v2/posts/{post_id}", json=payload, auth=auth, timeout=60)
+              action = f"업데이트(#{post_id})"
+          else:
+              payload = {"title": title, "content": html, "status": os.environ.get("POST_STATUS", "draft")}
+              if cover_id: payload["featured_media"] = cover_id
+              slug = (os.environ.get("CATEGORY") or "").strip()
+              if slug:
+                  rc = requests.get(f"{base}/wp-json/wp/v2/categories", params={"slug": slug}, auth=auth, timeout=30)
+                  if rc.ok and rc.json(): payload["categories"] = [rc.json()[0]["id"]]
+              r = requests.post(f"{base}/wp-json/wp/v2/posts", json=payload, auth=auth, timeout=60)
+              action = "새 글 생성"
+
+          if not r.ok:
+              print(f"::error::글 {action} 실패 {r.status_code}: {r.text[:400]}")
+              raise SystemExit(1)
+          post = r.json()
+          print(f"=== {action} 성공 · 이미지 {len(media)}개 ===")
+          print("제목:", post.get("title", {}).get("rendered"))
+          print("편집 주소:", f"{base}/wp-admin/post.php?post={post.get('id')}&action=edit")
+          print("링크:", post.get("link"))
+          PY

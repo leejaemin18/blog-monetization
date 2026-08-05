@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="750" viewBox="0 0 1000 750" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="750" fill="#FFFCF7"/>
+  <text x="60" y="90" font-size="46" font-weight="800" fill="#33302B">하루 <tspan fill="#2F9C95">급여량</tspan> 계산</text>
+  <rect x="62" y="108" width="90" height="8" rx="4" fill="#E8825A"/>
+
+  <!-- step 1 RER -->
+  <g transform="translate(60,160)">
+    <rect x="0" y="0" width="880" height="150" rx="18" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+    <text x="34" y="52" font-size="22" font-weight="700" fill="#E8825A">STEP 1 · 기초 필요 열량</text>
+    <text x="34" y="112" font-size="40" font-weight="800" fill="#33302B">RER = (체중kg × 30) + 70</text>
+  </g>
+  <!-- step 2 DER -->
+  <g transform="translate(60,330)">
+    <rect x="0" y="0" width="880" height="150" rx="18" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+    <text x="34" y="52" font-size="22" font-weight="700" fill="#2F9C95">STEP 2 · 하루 필요 열량</text>
+    <text x="34" y="112" font-size="40" font-weight="800" fill="#33302B">DER = RER × 활동계수</text>
+  </g>
+  <!-- step 3 -->
+  <g transform="translate(60,500)">
+    <rect x="0" y="0" width="880" height="120" rx="18" fill="#FBEDE5" stroke="#F0C9B4" stroke-width="2"/>
+    <text x="34" y="50" font-size="22" font-weight="700" fill="#D96C43">STEP 3</text>
+    <text x="34" y="92" font-size="30" font-weight="700" fill="#33302B">DER ÷ 사료 kcal/g = 하루 그램 수 → 2~3회 분할</text>
+  </g>
+  <text x="60" y="678" font-size="24" fill="#8A8378">※ 간식은 하루 총열량의 10% 이내로</text>
+  <text x="940" y="712" font-size="21" fill="#B9B2A6" text-anchor="end">집사의 발견</text>
+</svg>
