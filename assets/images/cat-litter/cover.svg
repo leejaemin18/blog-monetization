@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1200" height="675" fill="#FFFCF7"/>
+  <rect x="0" y="0" width="1200" height="12" fill="#2F9C95"/>
+  <!-- brand mark -->
+  <g transform="translate(70,64)">
+    <circle cx="26" cy="24" r="20" fill="#FFFFFF" stroke="#E8825A" stroke-width="5"/>
+    <line x1="40" y1="38" x2="54" y2="52" stroke="#E8825A" stroke-width="7" stroke-linecap="round"/>
+    <g fill="#2F9C95"><ellipse cx="26" cy="30" rx="8" ry="6"/><circle cx="18" cy="22" r="3.4"/><circle cx="23" cy="18" r="3.4"/><circle cx="29" cy="18" r="3.4"/><circle cx="34" cy="22" r="3.4"/></g>
+    <text x="70" y="34" font-size="26" font-weight="700" fill="#33302B">집사의 발견</text>
+  </g>
+  <!-- heading -->
+  <text x="70" y="300" font-size="82" font-weight="800" fill="#33302B">고양이 모래</text>
+  <text x="70" y="392" font-size="82" font-weight="800" fill="#33302B">고르는 법<tspan fill="#2F9C95">.</tspan></text>
+  <rect x="74" y="420" width="120" height="9" rx="4" fill="#E8825A"/>
+  <text x="70" y="486" font-size="32" font-weight="600" fill="#E8825A">응고력 · 먼지 · 냄새로 보는 5가지</text>
+  <text x="70" y="536" font-size="24" fill="#8A8378">순위보다 우리 아이가 잘 쓰는 모래</text>
+  <!-- cat + litter box -->
+  <g transform="translate(910,300)">
+    <!-- litter box -->
+    <path d="M-40 170 h300 l-24 70 h-252 z" fill="#E8825A"/>
+    <path d="M-40 170 h300 v-22 h-300 z" fill="#F4A98A"/>
+    <ellipse cx="110" cy="170" rx="150" ry="20" fill="#EAE3D8"/>
+    <g fill="#C9C0AF"><circle cx="60" cy="168" r="5"/><circle cx="95" cy="172" r="5"/><circle cx="130" cy="167" r="5"/><circle cx="165" cy="172" r="5"/><circle cx="110" cy="170" r="5"/></g>
+    <!-- cat sitting -->
+    <g transform="translate(70,0)">
+      <ellipse cx="60" cy="150" rx="52" ry="60" fill="#33302B"/>
+      <circle cx="60" cy="70" r="42" fill="#33302B"/>
+      <path d="M28 44 L20 6 L52 34 Z" fill="#33302B"/>
+      <path d="M92 44 L100 6 L68 34 Z" fill="#33302B"/>
+      <path d="M108 180 q60 -10 44 -70" fill="none" stroke="#33302B" stroke-width="20" stroke-linecap="round"/>
+      <circle cx="48" cy="70" r="5" fill="#FFFCF7"/>
+      <circle cx="72" cy="70" r="5" fill="#FFFCF7"/>
+      <path d="M54 84 q6 6 12 0" fill="none" stroke="#FFFCF7" stroke-width="3" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>

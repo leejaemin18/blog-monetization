@@ -10,6 +10,10 @@ on:
       draft_path:
         description: '초안 파일 경로'
         required: true
+      image_dir:
+        description: '이미지 SVG 폴더 (예: assets/images/cat-litter)'
+        required: false
+        default: 'assets/images'
       post_id:
         description: '업데이트할 워드프레스 글 ID (비우면 새 글 생성)'
         required: false
@@ -34,9 +38,13 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y -qq librsvg2-bin fonts-noto-cjk
 
       - name: SVG → PNG 변환
+        env:
+          IMAGE_DIR: ${{ github.event.inputs.image_dir }}
         run: |
+          DIR="${IMAGE_DIR:-assets/images}"
+          echo "이미지 폴더: $DIR"
           mkdir -p /tmp/png
-          for f in assets/images/*.svg; do
+          for f in "$DIR"/*.svg; do
             name=$(basename "$f" .svg)
             rsvg-convert "$f" -o "/tmp/png/$name.png"
             echo "변환: $name.png"
@@ -49,6 +57,7 @@ jobs:
           WP_USER: ${{ secrets.WP_USER }}
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
           DRAFT_PATH: ${{ github.event.inputs.draft_path }}
+          IMAGE_DIR: ${{ github.event.inputs.image_dir }}
           POST_ID: ${{ github.event.inputs.post_id }}
           CATEGORY: ${{ github.event.inputs.category }}
           POST_STATUS: ${{ github.event.inputs.status }}
@@ -60,11 +69,12 @@ jobs:
           base = os.environ["WP_URL"].rstrip("/")
           auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
 
-          ALT = {
-            "cover": "강아지 사료 고르는 법 — 집사의 발견",
-            "ingredients": "사료 성분표에서 볼 것 3가지 — 첫 원료·AAFCO·조단백",
-            "feeding": "강아지 하루 급여량 계산 — RER·DER 공식",
-          }
+          image_dir = (os.environ.get("IMAGE_DIR") or "assets/images").strip()
+          ALT = {}
+          try:
+              ALT = json.load(open(os.path.join(image_dir, "alt.json"), encoding="utf-8"))
+          except Exception as e:
+              print("alt.json 없음/오류 — 파일명을 alt로 사용:", e)
 
           # 1) 각 PNG 업로드 → key: {id, url}
           media = {}

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="720" fill="#FFFCF7"/>
+  <text x="60" y="86" font-size="46" font-weight="800" fill="#33302B">고르는 <tspan fill="#E8825A">기준</tspan> 체크</text>
+  <rect x="62" y="104" width="90" height="8" rx="4" fill="#2F9C95"/>
+
+  <g font-size="30" fill="#33302B">
+    <g transform="translate(70,170)">
+      <circle cx="24" cy="20" r="24" fill="#2F9C95"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">응고력</text><text x="70" y="52" font-size="22" fill="#8A8378">잘 뭉쳐야 치우기 쉽고 냄새 덜 남</text>
+    </g>
+    <g transform="translate(70,266)">
+      <circle cx="24" cy="20" r="24" fill="#2F9C95"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">먼지</text><text x="70" y="52" font-size="22" fill="#8A8378">적을수록 호흡기·청소에 좋음 (아기고양이 특히)</text>
+    </g>
+    <g transform="translate(70,362)">
+      <circle cx="24" cy="20" r="24" fill="#2F9C95"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">탈취력</text><text x="70" y="52" font-size="22" fill="#8A8378">향으로 덮기보다 무향 + 흡취가 나음</text>
+    </g>
+    <g transform="translate(70,458)">
+      <circle cx="24" cy="20" r="24" fill="#2F9C95"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">사막화</text><text x="70" y="52" font-size="22" fill="#8A8378">굵은 알갱이·매트로 모래 튐 줄이기</text>
+    </g>
+    <g transform="translate(70,554)">
+      <circle cx="24" cy="20" r="24" fill="#2F9C95"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">소변 확인</text><text x="70" y="52" font-size="22" fill="#8A8378">응고형은 덩어리로 건강 신호 관찰 가능</text>
+    </g>
+  </g>
+  <text x="500" y="686" font-size="21" fill="#B9B2A6" text-anchor="middle">집사의 발견 · 화장실 개수 = 고양이 수 + 1</text>
+</svg>
