@@ -1,0 +1,40 @@
+name: 워드프레스 사이트 설정 (제목·태그라인)
+
+on:
+  workflow_dispatch:
+    inputs:
+      title: { description: '사이트 제목', required: false }
+      tagline: { description: '태그라인(설명)', required: false }
+
+permissions:
+  contents: read
+
+jobs:
+  set:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 설정 변경
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          TITLE: ${{ github.event.inputs.title }}
+          TAGLINE: ${{ github.event.inputs.tagline }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          payload = {}
+          if (os.environ.get("TITLE") or "").strip(): payload["title"] = os.environ["TITLE"].strip()
+          if (os.environ.get("TAGLINE") or "").strip(): payload["description"] = os.environ["TAGLINE"].strip()
+          if not payload:
+              print("변경할 값이 없습니다."); raise SystemExit(0)
+          r = requests.post(f"{base}/wp-json/wp/v2/settings", json=payload, auth=auth, timeout=40)
+          if not r.ok:
+              print(f"::error::설정 변경 실패 {r.status_code}: {r.text[:300]}"); raise SystemExit(1)
+          d = r.json()
+          print("제목:", d.get("title"))
+          print("태그라인:", d.get("description"))
+          PY
