@@ -1,0 +1,50 @@
+name: 광고표시 문구 제거 (미가입 상태)
+
+# 발행된 모든 글에서 특정 문구가 든 문단(<p>)을 제거한다.
+# 쿠팡 파트너스 미가입·링크 없는 상태에서 광고표시 문구를 임시로 내린다.
+# (가입·링크 삽입 시 다시 추가)
+
+on:
+  workflow_dispatch:
+    inputs:
+      phrase:
+        description: '이 문구가 든 문단을 제거'
+        required: false
+        default: '쿠팡 파트너스 활동의 일환'
+
+permissions:
+  contents: read
+
+jobs:
+  strip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 문구 제거
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          PHRASE: ${{ github.event.inputs.phrase }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, re, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          phrase = (os.environ.get("PHRASE") or "쿠팡 파트너스 활동의 일환").strip()
+
+          r = requests.get(f"{base}/wp-json/wp/v2/posts",
+              params={"per_page": 50, "status": "publish,draft", "context": "edit"}, auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::글 목록 조회 실패 {r.status_code}: {r.text[:200]}"); raise SystemExit(1)
+          posts = r.json()
+          changed = 0
+          for p in posts:
+              raw = p.get("content", {}).get("raw", "")
+              new = re.sub(r"<p>[^<]*" + re.escape(phrase) + r"[^<]*</p>\s*", "", raw)
+              if new != raw:
+                  u = requests.post(f"{base}/wp-json/wp/v2/posts/{p['id']}", json={"content": new}, auth=auth, timeout=60)
+                  print(f"#{p['id']} {p.get('title', {}).get('rendered', '')} → {u.status_code}")
+                  changed += 1
+          print(f"=== 변경된 글: {changed}개 ===")
+          PY
