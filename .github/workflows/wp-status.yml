@@ -1,0 +1,83 @@
+name: 워드프레스 발행/상태 변경
+
+# 기존 글의 상태를 바꾼다(예: draft → publish). 이미지는 재업로드하지 않는다.
+# 발행 전 정리: 빈 CTA 자리표시자(👉 …)를 제거하고, 카테고리(이름)로 지정.
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id:
+        description: '대상 글 ID'
+        required: true
+      status:
+        description: 'publish / draft / pending'
+        required: false
+        default: 'publish'
+      category_name:
+        description: '카테고리 이름 (예: 사료·간식) — 선택'
+        required: false
+      strip_cta:
+        description: '빈 CTA(👉) 줄 제거'
+        required: false
+        default: 'true'
+
+permissions:
+  contents: read
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 상태 변경
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          POST_ID: ${{ github.event.inputs.post_id }}
+          POST_STATUS: ${{ github.event.inputs.status }}
+          CATEGORY_NAME: ${{ github.event.inputs.category_name }}
+          STRIP_CTA: ${{ github.event.inputs.strip_cta }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, re, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          pid = os.environ["POST_ID"].strip()
+          status = (os.environ.get("POST_STATUS") or "publish").strip()
+
+          payload = {"status": status}
+
+          # 현재 본문 가져와 빈 CTA 제거
+          if (os.environ.get("STRIP_CTA") or "true").lower() == "true":
+              r = requests.get(f"{base}/wp-json/wp/v2/posts/{pid}", params={"context": "edit"}, auth=auth, timeout=40)
+              if r.ok:
+                  raw = r.json().get("content", {}).get("raw", "")
+                  cleaned = re.sub(r"<p>[^<]*👉[^<]*</p>\s*", "", raw)
+                  if cleaned != raw:
+                      payload["content"] = cleaned
+                      print("빈 CTA 줄 제거함")
+              else:
+                  print("본문 조회 실패(무시):", r.status_code)
+
+          # 카테고리 이름으로 지정
+          name = (os.environ.get("CATEGORY_NAME") or "").strip()
+          if name:
+              rc = requests.get(f"{base}/wp-json/wp/v2/categories", params={"search": name}, auth=auth, timeout=30)
+              if rc.ok:
+                  match = [c for c in rc.json() if c.get("name") == name]
+                  if match:
+                      payload["categories"] = [match[0]["id"]]
+                      print(f"카테고리 지정: {name} (id {match[0]['id']})")
+                  else:
+                      print(f"카테고리 '{name}' 정확 일치 없음 — 건너뜀")
+
+          r = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}", json=payload, auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::상태 변경 실패 {r.status_code}: {r.text[:300]}")
+              raise SystemExit(1)
+          p = r.json()
+          print(f"=== #{pid} → {p.get('status')} ===")
+          print("제목:", p.get("title", {}).get("rendered"))
+          print("링크:", p.get("link"))
+          PY
