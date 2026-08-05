@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1200" height="675" fill="#FFFCF7"/>
+  <rect x="0" y="0" width="1200" height="12" fill="#E8825A"/>
+  <!-- brand mark top-left -->
+  <g transform="translate(70,64)">
+    <circle cx="26" cy="24" r="20" fill="#FFFFFF" stroke="#E8825A" stroke-width="5"/>
+    <line x1="40" y1="38" x2="54" y2="52" stroke="#E8825A" stroke-width="7" stroke-linecap="round"/>
+    <g fill="#2F9C95"><ellipse cx="26" cy="30" rx="8" ry="6"/><circle cx="18" cy="22" r="3.4"/><circle cx="23" cy="18" r="3.4"/><circle cx="29" cy="18" r="3.4"/><circle cx="34" cy="22" r="3.4"/></g>
+    <text x="70" y="34" font-size="26" font-weight="700" fill="#33302B">집사의 발견</text>
+  </g>
+  <!-- heading -->
+  <text x="70" y="300" font-size="82" font-weight="800" fill="#33302B">강아지 사료</text>
+  <text x="70" y="392" font-size="82" font-weight="800" fill="#33302B">고르는 법<tspan fill="#E8825A">.</tspan></text>
+  <rect x="74" y="420" width="120" height="9" rx="4" fill="#2F9C95"/>
+  <text x="70" y="486" font-size="34" font-weight="600" fill="#2F9C95">브랜드 · 노령견 · 처방식까지</text>
+  <text x="70" y="540" font-size="24" fill="#8A8378">순위보다 우리 아이에게 맞는 기준</text>
+  <!-- bowl illustration right -->
+  <g transform="translate(870,300)">
+    <ellipse cx="120" cy="200" rx="150" ry="30" fill="#EAE3D8"/>
+    <path d="M6 150 h228 a20 20 0 0 1 -18 40 h-192 a20 20 0 0 1 -18 -40 z" fill="#E8825A"/>
+    <ellipse cx="120" cy="150" rx="120" ry="34" fill="#F4A98A"/>
+    <ellipse cx="120" cy="148" rx="104" ry="26" fill="#8B5E3C"/>
+    <g fill="#6E4A2E">
+      <circle cx="80" cy="145" r="9"/><circle cx="110" cy="152" r="9"/><circle cx="145" cy="143" r="9"/><circle cx="170" cy="150" r="9"/><circle cx="120" cy="140" r="9"/><circle cx="95" cy="156" r="8"/><circle cx="150" cy="156" r="8"/>
+    </g>
+    <!-- paw on bowl -->
+    <g fill="#2F9C95" transform="translate(120,60)">
+      <ellipse cx="0" cy="14" rx="16" ry="12"/><circle cx="-16" cy="-4" r="6.5"/><circle cx="-6" cy="-14" r="6.5"/><circle cx="6" cy="-14" r="6.5"/><circle cx="16" cy="-4" r="6.5"/>
+    </g>
+  </g>
+</svg>
