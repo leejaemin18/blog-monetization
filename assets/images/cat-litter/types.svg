@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="800" viewBox="0 0 1000 800" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="800" fill="#FFFCF7"/>
+  <text x="60" y="86" font-size="46" font-weight="800" fill="#33302B">모래 <tspan fill="#2F9C95">5가지</tspan> 종류</text>
+  <rect x="62" y="104" width="90" height="8" rx="4" fill="#E8825A"/>
+
+  <g transform="translate(60,150)">
+    <rect x="0" y="0" width="880" height="112" rx="16" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+    <circle cx="60" cy="56" r="30" fill="#E8825A"/><text x="60" y="68" font-size="30" text-anchor="middle" fill="#fff">🪨</text>
+    <text x="115" y="48" font-size="30" font-weight="700" fill="#33302B">벤토나이트 (응고형)</text>
+    <text x="115" y="86" font-size="22" fill="#8A8378">대중적·가성비. 응고·탈취 좋음 / 먼지·사막화 있음</text>
+  </g>
+  <g transform="translate(60,278)">
+    <rect x="0" y="0" width="880" height="112" rx="16" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+    <circle cx="60" cy="56" r="30" fill="#2F9C95"/><text x="60" y="68" font-size="28" text-anchor="middle" fill="#fff">🫘</text>
+    <text x="115" y="48" font-size="30" font-weight="700" fill="#33302B">두부 (콩)</text>
+    <text x="115" y="86" font-size="22" fill="#8A8378">먼지 적고 기호성 좋음 / 습기·벌레 관리 필요</text>
+  </g>
+  <g transform="translate(60,406)">
+    <rect x="0" y="0" width="880" height="112" rx="16" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+    <circle cx="60" cy="56" r="30" fill="#E8825A"/><text x="60" y="68" font-size="28" text-anchor="middle" fill="#fff">💎</text>
+    <text x="115" y="48" font-size="30" font-weight="700" fill="#33302B">실리카 (크리스탈)</text>
+    <text x="115" y="86" font-size="22" fill="#8A8378">탈취·저먼지·오래감 / 응고 안 됨(소변확인 어려움)</text>
+  </g>
+  <g transform="translate(60,534)">
+    <rect x="0" y="0" width="880" height="112" rx="16" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+    <circle cx="60" cy="56" r="30" fill="#2F9C95"/><text x="60" y="68" font-size="28" text-anchor="middle" fill="#fff">🌲</text>
+    <text x="115" y="48" font-size="30" font-weight="700" fill="#33302B">우드펠렛 (나무)</text>
+    <text x="115" y="86" font-size="22" fill="#8A8378">천연·탈취 좋음·붕괴형 / 전용 화장실과 잘 맞음</text>
+  </g>
+  <g transform="translate(60,662)">
+    <rect x="0" y="0" width="880" height="112" rx="16" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+    <circle cx="60" cy="56" r="30" fill="#E8825A"/><text x="60" y="68" font-size="28" text-anchor="middle" fill="#fff">📄</text>
+    <text x="115" y="48" font-size="30" font-weight="700" fill="#33302B">종이 · 기타</text>
+    <text x="115" y="86" font-size="22" fill="#8A8378">가볍고 먼지 적음 / 응고·탈취는 제품 편차 큼</text>
+  </g>
+</svg>
