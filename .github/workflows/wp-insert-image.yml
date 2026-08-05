@@ -1,0 +1,104 @@
+name: AI 본문 이미지 삽입 (핵심 지점)
+
+# OpenAI 이미지로 사진을 생성해 글 본문의 특정 소제목 '앞'에 삽입한다.
+# (대표이미지는 건드리지 않음)
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id:
+        description: '대상 글 ID'
+        required: true
+      prompt:
+        description: '이미지 프롬프트(영문 권장)'
+        required: true
+      alt:
+        description: '이미지 대체텍스트(alt)'
+        required: false
+        default: '본문 이미지'
+      anchor_heading:
+        description: '이 소제목(h2) 바로 앞에 삽입 (예: 한눈에 비교)'
+        required: true
+      remove_cover_figure:
+        description: '본문 맨 위 중복 커버 이미지 제거 (대표이미지와 겹칠 때)'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: read
+
+jobs:
+  insert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 생성 + 업로드 + 삽입
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          OPENAI_KEY: ${{ secrets.OPENAI_API_KEY || secrets.OPEN_API_KEY }}
+          POST_ID: ${{ github.event.inputs.post_id }}
+          PROMPT: ${{ github.event.inputs.prompt }}
+          ALT: ${{ github.event.inputs.alt }}
+          ANCHOR: ${{ github.event.inputs.anchor_heading }}
+          REMOVE_COVER: ${{ github.event.inputs.remove_cover_figure }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, re, base64, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          oai = (os.environ.get("OPENAI_KEY") or "").strip()
+          if not oai:
+              print("::error::OpenAI 키가 없습니다."); raise SystemExit(1)
+          prompt = os.environ["PROMPT"]; alt = os.environ.get("ALT", "본문 이미지")
+          anchor = os.environ["ANCHOR"].strip()
+
+          def generate():
+              for body in [
+                  {"model": "gpt-image-1", "prompt": prompt, "size": "1536x1024", "n": 1},
+                  {"model": "dall-e-3", "prompt": prompt, "size": "1792x1024", "n": 1, "response_format": "b64_json"},
+              ]:
+                  r = requests.post("https://api.openai.com/v1/images/generations",
+                      headers={"Authorization": f"Bearer {oai}", "Content-Type": "application/json"}, json=body, timeout=180)
+                  if r.ok:
+                      print(f"{body['model']} 생성 성공"); return base64.b64decode(r.json()["data"][0]["b64_json"])
+                  print(f"{body['model']} 실패 {r.status_code}: {r.text[:200]}")
+              raise SystemExit("::error::이미지 생성 실패")
+
+          png = generate()
+          h = {"Content-Type": "image/png", "Content-Disposition": 'attachment; filename="inline.png"'}
+          r = requests.post(f"{base}/wp-json/wp/v2/media", headers=h, data=png, auth=auth, timeout=120)
+          if not r.ok:
+              print(f"::error::미디어 업로드 실패 {r.status_code}: {r.text[:300]}"); raise SystemExit(1)
+          m = r.json(); mid = m["id"]; murl = m["source_url"]
+          requests.post(f"{base}/wp-json/wp/v2/media/{mid}", json={"alt_text": alt}, auth=auth, timeout=30)
+          print(f"업로드: id {mid} {murl}")
+
+          fig = f'<figure style="text-align:center;margin:1.5em 0"><img src="{murl}" alt="{alt}" style="max-width:100%;height:auto;border-radius:10px"/></figure>\n'
+
+          pid = os.environ["POST_ID"].strip()
+          rg = requests.get(f"{base}/wp-json/wp/v2/posts/{pid}", params={"context": "edit"}, auth=auth, timeout=40)
+          if not rg.ok:
+              print(f"::error::본문 조회 실패 {rg.status_code}"); raise SystemExit(1)
+          raw = rg.json().get("content", {}).get("raw", "")
+
+          # 대표이미지와 겹치는 본문 맨 위 커버(첫 figure) 제거
+          if (os.environ.get("REMOVE_COVER") or "false").lower() == "true":
+              raw2 = re.sub(r'<figure\b[^>]*>.*?</figure>\s*', '', raw, count=1, flags=re.S)
+              if raw2 != raw:
+                  raw = raw2; print("본문 맨 위 중복 커버 제거함")
+
+          pat = re.compile(r'(<h2[^>]*>\s*' + re.escape(anchor) + r'\s*</h2>)')
+          if pat.search(raw):
+              new = pat.sub(fig + r'\1', raw, count=1); where = f"'{anchor}' 소제목 앞"
+          elif "</table>" in raw:
+              i = raw.find("</table>") + len("</table>"); new = raw[:i] + "\n" + fig + raw[i:]; where = "첫 표 뒤(대체)"
+          else:
+              new = raw + "\n" + fig; where = "본문 끝(대체)"
+
+          r = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}", json={"content": new}, auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::본문 업데이트 실패 {r.status_code}: {r.text[:300]}"); raise SystemExit(1)
+          print(f"=== #{pid} 본문 이미지 삽입 완료 ({where}) ===")
+          PY
