@@ -1,0 +1,159 @@
+name: 포스트 재작성 (기존 글 업데이트 · 이미지+상품카드+광고문구)
+
+# 초안(md)으로 기존 글(post_id)을 통째로 다시 빌드해 업데이트한다.
+# SVG 인포그래픽 + [[PRODUCT:key]] 상품카드 + AI 썸네일/핵심사진 + 상단 광고표시 문구(스타일).
+# post_id를 비우면 새 글로 발행.
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id: { description: '업데이트할 글 번호(ID). 비우면 새 글 발행', required: false }
+      draft_path: { description: '초안 md 경로', required: true }
+      image_dir: { description: 'SVG 인포그래픽 폴더', required: false, default: 'assets/images' }
+      product_dir: { description: '[[PRODUCT:key]] 상품 HTML 폴더', required: false, default: 'assets/products' }
+      category_name: { description: '카테고리 이름', required: false }
+      thumb_prompt: { description: 'AI 썸네일 프롬프트', required: true }
+      thumb_alt: { description: '썸네일 alt', required: false, default: '대표 이미지' }
+      mid_prompt: { description: 'AI 핵심사진 프롬프트', required: true }
+      mid_alt: { description: '핵심사진 alt', required: false, default: '본문 이미지' }
+      mid_anchor: { description: '핵심사진을 넣을 소제목(h2)', required: true }
+      disclosure_font: { description: '광고표시 문구 글씨 크기(px)', required: false, default: '13' }
+      status: { description: 'publish / draft', required: false, default: 'publish' }
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 폰트·변환기
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq librsvg2-bin fonts-noto-cjk
+      - name: SVG → PNG
+        env:
+          IMAGE_DIR: ${{ github.event.inputs.image_dir }}
+        run: |
+          DIR="${IMAGE_DIR:-assets/images}"; mkdir -p /tmp/png
+          for f in "$DIR"/*.svg; do [ -e "$f" ] || continue; rsvg-convert "$f" -o "/tmp/png/$(basename "$f" .svg).png"; done
+          ls -la /tmp/png || true
+      - name: 빌드 + 업데이트
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          OPENAI_KEY: ${{ secrets.OPENAI_API_KEY || secrets.OPEN_API_KEY }}
+          POST_ID: ${{ github.event.inputs.post_id }}
+          DRAFT_PATH: ${{ github.event.inputs.draft_path }}
+          IMAGE_DIR: ${{ github.event.inputs.image_dir }}
+          PRODUCT_DIR: ${{ github.event.inputs.product_dir }}
+          CATEGORY_NAME: ${{ github.event.inputs.category_name }}
+          THUMB_PROMPT: ${{ github.event.inputs.thumb_prompt }}
+          THUMB_ALT: ${{ github.event.inputs.thumb_alt }}
+          MID_PROMPT: ${{ github.event.inputs.mid_prompt }}
+          MID_ALT: ${{ github.event.inputs.mid_alt }}
+          MID_ANCHOR: ${{ github.event.inputs.mid_anchor }}
+          DISCLOSURE_FONT: ${{ github.event.inputs.disclosure_font }}
+          POST_STATUS: ${{ github.event.inputs.status }}
+        run: |
+          pip -q install markdown requests
+          python3 - <<'PY'
+          import os, re, glob, json, base64, requests, markdown
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          oai = (os.environ.get("OPENAI_KEY") or "").strip()
+          image_dir = (os.environ.get("IMAGE_DIR") or "assets/images").strip()
+          product_dir = (os.environ.get("PRODUCT_DIR") or "assets/products").strip()
+
+          def up(data, alt, fname):
+              r = requests.post(f"{base}/wp-json/wp/v2/media",
+                  headers={"Content-Type": "image/png", "Content-Disposition": f'attachment; filename="{fname}"'},
+                  data=data, auth=auth, timeout=120)
+              if not r.ok:
+                  print(f"::error::미디어 업로드 실패 {r.status_code}: {r.text[:300]}"); raise SystemExit(1)
+              m = r.json()
+              requests.post(f"{base}/wp-json/wp/v2/media/{m['id']}", json={"alt_text": alt}, auth=auth, timeout=30)
+              return m["id"], m["source_url"]
+
+          def fig(url, alt):
+              return f'<figure style="text-align:center;margin:1.5em 0"><img src="{url}" alt="{alt}" style="max-width:100%;height:auto;border-radius:10px"/></figure>\n'
+
+          def genai(prompt):
+              for body in [
+                  {"model": "gpt-image-1", "prompt": prompt, "size": "1536x1024", "n": 1},
+                  {"model": "dall-e-3", "prompt": prompt, "size": "1792x1024", "n": 1, "response_format": "b64_json"},
+              ]:
+                  r = requests.post("https://api.openai.com/v1/images/generations",
+                      headers={"Authorization": f"Bearer {oai}", "Content-Type": "application/json"}, json=body, timeout=180)
+                  if r.ok:
+                      print(f"{body['model']} 생성 성공"); return base64.b64decode(r.json()["data"][0]["b64_json"])
+                  print(f"{body['model']} 실패 {r.status_code}: {r.text[:200]}")
+              raise SystemExit("::error::AI 이미지 생성 실패")
+
+          # 1) 인포그래픽 업로드
+          ALT = {}
+          try: ALT = json.load(open(os.path.join(image_dir, "alt.json"), encoding="utf-8"))
+          except Exception: pass
+          media = {}
+          for png in sorted(glob.glob("/tmp/png/*.png")):
+              key = os.path.splitext(os.path.basename(png))[0]
+              _, url = up(open(png, "rb").read(), ALT.get(key, key), f"{key}.png")
+              media[key] = url; print(f"인포그래픽: {key} → {url}")
+
+          # 2) 마크다운 → [[IMG]] 치환
+          md = re.sub(r"<!--.*?-->", "", open(os.environ["DRAFT_PATH"], encoding="utf-8").read(), flags=re.S)
+          md = re.sub(r"\[\[IMG:([a-zA-Z0-9_-]+)\]\]",
+                      lambda mo: fig(media[mo.group(1)], ALT.get(mo.group(1), mo.group(1))) if mo.group(1) in media else "", md)
+          lines = md.split("\n"); title = os.path.basename(os.environ["DRAFT_PATH"])
+          for i, l in enumerate(lines):
+              if re.match(r"^#\s+", l): title = re.sub(r"^#\s+", "", l).strip(); del lines[i]; break
+          html = markdown.markdown("\n".join(lines), extensions=["tables", "nl2br"])
+
+          # 3) [[PRODUCT:key]] → 상품 카드 HTML (마크다운 변환 후 치환)
+          def product(mo):
+              key = mo.group(1)
+              path = os.path.join(product_dir, f"{key}.html")
+              try:
+                  return "\n" + open(path, encoding="utf-8").read().strip() + "\n"
+              except Exception:
+                  print(f"::warning::상품 파일 없음: {path}"); return ""
+          html = re.sub(r"<p>\s*\[\[PRODUCT:([a-zA-Z0-9_-]+)\]\]\s*</p>", product, html)
+          html = re.sub(r"\[\[PRODUCT:([a-zA-Z0-9_-]+)\]\]", product, html)
+
+          # 4) AI 썸네일(대표) + 핵심사진(본문)
+          tid, _ = up(genai(os.environ["THUMB_PROMPT"]), os.environ.get("THUMB_ALT", "대표 이미지"), "thumbnail.png")
+          _, murl = up(genai(os.environ["MID_PROMPT"]), os.environ.get("MID_ALT", "본문 이미지"), "inline.png")
+          figm = fig(murl, os.environ.get("MID_ALT", "본문 이미지"))
+          anchor = os.environ["MID_ANCHOR"].strip()
+          pat = re.compile(r'(<h2[^>]*>\s*' + re.escape(anchor) + r'\s*</h2>)')
+          if pat.search(html): html = pat.sub(figm + r'\1', html, count=1)
+          else: html += figm
+
+          # 5) 빈 CTA 제거
+          html = re.sub(r"<p>[^<]*👉[^<]*</p>\s*", "", html)
+
+          # 6) 광고표시 문구(스타일·따옴표) 상단 삽입
+          fs = (os.environ.get("DISCLOSURE_FONT") or "13").strip()
+          disc_text = "이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."
+          html = f'<p style="font-size:{fs}px;color:#8A8378;">“{disc_text}”</p>\n\n' + html
+
+          # 7) 카테고리 해결
+          payload = {"title": title, "content": html, "status": os.environ.get("POST_STATUS", "publish"), "featured_media": tid}
+          name = (os.environ.get("CATEGORY_NAME") or "").strip()
+          if name:
+              rc = requests.get(f"{base}/wp-json/wp/v2/categories", params={"search": name}, auth=auth, timeout=30)
+              if rc.ok:
+                  mt = [c for c in rc.json() if c.get("name") == name]
+                  if mt: payload["categories"] = [mt[0]["id"]]
+
+          # 8) 업데이트(있으면) 또는 새 발행
+          pid = (os.environ.get("POST_ID") or "").strip()
+          url = f"{base}/wp-json/wp/v2/posts/{pid}" if pid else f"{base}/wp-json/wp/v2/posts"
+          r = requests.post(url, json=payload, auth=auth, timeout=90)
+          if not r.ok:
+              print(f"::error::저장 실패 {r.status_code}: {r.text[:400]}"); raise SystemExit(1)
+          p = r.json()
+          print(f"=== {'업데이트' if pid else '발행'} 완료 #{p.get('id')} ({p.get('status')}) ===")
+          print("제목:", p.get("title", {}).get("rendered"))
+          print("링크:", p.get("link"))
+          PY
