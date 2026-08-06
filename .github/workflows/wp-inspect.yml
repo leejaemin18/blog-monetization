@@ -1,0 +1,55 @@
+name: 글 내용 점검 (특정 글 원문 조각)
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id: { description: '점검할 글 번호(ID)', required: true }
+      needle: { description: '이 문자열 주변을 발췌', required: false, default: '집사가 골라본' }
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 점검
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          POST_ID: ${{ github.event.inputs.post_id }}
+          NEEDLE: ${{ github.event.inputs.needle }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          pid = os.environ["POST_ID"].strip()
+          needle = os.environ.get("NEEDLE") or "집사가 골라본"
+          r = requests.get(f"{base}/wp-json/wp/v2/posts/{pid}",
+              params={"context": "edit"}, auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::조회 실패 {r.status_code}: {r.text[:200]}"); raise SystemExit(1)
+          c = r.json().get("content", {}).get("raw", "")
+          checks = {
+              "image13.coupangcdn (배너 이미지)": "image13.coupangcdn" in c,
+              "coupangcdn (모든 쿠팡이미지)": "coupangcdn" in c,
+              "link.coupang.com (딥링크)": "link.coupang.com" in c,
+              "fZezXFEVaK (배너 링크)": "fZezXFEVaK" in c,
+              "fZesQPPgn6 (버튼 링크)": "fZesQPPgn6" in c,
+              "집사가 골라본 (카드)": "집사가 골라본" in c,
+              "[[PRODUCT (미치환 토큰)": "[[PRODUCT" in c,
+              "<img (이미지 태그 존재)": "<img" in c,
+          }
+          for k, v in checks.items():
+              print(f"  {'O' if v else 'X'}  {k}")
+          print("본문 길이:", len(c))
+          i = c.find(needle)
+          if i >= 0:
+              print("\n=== 발췌 ===")
+              print(c[max(0,i-200): i+700])
+          else:
+              print(f"\n'{needle}' 없음")
+          PY
