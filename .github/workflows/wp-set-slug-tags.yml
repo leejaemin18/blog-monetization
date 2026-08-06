@@ -1,0 +1,58 @@
+name: 슬러그·태그 설정 (범용)
+
+# 특정 글의 슬러그(짧은 영문)와 태그를 설정한다. 신규 발행 글 마무리용.
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id: { description: '대상 글 번호(ID)', required: true }
+      slug: { description: '짧은 영문 슬러그 (예: senior-dog-care)', required: true }
+      tags: { description: '태그(콤마 구분)', required: false, default: '' }
+
+permissions:
+  contents: read
+
+jobs:
+  set:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 설정
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          POST_ID: ${{ github.event.inputs.post_id }}
+          SLUG: ${{ github.event.inputs.slug }}
+          TAGS: ${{ github.event.inputs.tags }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          pid = os.environ["POST_ID"].strip()
+          slug = os.environ["SLUG"].strip()
+          tags = [t.strip() for t in (os.environ.get("TAGS") or "").split(",") if t.strip()]
+
+          def tag_id(name):
+              r = requests.post(f"{base}/wp-json/wp/v2/tags", json={"name": name}, auth=auth, timeout=30)
+              if r.status_code in (200,201): return r.json()["id"]
+              if r.status_code == 400:
+                  tid = (r.json().get("data") or {}).get("term_id")
+                  if tid: return tid
+              rs = requests.get(f"{base}/wp-json/wp/v2/tags", params={"search": name, "per_page":50}, auth=auth, timeout=30)
+              if rs.ok:
+                  for t in rs.json():
+                      if t["name"] == name: return t["id"]
+              print(f"::warning::태그 실패: {name}"); return None
+
+          payload = {"slug": slug}
+          if tags:
+              ids = [t for t in (tag_id(n) for n in tags) if t]
+              payload["tags"] = ids
+          u = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}", json=payload, auth=auth, timeout=60)
+          if not u.ok:
+              print(f"::error::저장 실패 {u.status_code}: {u.text[:200]}"); raise SystemExit(1)
+          j = u.json()
+          print(f"=== #{pid} slug={j.get('slug')} tags={len(j.get('tags',[]))}개 ===")
+          PY
