@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="720" fill="#FFFCF7"/>
+  <text x="60" y="86" font-size="44" font-weight="800" fill="#33302B">고양이 사료 <tspan fill="#2F9C95">고르는 기준</tspan></text>
+  <rect x="62" y="104" width="90" height="8" rx="4" fill="#E8825A"/>
+  <g font-size="30" fill="#33302B">
+    <g transform="translate(70,170)">
+      <circle cx="24" cy="20" r="24" fill="#E8825A"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">동물성 단백질</text><text x="70" y="52" font-size="22" fill="#8A8378">첫 원료가 구체적 육류(닭·연어)인지</text>
+    </g>
+    <g transform="translate(70,278)">
+      <circle cx="24" cy="20" r="24" fill="#2F9C95"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">타우린</text><text x="70" y="52" font-size="22" fill="#8A8378">고양이 필수 아미노산 — 완전균형식엔 포함</text>
+    </g>
+    <g transform="translate(70,386)">
+      <circle cx="24" cy="20" r="24" fill="#2F9C95"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">완전균형식(AAFCO)</text><text x="70" y="52" font-size="22" fill="#8A8378">연령대 Complete &amp; Balanced 표기 확인</text>
+    </g>
+    <g transform="translate(70,494)">
+      <circle cx="24" cy="20" r="24" fill="#2F9C95"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">수분(습식 병행)</text><text x="70" y="52" font-size="22" fill="#8A8378">비뇨기 건강 위해 습식 곁들이기</text>
+    </g>
+    <g transform="translate(70,602)">
+      <circle cx="24" cy="20" r="24" fill="#E8825A"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">연령대</text><text x="70" y="52" font-size="22" fill="#8A8378">키튼 · 어덜트 · 시니어에 맞게</text>
+    </g>
+  </g>
+</svg>
