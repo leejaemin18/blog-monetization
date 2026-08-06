@@ -1,0 +1,40 @@
+name: 글 목록 진단 (제목·ID·상태·쿠팡링크 여부)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 목록 출력
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          r = requests.get(f"{base}/wp-json/wp/v2/posts",
+              params={"per_page": 50, "status": "publish,draft,pending,future,private", "context": "edit"},
+              auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::조회 실패 {r.status_code}: {r.text[:200]}"); raise SystemExit(1)
+          posts = r.json()
+          print(f"총 {len(posts)}개\n")
+          for p in posts:
+              t = p.get("title", {}).get("rendered", "")
+              raw = p.get("content", {}).get("raw", "")
+              has_coupang = "link.coupang.com" in raw
+              has_disc = "쿠팡 파트너스 활동의 일환" in raw
+              has_card = "집사가 골라본 추천" in raw
+              print(f"#{p['id']} [{p['status']}] {t}")
+              print(f"    링크: {p.get('link')}")
+              print(f"    쿠팡링크={has_coupang} 광고문구={has_disc} 상품카드={has_card} 본문길이={len(raw)}")
+          PY
