@@ -1,0 +1,83 @@
+name: 다이나믹 배너 전 글 삽입 (+ 광고표시 문구)
+
+# 모든 발행글 맨 끝(마무리 아래·확인일 위)에 쿠팡 다이나믹 배너를 넣고,
+# 배너가 제휴 링크이므로 광고표시 문구(스타일)를 맨 위에 (없으면) 추가한다.
+# <script> 저장 후 살아남았는지 검증한다.
+
+on:
+  workflow_dispatch:
+    inputs:
+      banner_path: { description: '배너 HTML 파일', required: false, default: 'assets/products/dynamic-banner.html' }
+      min_len: { description: '이 길이 미만 글은 건너뜀(빈 글 제외용)', required: false, default: '300' }
+      disclosure_font: { description: '광고표시 문구 글씨 크기(px)', required: false, default: '13' }
+
+permissions:
+  contents: read
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 배너 삽입
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          BANNER_PATH: ${{ github.event.inputs.banner_path }}
+          MIN_LEN: ${{ github.event.inputs.min_len }}
+          DISCLOSURE_FONT: ${{ github.event.inputs.disclosure_font }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, re, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          min_len = int(os.environ.get("MIN_LEN") or "300")
+          fs = (os.environ.get("DISCLOSURE_FONT") or "13").strip()
+          disc_text = "이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."
+          disc_p = f'<p style="font-size:{fs}px;color:#8A8378;">“{disc_text}”</p>'
+
+          banner = open(os.environ["BANNER_PATH"], encoding="utf-8").read().strip()
+
+          r = requests.get(f"{base}/wp-json/wp/v2/posts",
+              params={"per_page": 50, "status": "publish", "context": "edit"}, auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::글 목록 조회 실패 {r.status_code}: {r.text[:200]}"); raise SystemExit(1)
+
+          survived = stripped = skipped = changed = 0
+          for p in r.json():
+              pid = p["id"]; title = p.get("title", {}).get("rendered", "")
+              c = p.get("content", {}).get("raw", "")
+              if len(c) < min_len:
+                  print(f"· #{pid} 건너뜀(짧음): {title}"); skipped += 1; continue
+
+              new = c
+              # 1) 배너 (중복 방지: 컨테이너 클래스 마커)
+              if "jipsa-dyn-banner" not in new:
+                  m = list(re.finditer(r"<hr\s*/?>", new))
+                  if m:
+                      pos = m[-1].start(); new = new[:pos] + banner + "\n\n" + new[pos:]
+                  else:
+                      new = new + "\n\n" + banner
+              # 2) 광고표시 문구 (없을 때만, 맨 위)
+              if disc_text not in new:
+                  new = disc_p + "\n\n" + new
+
+              if new == c:
+                  print(f"· #{pid} 변경 없음(이미 적용): {title}"); continue
+
+              u = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}", json={"content": new}, auth=auth, timeout=90)
+              if not u.ok:
+                  print(f"::warning::#{pid} 저장 실패 {u.status_code}: {u.text[:150]}"); continue
+              saved = u.json().get("content", {}).get("raw", "")
+              ok = "PartnersCoupang" in saved
+              survived += 1 if ok else 0
+              stripped += 0 if ok else 1
+              changed += 1
+              print(f"{'O' if ok else 'X(script제거됨)'} #{pid} {title}")
+
+          print(f"\n=== 적용 {changed}건 · 스크립트생존 {survived} · 스크립트제거 {stripped} · 건너뜀 {skipped} ===")
+          if stripped:
+              print("::warning::일부 글에서 <script>가 저장 시 제거됨 → unfiltered_html 권한 없음. 테마 훅/커스텀HTML 방식 필요.")
+          PY
