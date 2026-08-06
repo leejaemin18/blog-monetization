@@ -1,0 +1,52 @@
+name: SEO 메타 삽입 (Rank Math 설명·포커스 키워드)
+
+# Rank Math 메타(설명·포커스 키워드)를 REST meta로 삽입 시도 후, 읽어서 검증한다.
+# 성공하면 수동 작업 불필요. 실패(REST 미등록)하면 수동 안내.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  meta:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 메타 삽입·검증
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+
+          PLAN = {
+            25: ("강아지 사료 추천", "강아지 사료 추천 순위보다 중요한 건 성분표예요. 첫 원료·완전균형식·조단백 기준부터 노령견·처방식까지, 우리 아이에 맞게 고르는 법을 정리했어요."),
+            62: ("고양이 사료 추천", "고양이 사료 추천, 완전 육식동물 기준으로. 동물성 단백질·타우린·완전균형식과 건식·습식 병행까지 진짜 봐야 할 것만 담았어요."),
+            33: ("고양이 모래 추천", "고양이 모래 추천 전에 종류부터. 벤토나이트·두부 등 5종의 응고력·먼지·냄새·사막화를 비교해 우리집에 맞게 고르는 법."),
+            46: ("자동급수기 추천", "반려동물 자동급수기 고르는 기준. 정수 필터·소음·세척 편의를 비교하고, 가성비·스테인리스까지 상황별로 정리했어요."),
+            50: ("고양이 스크래처", "고양이 스크래처, 우리 아이가 어디를 긁는지로 고르세요. 벽면·하우스·수직 등 형태별 특징과 안정성 기준을 정리했어요."),
+          }
+
+          ok = fail = 0
+          for pid, (fk, desc) in PLAN.items():
+              meta = {"rank_math_focus_keyword": fk, "rank_math_description": desc}
+              u = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}", json={"meta": meta}, auth=auth, timeout=60)
+              # 검증: edit 컨텍스트로 다시 읽어 메타 반영 확인
+              r = requests.get(f"{base}/wp-json/wp/v2/posts/{pid}", params={"context": "edit"}, auth=auth, timeout=40)
+              got = (r.json().get("meta") or {}) if r.ok else {}
+              saved = got.get("rank_math_description", "")
+              if saved and desc[:12] in saved:
+                  print(f"O #{pid} 메타 저장됨"); ok += 1
+              else:
+                  print(f"X #{pid} 미반영 (REST meta 미등록 가능) status={u.status_code}"); fail += 1
+
+          print(f"\n=== 성공 {ok} · 실패 {fail} ===")
+          if fail:
+              print("일부/전부 REST로 안 들어감 → Rank Math 박스에 수동 입력 필요.")
+          PY
