@@ -1,0 +1,76 @@
+name: SEO 적용 (슬러그·태그·제목·정리)
+
+# 글별로 슬러그/태그(/제목)를 일괄 적용하고, 기본 글(#22)을 휴지통으로.
+
+on:
+  workflow_dispatch:
+    inputs:
+      trash_id:
+        description: '휴지통으로 보낼 기본 글 ID (비우면 생략)'
+        required: false
+        default: '22'
+
+permissions:
+  contents: read
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 적용
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          TRASH_ID: ${{ github.event.inputs.trash_id }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+
+          PLAN = [
+            {"id":25, "slug":"dog-food-guide", "title":None,
+             "tags":["강아지사료","강아지사료추천","노령견사료","처방식","강아지사료고르는법"]},
+            {"id":62, "slug":"cat-food-guide", "title":"고양이 사료 추천 — 단백질·타우린·습식 기준 (2026)",
+             "tags":["고양이사료","고양이사료추천","습식사료","건식사료","타우린"]},
+            {"id":33, "slug":"cat-litter-guide", "title":"고양이 모래 추천 — 벤토·두부 등 5종 비교 (2026)",
+             "tags":["고양이모래","고양이모래추천","벤토나이트모래","두부모래","무향모래"]},
+            {"id":46, "slug":"pet-water-fountain", "title":None,
+             "tags":["자동급수기","고양이급수기","강아지급수기","정수필터","음수량"]},
+            {"id":50, "slug":"cat-scratcher-guide", "title":None,
+             "tags":["고양이스크래처","스크래처추천","벽면스크래처","골판지스크래처","캣타워"]},
+          ]
+
+          def tag_id(name):
+              r = requests.post(f"{base}/wp-json/wp/v2/tags", json={"name": name}, auth=auth, timeout=30)
+              if r.status_code in (200,201):
+                  return r.json()["id"]
+              if r.status_code == 400:
+                  d = r.json()
+                  tid = (d.get("data") or {}).get("term_id")
+                  if tid: return tid
+              rs = requests.get(f"{base}/wp-json/wp/v2/tags", params={"search": name, "per_page":50}, auth=auth, timeout=30)
+              if rs.ok:
+                  for t in rs.json():
+                      if t["name"] == name: return t["id"]
+              print(f"::warning::태그 생성/조회 실패: {name}"); return None
+
+          for item in PLAN:
+              pid = item["id"]
+              ids = [t for t in (tag_id(n) for n in item["tags"]) if t]
+              payload = {"slug": item["slug"], "tags": ids}
+              if item.get("title"): payload["title"] = item["title"]
+              u = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}", json=payload, auth=auth, timeout=60)
+              if not u.ok:
+                  print(f"::warning::#{pid} 적용 실패 {u.status_code}: {u.text[:150]}"); continue
+              j = u.json()
+              print(f"O #{pid} slug={j.get('slug')} tags={len(j.get('tags',[]))}개" + (" title수정" if item.get('title') else ""))
+
+          trash = (os.environ.get("TRASH_ID") or "").strip()
+          if trash:
+              d = requests.delete(f"{base}/wp-json/wp/v2/posts/{trash}", auth=auth, timeout=30)  # force 없이 → 휴지통
+              print(f"휴지통 #{trash}: {d.status_code}")
+          print("=== SEO 적용 완료 ===")
+          PY
