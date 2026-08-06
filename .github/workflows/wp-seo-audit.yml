@@ -1,0 +1,50 @@
+name: SEO 감사 (제목·슬러그·태그·메타)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 감사
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+
+          def termmap(kind):
+              m = {}
+              r = requests.get(f"{base}/wp-json/wp/v2/{kind}", params={"per_page": 100}, auth=auth, timeout=40)
+              if r.ok:
+                  for t in r.json(): m[t["id"]] = t["name"]
+              return m
+          tags = termmap("tags"); cats = termmap("categories")
+
+          r = requests.get(f"{base}/wp-json/wp/v2/posts",
+              params={"per_page": 50, "status": "publish", "context": "edit"}, auth=auth, timeout=60)
+          posts = r.json()
+          for p in sorted(posts, key=lambda x: x["id"]):
+              t = p.get("title", {}).get("rendered", "")
+              slug = p.get("slug", "")
+              ptags = [tags.get(i, str(i)) for i in p.get("tags", [])]
+              pcats = [cats.get(i, str(i)) for i in p.get("categories", [])]
+              meta = p.get("meta", {}) or {}
+              rm = {k: v for k, v in meta.items() if "rank_math" in k and v}
+              print(f"\n#{p['id']} {t}")
+              print(f"   제목 길이: {len(t)}자")
+              print(f"   슬러그: {slug}")
+              print(f"   카테고리: {pcats}")
+              print(f"   태그({len(ptags)}): {ptags}")
+              print(f"   RankMath메타: {rm if rm else '(REST에 노출 안 됨 — 수동 확인 필요)'}")
+          print("\n=== 감사 완료 ===")
+          PY
