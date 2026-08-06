@@ -1,0 +1,80 @@
+name: 쿠팡 배너 이미지 재호스팅 (애드블록/핫링크 우회)
+
+# 외부 쿠팡 배너 이미지를 우리 워드프레스 미디어로 업로드하고,
+# 글 본문의 외부 이미지 src를 우리 도메인 주소로 교체한다. (링크/딥링크는 유지)
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id: { description: '대상 글 번호(ID)', required: true }
+      banner_url:
+        description: '교체할 외부 배너 이미지 URL'
+        required: false
+        default: 'https://image13.coupangcdn.com/image/affiliate/banner/cd47fc23eca146e96b7fccc5bbe5651c@2x.jpg'
+      filename: { description: '업로드 파일명', required: false, default: 'royalcanin-dogfood-7kg.jpg' }
+      alt: { description: '이미지 alt', required: false, default: '로얄캐닌 강아지 건식사료 닭+칠면조 7kg' }
+
+permissions:
+  contents: read
+
+jobs:
+  rehost:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 재호스팅
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          POST_ID: ${{ github.event.inputs.post_id }}
+          BANNER_URL: ${{ github.event.inputs.banner_url }}
+          FILENAME: ${{ github.event.inputs.filename }}
+          ALT: ${{ github.event.inputs.alt }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          pid = os.environ["POST_ID"].strip()
+          burl = os.environ["BANNER_URL"].strip()
+          fname = os.environ["FILENAME"].strip()
+          alt = os.environ["ALT"].strip()
+
+          # 1) 외부 배너 이미지 다운로드 (러너는 오픈 인터넷)
+          ir = requests.get(burl, headers={"User-Agent": "Mozilla/5.0", "Referer": "https://link.coupang.com/"}, timeout=60)
+          if not ir.ok:
+              print(f"::error::배너 다운로드 실패 {ir.status_code}"); raise SystemExit(1)
+          ctype = ir.headers.get("Content-Type", "image/jpeg").split(";")[0]
+          data = ir.content
+          print(f"다운로드 성공: {len(data)} bytes, {ctype}")
+
+          # 2) 워드프레스 미디어 업로드
+          mr = requests.post(f"{base}/wp-json/wp/v2/media",
+              headers={"Content-Type": ctype, "Content-Disposition": f'attachment; filename="{fname}"'},
+              data=data, auth=auth, timeout=120)
+          if not mr.ok:
+              print(f"::error::업로드 실패 {mr.status_code}: {mr.text[:300]}"); raise SystemExit(1)
+          m = mr.json()
+          local = m["source_url"]
+          requests.post(f"{base}/wp-json/wp/v2/media/{m['id']}", json={"alt_text": alt}, auth=auth, timeout=30)
+          print("로컬 이미지:", local)
+
+          # 3) 글 본문에서 외부 URL → 로컬 URL 교체 (@2x/일반 변형 모두)
+          r = requests.get(f"{base}/wp-json/wp/v2/posts/{pid}", params={"context": "edit"}, auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::글 조회 실패 {r.status_code}"); raise SystemExit(1)
+          c = r.json().get("content", {}).get("raw", "")
+          variants = {burl, burl.replace("@2x", "")}
+          n = 0
+          for v in variants:
+              if v and v in c:
+                  cnt = c.count(v); c = c.replace(v, local); n += cnt
+          if n == 0:
+              print("::warning::본문에서 해당 배너 URL을 찾지 못함 (이미 교체되었을 수 있음)")
+          u = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}", json={"content": c}, auth=auth, timeout=90)
+          if not u.ok:
+              print(f"::error::수정 실패 {u.status_code}: {u.text[:300]}"); raise SystemExit(1)
+          print(f"=== #{pid} 배너 재호스팅 완료 (교체 변형 {n}건) ===")
+          print("남은 외부 배너:", "image13.coupangcdn" in u.json().get("content", {}).get("raw", ""))
+          PY
