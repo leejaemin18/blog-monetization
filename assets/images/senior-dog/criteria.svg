@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="760" fill="#FFFCF7"/>
+  <text x="60" y="86" font-size="44" font-weight="800" fill="#33302B">노령견, 7살부터 <tspan fill="#2F9C95">체크리스트</tspan></text>
+  <rect x="62" y="104" width="90" height="8" rx="4" fill="#E8825A"/>
+  <g font-size="30" fill="#33302B">
+    <g transform="translate(70,170)">
+      <circle cx="24" cy="20" r="24" fill="#E8825A"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">양질의 단백질 유지</text><text x="70" y="52" font-size="22" fill="#8A8378">근육 손실 막게 — 무작정 저단백 X</text>
+    </g>
+    <g transform="translate(70,278)">
+      <circle cx="24" cy="20" r="24" fill="#2F9C95"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">칼로리는 조금 낮게</text><text x="70" y="52" font-size="22" fill="#8A8378">활동량 감소 → 과체중 예방</text>
+    </g>
+    <g transform="translate(70,386)">
+      <circle cx="24" cy="20" r="24" fill="#2F9C95"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">관절 케어</text><text x="70" y="52" font-size="22" fill="#8A8378">글루코사민 · 오메가3(EPA·DHA)</text>
+    </g>
+    <g transform="translate(70,494)">
+      <circle cx="24" cy="20" r="24" fill="#2F9C95"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">신장 배려</text><text x="70" y="52" font-size="22" fill="#8A8378">인·나트륨 조절은 진단 후 처방식</text>
+    </g>
+    <g transform="translate(70,602)">
+      <circle cx="24" cy="20" r="24" fill="#E8825A"/><path d="M13 20 l8 8 l14 -16" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="22" font-weight="700">치아 · 기호성</text><text x="70" y="52" font-size="22" fill="#8A8378">부드러운 알갱이 · 불려주기</text>
+    </g>
+  </g>
+</svg>
