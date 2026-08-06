@@ -1,0 +1,58 @@
+name: 광고표시 문구 스타일 (따옴표 + 글씨 축소)
+
+# 특정 글의 광고표시 문구 문단을 따옴표로 감싸고 글씨를 살짝 줄인 버전으로 교체한다.
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id:
+        description: '대상 글 번호(ID)'
+        required: true
+      font_size:
+        description: '문구 글씨 크기(px)'
+        required: false
+        default: '13'
+
+permissions:
+  contents: read
+
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 문구 스타일 적용
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          POST_ID: ${{ github.event.inputs.post_id }}
+          FONT_SIZE: ${{ github.event.inputs.font_size }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, re, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          pid = os.environ["POST_ID"].strip()
+          fs = (os.environ.get("FONT_SIZE") or "13").strip()
+          text = "이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."
+          new_p = f'<p style="font-size:{fs}px;color:#8A8378;">“{text}”</p>'
+
+          r = requests.get(f"{base}/wp-json/wp/v2/posts/{pid}",
+              params={"context": "edit"}, auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::#{pid} 조회 실패 {r.status_code}: {r.text[:200]}"); raise SystemExit(1)
+          content = r.json().get("content", {}).get("raw", "")
+
+          # 기존 광고표시 문단(<p ...>...본문...</p>, 따옴표 유무 무관)을 새 버전으로 교체
+          pat = re.compile(r'<p[^>]*>\s*[“"”]?\s*' + re.escape(text) + r'\s*[”"“]?\s*</p>')
+          new_content, n = pat.subn(new_p, content)
+          if n == 0:
+              print("::warning::기존 광고표시 문단을 찾지 못했습니다. 변경 없음."); raise SystemExit(0)
+
+          u = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}",
+              json={"content": new_content}, auth=auth, timeout=60)
+          if not u.ok:
+              print(f"::error::수정 실패 {u.status_code}: {u.text[:300]}"); raise SystemExit(1)
+          print(f"=== #{pid} 광고표시 문구 스타일 적용 ({n}건, {fs}px) ===")
+          PY
