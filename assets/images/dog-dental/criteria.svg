@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="720" fill="#FFFCF7"/>
+  <text x="60" y="86" font-size="42" font-weight="800" fill="#33302B">집에서 되는 것 <tspan fill="#8A8378">vs</tspan> <tspan fill="#E8825A">병원부터</tspan></text>
+  <rect x="62" y="104" width="90" height="8" rx="4" fill="#2F9C95"/>
+
+  <!-- left column: home -->
+  <rect x="60" y="150" width="420" height="500" rx="16" fill="#fff" stroke="#EAE3D8" stroke-width="2"/>
+  <text x="90" y="204" font-size="26" font-weight="800" fill="#2F9C95">집에서 관리 (예방)</text>
+  <g font-size="23" fill="#33302B">
+    <g transform="translate(92,250)">
+      <circle cx="16" cy="14" r="16" fill="#2F9C95"/><path d="M8 14 l6 6 l10 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="46" y="16" font-weight="700">매일 덴탈껌 씹기</text><text x="46" y="44" font-size="18" fill="#8A8378">저작으로 치태가 굳기 전에 관리</text>
+    </g>
+    <g transform="translate(92,330)">
+      <circle cx="16" cy="14" r="16" fill="#2F9C95"/><path d="M8 14 l6 6 l10 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="46" y="16" font-weight="700">칫솔질 + 효소치약</text><text x="46" y="44" font-size="18" fill="#8A8378">가장 확실한 방법 — 주 3회 이상</text>
+    </g>
+    <g transform="translate(92,410)">
+      <circle cx="16" cy="14" r="16" fill="#2F9C95"/><path d="M8 14 l6 6 l10 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="46" y="16" font-weight="700">워터첨가제 · 스프레이</text><text x="46" y="44" font-size="18" fill="#8A8378">칫솔 거부하는 아이 보조 수단</text>
+    </g>
+    <g transform="translate(92,490)">
+      <circle cx="16" cy="14" r="16" fill="#2F9C95"/><path d="M8 14 l6 6 l10 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="46" y="16" font-weight="700">VOHC 인증 제품 확인</text><text x="46" y="44" font-size="18" fill="#8A8378">효과 검증된 마크가 있으면 안심</text>
+    </g>
+    <g transform="translate(92,570)">
+      <circle cx="16" cy="14" r="16" fill="#2F9C95"/><path d="M8 14 l6 6 l10 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="46" y="16" font-weight="700">어릴 때부터 습관화</text><text x="46" y="44" font-size="18" fill="#8A8378">천천히 · 간식으로 긍정 경험</text>
+    </g>
+  </g>
+
+  <!-- right column: vet -->
+  <rect x="520" y="150" width="420" height="500" rx="16" fill="#fff" stroke="#EAE3D8" stroke-width="2"/>
+  <text x="550" y="204" font-size="26" font-weight="800" fill="#E8825A">병원부터 (치료)</text>
+  <g font-size="23" fill="#33302B">
+    <g transform="translate(552,250)">
+      <circle cx="16" cy="14" r="16" fill="#E8825A"/><text x="12" y="22" font-size="22" font-weight="800" fill="#fff">!</text>
+      <text x="46" y="16" font-weight="700">이미 굳은 치석</text><text x="46" y="44" font-size="18" fill="#8A8378">스케일링은 집에서 불가 — 마취 진료</text>
+    </g>
+    <g transform="translate(552,330)">
+      <circle cx="16" cy="14" r="16" fill="#E8825A"/><text x="12" y="22" font-size="22" font-weight="800" fill="#fff">!</text>
+      <text x="46" y="16" font-weight="700">잇몸 붓고 피남</text><text x="46" y="44" font-size="18" fill="#8A8378">치주염 진행 신호 — 방치하면 발치</text>
+    </g>
+    <g transform="translate(552,410)">
+      <circle cx="16" cy="14" r="16" fill="#E8825A"/><text x="12" y="22" font-size="22" font-weight="800" fill="#fff">!</text>
+      <text x="46" y="16" font-weight="700">심한 구취</text><text x="46" y="44" font-size="18" fill="#8A8378">단순 냄새 아닌 감염일 수 있음</text>
+    </g>
+    <g transform="translate(552,490)">
+      <circle cx="16" cy="14" r="16" fill="#E8825A"/><text x="12" y="22" font-size="22" font-weight="800" fill="#fff">!</text>
+      <text x="46" y="16" font-weight="700">한쪽으로만 씹기</text><text x="46" y="44" font-size="18" fill="#8A8378">통증 · 이빨 흔들림 의심</text>
+    </g>
+    <g transform="translate(552,570)">
+      <circle cx="16" cy="14" r="16" fill="#E8825A"/><text x="12" y="22" font-size="22" font-weight="800" fill="#fff">!</text>
+      <text x="46" y="16" font-weight="700">사람 손 스케일러 사용</text><text x="46" y="44" font-size="18" fill="#8A8378">잇몸·법랑질 손상 위험 — 비권장</text>
+    </g>
+  </g>
+</svg>
