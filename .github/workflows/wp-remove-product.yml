@@ -1,0 +1,79 @@
+name: 추천 상품/광고문구 제거 (특정 글)
+
+# 특정 글(post_id)에서 상품 카드 블록과 광고표시 문구를 제거한다.
+# (초안 등 잘못 삽입된 글 정리용)
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id:
+        description: '정리할 글 번호(ID)'
+        required: true
+      block_path:
+        description: '제거할 상품 HTML 블록 파일 경로'
+        required: true
+        default: 'assets/products/dogfood-royalcanin.html'
+      remove_disclosure:
+        description: '광고표시 문구도 제거 (true/false)'
+        required: false
+        default: 'true'
+
+permissions:
+  contents: read
+
+jobs:
+  remove:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 제거
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          POST_ID: ${{ github.event.inputs.post_id }}
+          BLOCK_PATH: ${{ github.event.inputs.block_path }}
+          REMOVE_DISCLOSURE: ${{ github.event.inputs.remove_disclosure }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, re, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          pid = os.environ["POST_ID"].strip()
+          rm_disc = (os.environ.get("REMOVE_DISCLOSURE") or "true").strip().lower() == "true"
+          disclosure = "이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."
+
+          with open(os.environ["BLOCK_PATH"], encoding="utf-8") as f:
+              block = f.read().strip()
+
+          r = requests.get(f"{base}/wp-json/wp/v2/posts/{pid}",
+              params={"context": "edit"}, auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::#{pid} 조회 실패 {r.status_code}: {r.text[:200]}"); raise SystemExit(1)
+          post = r.json()
+          content = post.get("content", {}).get("raw", "")
+          before = len(content)
+
+          # 상품 카드 블록 제거 (정확 일치 우선, 실패 시 마커 기반)
+          content = content.replace(block + "\n\n", "").replace(block, "")
+          if "집사가 골라본 추천" in content:
+              # 마커가 남아있으면 배너/버튼 앵커가 있는 최상위 div를 통째로 제거
+              content = re.sub(
+                  r'<div[^>]*>\s*<div[^>]*>집사가 골라본 추천.*?link\.coupang\.com.*?</div>\s*</div>\s*',
+                  "", content, flags=re.S)
+
+          if rm_disc:
+              content = re.sub(r"<p>\s*" + re.escape(disclosure) + r"\s*</p>\s*", "", content)
+
+          after = len(content)
+          if after == before:
+              print("변경 없음 (이미 제거되었거나 매칭 실패)");
+          u = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}",
+              json={"content": content}, auth=auth, timeout=60)
+          if not u.ok:
+              print(f"::error::수정 실패 {u.status_code}: {u.text[:300]}"); raise SystemExit(1)
+          d = u.json()
+          print(f"=== #{pid} 정리 완료 (본문 {before} → {after}) ===")
+          print("쿠팡링크 잔존:", "link.coupang.com" in d.get("content", {}).get("raw", ""))
+          PY
