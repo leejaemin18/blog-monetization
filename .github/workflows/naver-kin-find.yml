@@ -1,129 +1,56 @@
-name: 지식인 질문 찾기 (노견 등)
+name: 지식인 질문 찾기 (반려동물)
 
-# 네이버 검색 오픈API(읽기 전용)로 최근 지식인 질문을 수집해 로그로 출력한다.
-# 답변 등록/자동게시는 하지 않는다(정책 위반). Claude가 로그를 읽어 목록을 정리하고,
-# 사람이 직접 골라 답변한다. Client ID/Secret은 시크릿에서 읽으며, 로그인 정보는 쓰지 않는다.
+# 네이버 지식iN 질문을 수집해 research/ 폴더에 md로 저장·커밋한다.
+# 제이로그(jaylog)의 kin-research.yml 방식을 가져왔다.
+# 필요한 시크릿: NAVER_CLIENT_ID, NAVER_CLIENT_SECRET
+#   (구 개발자센터 Client ID/Secret, 신 네이버클라우드 API HUB 키 둘 다 자동 인식)
+#
+# ※ 읽기 전용이다. 답변 자동 등록은 하지 않는다(네이버 운영정책상 매크로 금지).
+#    수집된 질문 중에서 사람이 골라 직접 답변한다.
 
 on:
   workflow_dispatch:
     inputs:
-      queries:
-        description: "검색어(콤마 구분)"
+      keywords:
+        description: "조사할 키워드 (쉼표로 구분)"
+        required: true
+        default: "노령견 사료, 노령견 관절, 노견 계단, 노령견 영양제, 강아지 치석, 강아지 양치"
+      display:
+        description: "키워드당 수집 건수 (최대 100)"
         required: false
-        default: "노령견 사료,노령견 관절,노견 계단,노령견 영양제,노령견 치아,강아지 치석"
-      per_query:
-        description: "검색어당 가져올 개수(최대 100)"
-        required: false
-        default: "10"
+        default: "30"
       check_answers:
-        description: "각 질문 페이지 열어 미답변 여부 확인 (y/n)"
+        description: "각 질문 페이지를 열어 미답변 여부 확인 (y/n)"
         required: false
         default: "y"
 
-permissions:
-  contents: read
-
 jobs:
-  find:
+  research:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: 지식인 검색
+      - uses: actions/checkout@v4
+
+      - name: 지식iN 질문 수집
         env:
-          # secrets 전체를 JSON으로 받아 이름에 NAVER가 들어간 것을 자동 탐지한다.
-          # (로그에는 값이 자동 마스킹되며, 스크립트는 '이름'만 출력한다.)
-          SECRETS_JSON: ${{ toJSON(secrets) }}
-          QUERIES: ${{ github.event.inputs.queries }}
-          PER_QUERY: ${{ github.event.inputs.per_query }}
-          CHECK: ${{ github.event.inputs.check_answers }}
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+          KEYWORDS: ${{ inputs.keywords }}
+          DISPLAY: ${{ inputs.display }}
+          CHECK_ANSWERS: ${{ inputs.check_answers }}
         run: |
-          pip -q install requests
-          python3 - <<'PY'
-          import os, re, html, time, json, requests
+          if [ -z "$NAVER_CLIENT_ID" ] || [ -z "$NAVER_CLIENT_SECRET" ]; then
+            echo "::error::NAVER_CLIENT_ID / NAVER_CLIENT_SECRET 시크릿을 먼저 등록하세요."
+            echo "저장소 → Settings → Secrets and variables → Actions"
+            exit 1
+          fi
+          python3 .github/scripts/kin_research.py
 
-          sj = json.loads(os.environ.get("SECRETS_JSON") or "{}")
-          naver = {k: v for k, v in sj.items()
-                   if "NAVER" in k.upper() and k.lower() != "github_token"}
-          print("탐지된 네이버 시크릿 이름:", ", ".join(sorted(naver.keys())) or "(없음)")
-
-          def is_secret_name(k):
-              u = k.upper()
-              return ("SECRET" in u) or ("PASSWORD" in u) or u.endswith("_PW") or u.endswith("_SEC")
-
-          sec_keys = [k for k in naver if is_secret_name(k)]
-          id_keys  = [k for k in naver if k not in sec_keys]
-          cid  = sj.get(id_keys[0])  if id_keys  else None
-          csec = sj.get(sec_keys[0]) if sec_keys else None
-          if not cid or not csec:
-              print("::error::네이버 Client ID/Secret을 확정하지 못했습니다.")
-              print("탐지된 이름:", ", ".join(sorted(naver.keys())) or "(없음)")
-              print("ID 후보:", id_keys, "/ SECRET 후보:", sec_keys)
-              print("시크릿 이름에 'NAVER'가 들어있고 ID/SECRET 2개가 있는지 확인해주세요.")
-              raise SystemExit(1)
-          print(f"인증 시크릿 사용: ID<-{id_keys[0]}, SECRET<-{sec_keys[0]}")
-
-          headers = {"X-Naver-Client-Id": cid, "X-Naver-Client-Secret": csec}
-          queries = [q.strip() for q in (os.environ.get("QUERIES") or "").split(",") if q.strip()]
-          per = int(os.environ.get("PER_QUERY") or "10")
-          check = (os.environ.get("CHECK") or "y").lower().startswith("y")
-          UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126.0 Safari/537.36"
-
-          def clean(t):
-              return html.unescape(re.sub(r"<[^>]+>", "", t or "")).strip()
-
-          seen, items = set(), []
-          for q in queries:
-              try:
-                  r = requests.get("https://openapi.naver.com/v1/search/kin.json",
-                                   params={"query": q, "display": min(per, 100), "sort": "date"},
-                                   headers=headers, timeout=20)
-              except Exception as e:
-                  print(f"::warning::'{q}' 검색 예외: {e}"); continue
-              if not r.ok:
-                  print(f"::warning::'{q}' 검색 실패 {r.status_code}: {r.text[:150]}"); continue
-              for it in r.json().get("items", []):
-                  link = it.get("link", "")
-                  if not link or link in seen:
-                      continue
-                  seen.add(link)
-                  items.append({"q": q, "title": clean(it.get("title")),
-                                "desc": clean(it.get("description")), "link": link})
-
-          print(f"\n총 {len(items)}개 질문 수집 (검색어 {len(queries)}개, 최신순)\n")
-
-          def answer_state(url):
-              try:
-                  p = requests.get(url, headers={"User-Agent": UA}, timeout=15)
-                  t = p.text
-                  if ("아직 등록된 답변이 없" in t) or ("답변이 없습니다" in t):
-                      return "🟢 미답변"
-                  m = (re.search(r'"answerCount"\s*:\s*([0-9]+)', t)
-                       or re.search(r"답변\s*<em[^>]*>\s*([0-9]+)", t)
-                       or re.search(r"답변수[^0-9]{0,10}([0-9]+)", t))
-                  if m:
-                      n = int(m.group(1))
-                      return "🟢 미답변" if n == 0 else f"⚪ 답변 {n}개"
-                  return "⚪ 답변있음(추정)"
-              except Exception:
-                  return "❓ 확인불가"
-
-          # 미답변 우선 정렬을 위해 상태 먼저 계산
-          for it in items:
-              it["state"] = answer_state(it["link"]) if check else ""
-              if check:
-                  time.sleep(0.4)
-
-          order = {"🟢": 0, "❓": 1, "⚪": 2}
-          items.sort(key=lambda x: order.get((x["state"][:1] or "⚪"), 2))
-
-          for i, it in enumerate(items, 1):
-              print(f"[{i}] {it['state']}  · 검색어: {it['q']}")
-              print(f"    제목: {it['title']}")
-              if it["desc"]:
-                  print(f"    요약: {it['desc'][:130]}")
-              print(f"    링크: {it['link']}\n")
-
-          green = sum(1 for it in items if it["state"].startswith("🟢"))
-          print(f"=== 요약: 총 {len(items)}개 중 미답변 추정 {green}개 (🟢 우선 정렬) ===")
-          if check:
-              print("※ 미답변 판정은 러너가 페이지를 열어 추정한 값입니다. ❓는 확인 실패이니 직접 열어보세요.")
-          PY
+      - name: 결과 커밋
+        run: |
+          git config user.name "jipsa-bot"
+          git config user.email "actions@github.com"
+          git add research/
+          git diff --cached --quiet || git commit -m "지식iN 질문 조사 결과 [bot]"
+          git push
