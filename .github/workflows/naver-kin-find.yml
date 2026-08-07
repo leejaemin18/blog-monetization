@@ -29,44 +29,37 @@ jobs:
     steps:
       - name: 지식인 검색
         env:
-          # 실제 존재하는 시크릿만 값이 채워진다(없는 이름은 빈 문자열).
-          ID1: ${{ secrets.NAVER_CLIENT_ID }}
-          ID2: ${{ secrets.NAVER_API_ID }}
-          ID3: ${{ secrets.NAVER_ID }}
-          ID4: ${{ secrets.NAVER_SEARCH_CLIENT_ID }}
-          ID5: ${{ secrets.NAVER_CLIENT }}
-          ID6: ${{ secrets.NAVER_API_CLIENT_ID }}
-          SEC1: ${{ secrets.NAVER_CLIENT_SECRET }}
-          SEC2: ${{ secrets.NAVER_API_SECRET }}
-          SEC3: ${{ secrets.NAVER_SECRET }}
-          SEC4: ${{ secrets.NAVER_SEARCH_CLIENT_SECRET }}
-          SEC5: ${{ secrets.NAVER_CLIENT_SECRET_KEY }}
-          SEC6: ${{ secrets.NAVER_API_CLIENT_SECRET }}
+          # secrets 전체를 JSON으로 받아 이름에 NAVER가 들어간 것을 자동 탐지한다.
+          # (로그에는 값이 자동 마스킹되며, 스크립트는 '이름'만 출력한다.)
+          SECRETS_JSON: ${{ toJSON(secrets) }}
           QUERIES: ${{ github.event.inputs.queries }}
           PER_QUERY: ${{ github.event.inputs.per_query }}
           CHECK: ${{ github.event.inputs.check_answers }}
         run: |
           pip -q install requests
           python3 - <<'PY'
-          import os, re, html, time, requests
+          import os, re, html, time, json, requests
 
-          def pick(prefix):
-              for i in range(1, 7):
-                  v = (os.environ.get(f"{prefix}{i}") or "").strip()
-                  if v:
-                      return v, f"{prefix}{i}"
-              return "", None
+          sj = json.loads(os.environ.get("SECRETS_JSON") or "{}")
+          naver = {k: v for k, v in sj.items()
+                   if "NAVER" in k.upper() and k.lower() != "github_token"}
+          print("탐지된 네이버 시크릿 이름:", ", ".join(sorted(naver.keys())) or "(없음)")
 
-          cid, cid_src = pick("ID")
-          csec, csec_src = pick("SEC")
+          def is_secret_name(k):
+              u = k.upper()
+              return ("SECRET" in u) or ("PASSWORD" in u) or u.endswith("_PW") or u.endswith("_SEC")
+
+          sec_keys = [k for k in naver if is_secret_name(k)]
+          id_keys  = [k for k in naver if k not in sec_keys]
+          cid  = sj.get(id_keys[0])  if id_keys  else None
+          csec = sj.get(sec_keys[0]) if sec_keys else None
           if not cid or not csec:
-              print("::error::네이버 Client ID/Secret 시크릿을 찾지 못했습니다.")
-              print("확인한 후보 이름:")
-              print("  ID  : NAVER_CLIENT_ID / NAVER_API_ID / NAVER_ID / NAVER_SEARCH_CLIENT_ID / NAVER_CLIENT / NAVER_API_CLIENT_ID")
-              print("  SEC : NAVER_CLIENT_SECRET / NAVER_API_SECRET / NAVER_SECRET / NAVER_SEARCH_CLIENT_SECRET / NAVER_CLIENT_SECRET_KEY / NAVER_API_CLIENT_SECRET")
-              print("실제 시크릿 이름이 이와 다르면 알려주세요.")
+              print("::error::네이버 Client ID/Secret을 확정하지 못했습니다.")
+              print("탐지된 이름:", ", ".join(sorted(naver.keys())) or "(없음)")
+              print("ID 후보:", id_keys, "/ SECRET 후보:", sec_keys)
+              print("시크릿 이름에 'NAVER'가 들어있고 ID/SECRET 2개가 있는지 확인해주세요.")
               raise SystemExit(1)
-          print(f"인증 시크릿 사용: ID<-{cid_src}, SECRET<-{csec_src}")
+          print(f"인증 시크릿 사용: ID<-{id_keys[0]}, SECRET<-{sec_keys[0]}")
 
           headers = {"X-Naver-Client-Id": cid, "X-Naver-Client-Secret": csec}
           queries = [q.strip() for q in (os.environ.get("QUERIES") or "").split(",") if q.strip()]
