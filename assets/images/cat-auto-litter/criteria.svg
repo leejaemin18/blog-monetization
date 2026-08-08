@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="740" viewBox="0 0 1000 740" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="740" fill="#FFFCF7"/>
+  <text x="60" y="86" font-size="42" font-weight="800" fill="#33302B">사도 좋은 집 <tspan fill="#8A8378">vs</tspan> <tspan fill="#E8825A">기다릴 집</tspan></text>
+  <rect x="62" y="104" width="90" height="8" rx="4" fill="#2F9C95"/>
+
+  <rect x="60" y="150" width="420" height="510" rx="16" fill="#fff" stroke="#EAE3D8" stroke-width="2"/>
+  <text x="90" y="204" font-size="26" font-weight="800" fill="#2F9C95">이런 집은 만족도 높아요</text>
+  <g font-size="23" fill="#33302B">
+    <g transform="translate(92,252)">
+      <circle cx="16" cy="14" r="16" fill="#2F9C95"/><path d="M8 14 l6 6 l10 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="46" y="16" font-weight="700">성묘 1~2마리</text><text x="46" y="44" font-size="18" fill="#8A8378">4kg 이상 · 센서가 잘 인식</text>
+    </g>
+    <g transform="translate(92,334)">
+      <circle cx="16" cy="14" r="16" fill="#2F9C95"/><path d="M8 14 l6 6 l10 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="46" y="16" font-weight="700">집을 오래 비움</text><text x="46" y="44" font-size="18" fill="#8A8378">출장 · 야근 · 1인 가구</text>
+    </g>
+    <g transform="translate(92,416)">
+      <circle cx="16" cy="14" r="16" fill="#2F9C95"/><path d="M8 14 l6 6 l10 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="46" y="16" font-weight="700">벤토나이트 쓰는 중</text><text x="46" y="44" font-size="18" fill="#8A8378">호환 모래라 바꿀 필요 없음</text>
+    </g>
+    <g transform="translate(92,498)">
+      <circle cx="16" cy="14" r="16" fill="#2F9C95"/><path d="M8 14 l6 6 l10 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="46" y="16" font-weight="700">콘센트 · 자리 확보</text><text x="46" y="44" font-size="18" fill="#8A8378">덩치가 커서 공간이 필요</text>
+    </g>
+    <g transform="translate(92,580)">
+      <circle cx="16" cy="14" r="16" fill="#2F9C95"/><path d="M8 14 l6 6 l10 -12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="46" y="16" font-weight="700">적응 기간을 줄 수 있음</text><text x="46" y="44" font-size="18" fill="#8A8378">기존 화장실 당분간 같이 둠</text>
+    </g>
+  </g>
+
+  <rect x="520" y="150" width="420" height="510" rx="16" fill="#fff" stroke="#EAE3D8" stroke-width="2"/>
+  <text x="550" y="204" font-size="26" font-weight="800" fill="#E8825A">지금은 미루세요</text>
+  <g font-size="23" fill="#33302B">
+    <g transform="translate(552,252)">
+      <circle cx="16" cy="14" r="16" fill="#E8825A"/><text x="12" y="22" font-size="22" font-weight="800" fill="#fff">!</text>
+      <text x="46" y="16" font-weight="700">아기고양이 · 초소형묘</text><text x="46" y="44" font-size="18" fill="#8A8378">가벼우면 센서 인식이 어려움</text>
+    </g>
+    <g transform="translate(552,334)">
+      <circle cx="16" cy="14" r="16" fill="#E8825A"/><text x="12" y="22" font-size="22" font-weight="800" fill="#fff">!</text>
+      <text x="46" y="16" font-weight="700">노묘 · 다리가 불편</text><text x="46" y="44" font-size="18" fill="#8A8378">입구 턱이 높아 오르기 힘듦</text>
+    </g>
+    <g transform="translate(552,416)">
+      <circle cx="16" cy="14" r="16" fill="#E8825A"/><text x="12" y="22" font-size="22" font-weight="800" fill="#fff">!</text>
+      <text x="46" y="16" font-weight="700">두부 · 우드펠렛 모래</text><text x="46" y="44" font-size="18" fill="#8A8378">기기에 따라 뭉침 · 걸림 발생</text>
+    </g>
+    <g transform="translate(552,498)">
+      <circle cx="16" cy="14" r="16" fill="#E8825A"/><text x="12" y="22" font-size="22" font-weight="800" fill="#fff">!</text>
+      <text x="46" y="16" font-weight="700">겁이 아주 많은 아이</text><text x="46" y="44" font-size="18" fill="#8A8378">모터 소리에 아예 안 들어감</text>
+    </g>
+    <g transform="translate(552,580)">
+      <circle cx="16" cy="14" r="16" fill="#E8825A"/><text x="12" y="22" font-size="22" font-weight="800" fill="#fff">!</text>
+      <text x="46" y="16" font-weight="700">방광염 · 신장 이력</text><text x="46" y="44" font-size="18" fill="#8A8378">소변량 확인이 어려워질 수 있음</text>
+    </g>
+  </g>
+
+  <text x="60" y="706" font-size="19" fill="#8A8378">※ 자동화장실은 청소를 줄여줄 뿐, 완전히 없애주지는 않아요 — 통 비우기·세척은 여전히 필요합니다.</text>
+</svg>
