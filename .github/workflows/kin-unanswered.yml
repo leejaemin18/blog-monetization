@@ -1,0 +1,96 @@
+name: 지식iN 미답변 질문 (지금 조회)
+
+# 반려동물 카테고리 목록에서 "답변 0개"인 질문만 최신순으로 뽑는다.
+# 미리 뽑아두면 그사이 답변이 달리므로, 답변하려는 그 순간에 실행한다.
+#
+# ※ 읽기 전용. 답변 자동 등록은 하지 않는다(네이버 운영정책상 매크로 금지).
+
+on:
+  workflow_dispatch:
+    inputs:
+      dir_ids:
+        description: "카테고리 dirId (콤마). 80502=고양이"
+        required: false
+        default: "80502,80501,80511,8050103,8050104,8050105"
+      pages:
+        description: "카테고리당 페이지 수"
+        required: false
+        default: "2"
+      max_answers:
+        description: "이 답변수 이하만 표시 (0=미답변만)"
+        required: false
+        default: "0"
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 미답변 질문 조회
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, re, html, requests
+
+          ids = [x.strip() for x in (os.environ.get("DIR_IDS") or "80502").split(",") if x.strip()]
+          pages = max(1, int(os.environ.get("PAGES") or "2"))
+          maxa = int(os.environ.get("MAX_ANSWERS") or "0")
+          UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126.0 Safari/537.36"
+          H = {"User-Agent": UA, "Accept-Language": "ko-KR,ko;q=0.9"}
+
+          def strip(s):
+              return html.unescape(re.sub(r"<[^>]+>", "", s or "")).strip()
+
+          def age_rank(t):
+              """'12분 전' < '2시간 전' < 날짜 순으로 정렬하기 위한 분 단위 근사."""
+              m = re.search(r"(\d+)\s*분", t)
+              if m: return int(m.group(1))
+              m = re.search(r"(\d+)\s*시간", t)
+              if m: return int(m.group(1)) * 60
+              return 100000  # 날짜로 표기되면 오래된 것
+
+          rows, seen = [], set()
+          for d in ids:
+              for p in range(1, pages + 1):
+                  url = f"https://kin.naver.com/qna/list.naver?dirId={d}&page={p}"
+                  try:
+                      r = requests.get(url, headers=H, timeout=20)
+                  except Exception as e:
+                      print(f"::warning::{d} p{p} 실패: {type(e).__name__}"); continue
+                  if not r.ok:
+                      print(f"::warning::{d} p{p} HTTP {r.status_code}"); continue
+                  for tr in re.split(r"<tr[\s>]", r.text)[1:]:
+                      m = re.search(r'<td class="title">\s*<a href="(/qna/detail\.naver\?[^"]+)"[^>]*>(.*?)</a>', tr, re.S)
+                      if not m: continue
+                      nums = re.findall(r'<td class="t_num">(.*?)</td>', tr, re.S)
+                      if len(nums) < 3: continue
+                      ans_txt = strip(nums[1])
+                      if not ans_txt.isdigit(): continue
+                      ans = int(ans_txt)
+                      if ans > maxa: continue
+                      link = "https://kin.naver.com" + html.unescape(m.group(1))
+                      if link in seen: continue
+                      seen.add(link)
+                      fm = re.search(r'<td class="field">.*?>([^<]*)</a>', tr, re.S)
+                      rows.append({
+                          "title": strip(m.group(2)),
+                          "field": strip(fm.group(1)) if fm else d,
+                          "ans": ans,
+                          "when": strip(nums[2]),
+                          "link": link,
+                      })
+
+          rows.sort(key=lambda x: age_rank(x["when"]))
+          label = "미답변" if maxa == 0 else f"답변 {maxa}개 이하"
+          print(f"\n=== {label} 질문 {len(rows)}건 (최신순) ===\n")
+          for i, q in enumerate(rows, 1):
+              print(f"[{i}] {q['when']} · {q['field']} · 답변 {q['ans']}")
+              print(f"    {q['title']}")
+              print(f"    {q['link']}\n")
+          if not rows:
+              print("지금은 조건에 맞는 질문이 없어요. max_answers를 1로 올려 다시 실행해 보세요.")
+          print("※ 답변은 사람이 직접 등록합니다. 먼저 답할수록 채택 확률이 올라가요.")
+          PY
+        env:
+          DIR_IDS: ${{ github.event.inputs.dir_ids }}
+          PAGES: ${{ github.event.inputs.pages }}
+          MAX_ANSWERS: ${{ github.event.inputs.max_answers }}
