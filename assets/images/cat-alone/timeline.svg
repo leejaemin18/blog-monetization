@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="620" fill="#FFFCF7"/>
+  <text x="60" y="82" font-size="40" font-weight="800" fill="#33302B">며칠 비우느냐에 따라 <tspan fill="#2F9C95">준비가 달라져요</tspan></text>
+  <rect x="62" y="100" width="90" height="8" rx="4" fill="#E8825A"/>
+
+  <!-- timeline axis -->
+  <line x1="120" y1="180" x2="900" y2="180" stroke="#EAE3D8" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="180" cy="180" r="22" fill="#2F9C95"/>
+  <circle cx="500" cy="180" r="22" fill="#E8825A"/>
+  <circle cx="820" cy="180" r="22" fill="#C6553A"/>
+  <text x="180" y="189" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">1</text>
+  <text x="500" y="189" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">2</text>
+  <text x="820" y="189" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">3</text>
+
+  <!-- stage 1 -->
+  <text x="180" y="248" font-size="27" font-weight="800" fill="#2F9C95" text-anchor="middle">1박</text>
+  <rect x="60" y="268" width="250" height="286" rx="14" fill="#fff" stroke="#EAE3D8" stroke-width="2"/>
+  <g font-size="19" fill="#5b554d">
+    <text x="84" y="308" font-size="20" font-weight="700" fill="#33302B">대체로 괜찮아요</text>
+    <text x="84" y="348">· 물그릇 2곳 이상</text>
+    <text x="84" y="382">· 사료 넉넉히</text>
+    <text x="84" y="416">· 화장실 깨끗이 비우고</text>
+    <text x="84" y="450">· 창문 · 베란다 잠그기</text>
+    <text x="84" y="484">· 삼킬 물건 치우기</text>
+    <text x="84" y="524" font-size="17" fill="#8A8378">건강한 성묘 기준</text>
+  </g>
+
+  <!-- stage 2 -->
+  <text x="500" y="248" font-size="27" font-weight="800" fill="#E8825A" text-anchor="middle">2~3박</text>
+  <rect x="375" y="268" width="250" height="286" rx="14" fill="#fff" stroke="#EAE3D8" stroke-width="2"/>
+  <g font-size="19" fill="#5b554d">
+    <text x="399" y="308" font-size="20" font-weight="700" fill="#33302B">장비가 필요해요</text>
+    <text x="399" y="348">· 자동급식기 (건식만)</text>
+    <text x="399" y="382">· 예비 그릇에 분산</text>
+    <text x="399" y="416">· 화장실 개수 늘리기</text>
+    <text x="399" y="450">· 펫캠으로 확인</text>
+    <text x="399" y="484">· 더위 · 추위 대비</text>
+    <text x="399" y="524" font-size="17" fill="#8A8378">정전 · 고장까지 가정</text>
+  </g>
+
+  <!-- stage 3 -->
+  <text x="820" y="248" font-size="27" font-weight="800" fill="#C6553A" text-anchor="middle">4박 이상</text>
+  <rect x="690" y="268" width="250" height="286" rx="14" fill="#fff" stroke="#EAE3D8" stroke-width="2"/>
+  <g font-size="19" fill="#5b554d">
+    <text x="714" y="308" font-size="20" font-weight="700" fill="#33302B">사람이 와야 해요</text>
+    <text x="714" y="348">· 하루 1회 방문 필수</text>
+    <text x="714" y="382">· 화장실 · 물 갈아주기</text>
+    <text x="714" y="416">· 아픈지 눈으로 확인</text>
+    <text x="714" y="450">· 병원 연락처 공유</text>
+    <text x="714" y="484">· 펫시터 · 호텔 고려</text>
+    <text x="714" y="524" font-size="17" fill="#8A8378">장비로 대신할 수 없음</text>
+  </g>
+
+  <text x="60" y="596" font-size="18" fill="#8A8378">※ 아기고양이 · 노묘 · 질환이 있는 아이는 이 기준이 적용되지 않아요. 하루라도 사람이 곁에 있어야 합니다.</text>
+</svg>
