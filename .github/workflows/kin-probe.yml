@@ -1,66 +1,65 @@
 name: 지식iN 미답변 목록 구조 탐색 (1회성)
 
-# 지식iN "답변대기(미답변)" 목록 페이지의 실제 URL과 HTML 구조를 확인하기 위한 탐색용.
-# 구조를 파악해 본 수집 워크플로우를 만든 뒤에는 삭제해도 된다.
+# 지식iN "답변대기(미답변)" 목록의 실제 URL과 HTML 구조를 확인하기 위한 탐색용.
+# 구조를 파악해 본 수집 워크플로우를 만든 뒤에는 삭제한다.
 
 on:
   workflow_dispatch:
     inputs:
-      dir_id:
-        description: "카테고리 dirId (반려동물 계열)"
+      dir_ids:
+        description: "테스트할 dirId 목록(콤마)"
         required: false
-        default: "8050"
+        default: "80502,80511,8050103,8050105,80501"
 
 jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: 후보 URL 탐색
+      - name: 데스크톱·모바일 목록 탐색
         env:
-          DIR_ID: ${{ github.event.inputs.dir_id }}
+          DIR_IDS: ${{ github.event.inputs.dir_ids }}
         run: |
           pip -q install requests
           python3 - <<'PY'
           import os, re, html, requests
-          d = (os.environ.get("DIR_ID") or "8050").strip()
-          UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126.0 Safari/537.36"
-          H = {"User-Agent": UA, "Accept-Language": "ko-KR,ko;q=0.9"}
+          ids = [x.strip() for x in (os.environ.get("DIR_IDS") or "80502").split(",") if x.strip()]
+          UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Safari/604.1"
+          UAD = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126.0 Safari/537.36"
 
-          cands = [
-            f"https://kin.naver.com/qna/list.naver?dirId={d}",
-            f"https://kin.naver.com/qna/list.naver?dirId={d}&queryTime=",
-            f"https://kin.naver.com/qna/list.naver?dirId={d}&answerStatus=NO_ANSWER",
-            f"https://kin.naver.com/qna/noanswerList.naver?dirId={d}",
-            f"https://kin.naver.com/answer/list.naver?dirId={d}",
-            f"https://kin.naver.com/qna/kinupdown.naver?dirId={d}",
-            "https://kin.naver.com/qna/list.naver",
-          ]
-          for u in cands:
+          def probe(u, ua, label):
               try:
-                  r = requests.get(u, headers=H, timeout=20)
+                  r = requests.get(u, headers={"User-Agent": ua, "Accept-Language": "ko-KR,ko;q=0.9"}, timeout=20)
               except Exception as e:
-                  print(f"[X] {u} -> {type(e).__name__}"); continue
+                  print(f"  [X] {label} {type(e).__name__}"); return None
               t = r.text
-              n_q = len(re.findall(r"/qna/detail\.naver\?[^\"']*docId=\d+", t))
-              has_wait = ("답변대기" in t) or ("미답변" in t) or ("답변이 없" in t)
-              print(f"[{r.status_code}] len={len(t):>7} 상세링크={n_q:>3} 답변대기문구={has_wait}  {u}")
+              n = len(re.findall(r"docId=\d+", t))
+              wait = sum(k in t for k in ("답변대기", "미답변", "답변이 없", "답변 0"))
+              print(f"  [{r.status_code}] len={len(t):>7} docId={n:>3} 대기표현={wait}  {label}")
+              return t if r.ok and n > 0 else None
 
-          # 가장 정보가 많은 기본 목록에서 구조 덤프
-          base = f"https://kin.naver.com/qna/list.naver?dirId={d}"
-          r = requests.get(base, headers=H, timeout=20)
-          t = r.text
-          print("\n=== 페이지 내 탭/필터 링크 (답변 관련) ===")
-          for m in re.findall(r'<a[^>]+href="([^"]+)"[^>]*>([^<]{1,30})</a>', t):
-              if any(k in m[1] for k in ("답변", "미답변", "대기", "전체")):
-                  print(f"  {html.unescape(m[1]).strip():<12} {html.unescape(m[0])[:120]}")
+          best = None
+          for d in ids:
+              print(f"\n### dirId={d}")
+              for u, ua, lb in [
+                  (f"https://kin.naver.com/qna/list.naver?dirId={d}", UAD, "PC list"),
+                  (f"https://m.kin.naver.com/mobile/qna/list.naver?dirId={d}", UA, "M list"),
+                  (f"https://m.kin.naver.com/mobile/qna/list.naver?dirId={d}&queryTime=&page=1", UA, "M list p1"),
+                  (f"https://kin.naver.com/qna/list.naver?dirId={d}&sortType=none&queryTime=", UAD, "PC sort"),
+              ]:
+                  t = probe(u, ua, lb)
+                  if t and best is None:
+                      best = (u, t)
 
-          print("\n=== 질문 항목 샘플 (앞 5개) ===")
-          for m in re.findall(r'<a[^>]+href="(/qna/detail\.naver\?[^"]*docId=\d+[^"]*)"[^>]*>(.{1,80}?)</a>', t)[:5]:
-              title = html.unescape(re.sub(r"<[^>]+>", "", m[1])).strip()
-              print(f"  {title[:50]}\n    https://kin.naver.com{html.unescape(m[0])}")
+          if not best:
+              print("\n::warning::목록을 가져온 URL이 없습니다.")
+              raise SystemExit(0)
 
-          print("\n=== '답변' 개수 표기로 보이는 패턴 ===")
-          for pat in [r'답변\s*<[^>]*>\s*\d+', r'class="[^"]*answer[^"]*"[^>]*>\s*\d+', r'답변수\D{0,10}\d+']:
-              found = re.findall(pat, t)[:5]
-              print(f"  {pat} -> {found}")
+          u, t = best
+          print(f"\n=== 구조 덤프 대상: {u} ===")
+          # 상세 링크 주변 400자를 몇 개 출력해 답변수 표기 위치를 찾는다
+          for m in list(re.finditer(r"docId=\d+", t))[:3]:
+              s = max(0, m.start() - 250); e = min(len(t), m.end() + 400)
+              chunk = re.sub(r"\s+", " ", t[s:e])
+              print("\n--- 조각 ---")
+              print(chunk[:600])
           PY
