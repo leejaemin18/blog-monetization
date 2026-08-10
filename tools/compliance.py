@@ -169,6 +169,121 @@ def c_verified_date(text, is_affiliate):
     return None
 
 
+# ─────────────────────────────────────────────────────────────
+# 집사의 발견 전용 검사 (스타일가이드 3.5·3.6·6.5 강제)
+# 규칙을 문서에만 두면 지켜지지 않아서, 실제로 어겼던 것들을 검사로 옮겼다.
+# ─────────────────────────────────────────────────────────────
+
+# 3.6 A — 실제로 굳어버렸던 상투구
+STOCK_PHRASES = [
+    "검색하게 되는 건", "찾아보게 되는 건",
+    "저도 ", "기억이 나요",
+    "정리하면",
+    "순으로 챙기면", "순으로 따져보면",
+    "관련해서 아래 글도",
+]
+
+
+def _body(text):
+    """HTML 주석(작성 지시문)을 뺀 본문만."""
+    return re.sub(r"<!--.*?-->", "", text, flags=re.S)
+
+
+@check("WARN", "굳어버린 상투구")
+def c_stock_phrases(text, is_affiliate):
+    body = _body(text)
+    hits = [p for p in STOCK_PHRASES if p in body]
+    if hits:
+        return ("최근 글에서 반복된 표현입니다: "
+                + ", ".join(f"'{h}'" for h in hits)
+                + " — 스타일가이드 3.6 A 참고해 다른 말로 바꾸세요.")
+    return None
+
+
+@check("WARN", "'우리 아이' 남발")
+def c_our_kid(text, is_affiliate):
+    n = _body(text).count("우리 아이")
+    if n > 2:
+        return f"'우리 아이'가 {n}회 나옵니다(권장 2회 이하). 품종·나이·상황 표현으로 바꿔보세요."
+    return None
+
+
+@check("ERROR", "지어낸 1인칭 경험")
+def c_fake_experience(text, is_affiliate):
+    body = _body(text)
+    pat = r"저(?:는|도|희)[^.\n]{0,40}(써봤|사용해\s?봤|먹여\s?봤|길러|키워\s?봤|경험)"
+    if re.search(pat, body):
+        return ("운영자의 실제 경험이 아니면 1인칭 체험 서술을 쓰지 않습니다. "
+                "독자를 향한 서술로 바꾸거나 실제 경험일 때만 남기세요.")
+    return None
+
+
+@check("WARN", "분량")
+def c_length(text, is_affiliate):
+    n = len(_body(text).split())
+    if n < 180:
+        return f"본문이 {n}단어로 짧습니다. 최근 글들은 210~270단어 수준입니다."
+    return None
+
+
+@check("WARN", "내부 링크")
+def c_internal_links(text, is_affiliate):
+    n = len(re.findall(r"\]\(/", _body(text)))
+    if n < 2:
+        return f"내부 링크가 {n}개입니다. 2~4개를 권장합니다(스타일가이드 6.5)."
+    return None
+
+
+@check("INFO", "외부 dofollow 링크")
+def c_external_link(text, is_affiliate):
+    if not re.search(r"\]\(https?://", _body(text)):
+        return "권위 있는 출처로 가는 외부 링크가 없습니다. 1개 넣으면 신뢰도에 도움이 됩니다."
+    return None
+
+
+@check("WARN", "깨진 한글")
+def c_broken_hangul(text, is_affiliate):
+    # API로 워크플로우를 돌릴 때 유니코드 이스케이프를 잘못 만들어 실제로 발생했던 사고
+    suspects = ["덴탈찍", "겹총", "겹쳨", "씩기", "봽는", "자일리퇨", "헹괄", "퉘가전", "펫캐"]
+    hits = [w for w in suspects if w in text]
+    if hits:
+        return "깨진 글자로 보이는 문자열: " + ", ".join(hits)
+    return None
+
+
+@check("ERROR", "미치환 토큰")
+def c_tokens(text, is_affiliate):
+    left = re.findall(r"__(?:LINK|IMG)\d__", text)
+    if left:
+        return f"자리표시자가 남아 있습니다: {', '.join(sorted(set(left)))} — 실제 배너로 채우세요."
+    return None
+
+
+@check("INFO", "GEO — 답변 요약")
+def c_geo_summary(text, is_affiliate):
+    """AI 답변 엔진에 인용되려면 뽑아 쓰기 좋은 요약이 앞에 있어야 한다."""
+    body = _body(text).strip()
+    head = "\n".join(body.split("\n")[:12])
+    # 짧은 굵은 글씨 한 줄로 답을 먼저 던지는 형태도 요약으로 인정 (예: **분당 30회.**)
+    lead_bold = re.search(r"^\*\*[^*\n]{2,40}\*\*\s*$", head, re.M)
+    if lead_bold:
+        return None
+    if not re.search(r"(결론부터|먼저 답부터|한 줄로 말하면|요약하면|답부터)", head):
+        return ("도입부에 한 문단짜리 '답' 요약이 없습니다. "
+                "답변 엔진은 추출 가능한 요약을 인용합니다(GEO).")
+    return None
+
+
+@check("INFO", "GEO — FAQ 구조")
+def c_geo_faq(text, is_affiliate):
+    body = _body(text)
+    if "자주 묻는 질문" in body:
+        qs = len(re.findall(r"^\*\*Q[.．]", body, re.M))
+        if qs == 0:
+            return "FAQ 섹션이 있지만 'Q.' 형식이 아닙니다. FAQPage 스키마로 뽑으려면 형식을 맞추세요."
+    return None
+
+
 def detect_affiliate(text):
     kws = [r"제휴", r"쿠팡", r"파트너스", r"할인\s*코드", r"쿠폰", r"affiliate", r"Trip\.com"]
     return any(re.search(k, text, re.IGNORECASE) for k in kws)

@@ -1,0 +1,146 @@
+name: FAQ 스키마 주입 (GEO)
+
+# 글 본문의 "자주 묻는 질문" 섹션을 읽어 FAQPage JSON-LD를 만들어 본문 끝에 넣는다.
+# 목적: 검색 리치결과 + AI 답변 엔진(ChatGPT·Perplexity 등) 인용 확률 상승.
+#
+# 멱등: jipsa-faq-schema 마커로 기존 블록을 갈아끼운다.
+# 주의: FAQ가 없는 글은 건너뛴다. 스키마는 화면에 보이지 않는다(JSON-LD).
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_ids:
+        description: "대상 글 번호(콤마). 비우면 발행된 전체"
+        required: false
+        default: ""
+      dry_run:
+        description: "검사만 하고 저장하지 않기 (y/n)"
+        required: false
+        default: "n"
+
+permissions:
+  contents: read
+
+jobs:
+  faq:
+    runs-on: ubuntu-latest
+    steps:
+      - name: FAQ 스키마 주입
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          POST_IDS: ${{ github.event.inputs.post_ids }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, re, json, html, requests
+
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          dry = (os.environ.get("DRY_RUN") or "n").lower().startswith("y")
+          ids = [x.strip() for x in (os.environ.get("POST_IDS") or "").split(",") if x.strip()]
+
+          MARK_OPEN = '<!-- jipsa-faq-schema -->'
+          MARK_CLOSE = '<!-- /jipsa-faq-schema -->'
+
+          def get_posts():
+              if ids:
+                  out = []
+                  for i in ids:
+                      r = requests.get(f"{base}/wp-json/wp/v2/posts/{i}",
+                                       params={"context": "edit"}, auth=auth, timeout=30)
+                      if r.ok: out.append(r.json())
+                      else: print(f"::warning::#{i} 조회 실패 {r.status_code}")
+                  return out
+              r = requests.get(f"{base}/wp-json/wp/v2/posts",
+                               params={"per_page": 100, "status": "publish", "context": "edit"},
+                               auth=auth, timeout=60)
+              r.raise_for_status()
+              return r.json()
+
+          def strip_tags(s):
+              s = re.sub(r"<[^>]+>", "", s)
+              return html.unescape(s).strip()
+
+          def extract_faq(content):
+              """'자주 묻는 질문' h2 이후의 <p><strong>Q...</strong></p> + 다음 문단을 쌍으로 뽑는다."""
+              m = re.search(r"<h2[^>]*>\s*자주 묻는 질문\s*</h2>(.*?)(?=<h2|\Z)", content, re.S)
+              if not m:
+                  return []
+              block = m.group(1)
+              pairs = []
+              # 질문: strong으로 감싼 Q로 시작하는 문단 / 답: 그 뒤에 이어지는 텍스트
+              for qm in re.finditer(
+                      r"<p>\s*<strong>\s*(Q[.．][^<]{2,200}?)\s*</strong>\s*(.*?)</p>", block, re.S):
+                  q = strip_tags(qm.group(1))
+                  a = strip_tags(qm.group(2))
+                  if not a:
+                      # 답이 다음 문단에 있는 형태
+                      nxt = re.search(r"</p>\s*<p>(.*?)</p>", block[qm.end() - 4:], re.S)
+                      if nxt:
+                          a = strip_tags(nxt.group(1))
+                  q = re.sub(r"^Q[.．]\s*", "", q).strip()
+                  if q and a and len(a) > 5:
+                      pairs.append((q, a))
+              return pairs
+
+          def build_schema(pairs):
+              data = {
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  "mainEntity": [
+                      {"@type": "Question", "name": q,
+                       "acceptedAnswer": {"@type": "Answer", "text": a}}
+                      for q, a in pairs
+                  ],
+              }
+              body = json.dumps(data, ensure_ascii=False, indent=2)
+              return (f'{MARK_OPEN}\n<script type="application/ld+json">\n'
+                      f'{body}\n</script>\n{MARK_CLOSE}')
+
+          changed = skipped = 0
+          for p in get_posts():
+              pid = p["id"]
+              title = p.get("title", {}).get("rendered", "")
+              raw = p.get("content", {}).get("raw", "")
+              pairs = extract_faq(raw)
+              if not pairs:
+                  print(f"·  #{pid} FAQ 없음 — 건너뜀  ({title[:34]})")
+                  skipped += 1
+                  continue
+
+              new_block = build_schema(pairs)
+              if MARK_OPEN in raw:
+                  body = re.sub(re.escape(MARK_OPEN) + r".*?" + re.escape(MARK_CLOSE),
+                                new_block, raw, flags=re.S)
+                  action = "갱신"
+              else:
+                  body = raw.rstrip() + "\n\n" + new_block + "\n"
+                  action = "삽입"
+
+              if body == raw:
+                  print(f"=  #{pid} 변경 없음 (Q&A {len(pairs)}개)")
+                  continue
+
+              print(f"→  #{pid} {action}: Q&A {len(pairs)}개  ({title[:34]})")
+              for q, _ in pairs:
+                  print(f"      · {q[:60]}")
+              if dry:
+                  continue
+              u = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}",
+                                json={"content": body}, auth=auth, timeout=60)
+              if not u.ok:
+                  print(f"::error::#{pid} 저장 실패 {u.status_code}: {u.text[:150]}")
+                  continue
+              # 저장 후 실제로 남아 있는지 확인 (unfiltered_html 여부에 따라 script가 제거될 수 있음)
+              chk = requests.get(f"{base}/wp-json/wp/v2/posts/{pid}",
+                                 params={"context": "edit"}, auth=auth, timeout=30)
+              if chk.ok and "FAQPage" not in chk.json().get("content", {}).get("raw", ""):
+                  print(f"::warning::#{pid} 저장은 됐지만 스키마가 남지 않았습니다(스크립트 제거 가능성).")
+              else:
+                  changed += 1
+
+          print(f"\n=== {'검사' if dry else '적용'} 완료: 변경 {changed}건 · FAQ 없음 {skipped}건 ===")
+          PY
