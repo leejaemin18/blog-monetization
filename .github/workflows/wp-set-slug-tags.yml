@@ -9,6 +9,8 @@ on:
       slug: { description: '짧은 영문 슬러그 (예: senior-dog-care)', required: false, default: '' }
       tags: { description: '태그(콤마 구분)', required: false, default: '' }
       category: { description: '카테고리 이름(정확히)', required: false, default: '' }
+      create_category: { description: '카테고리가 없으면 새로 만들기 (y/n)', required: false, default: 'n' }
+      category_slug: { description: '새 카테고리의 영문 슬러그 (선택)', required: false, default: '' }
 
 permissions:
   contents: read
@@ -26,6 +28,8 @@ jobs:
           SLUG: ${{ github.event.inputs.slug }}
           TAGS: ${{ github.event.inputs.tags }}
           CATEGORY: ${{ github.event.inputs.category }}
+          CREATE_CATEGORY: ${{ github.event.inputs.create_category }}
+          CATEGORY_SLUG: ${{ github.event.inputs.category_slug }}
         run: |
           pip -q install requests
           python3 - <<'PY'
@@ -62,10 +66,25 @@ jobs:
               if rc.ok:
                   for c in rc.json():
                       if c["name"] == cat: cid = c["id"]; break
+              if not cid and (os.environ.get("CREATE_CATEGORY") or "").lower().startswith("y"):
+                  body = {"name": cat}
+                  cslug = (os.environ.get("CATEGORY_SLUG") or "").strip()
+                  if cslug:
+                      body["slug"] = cslug
+                  rn = requests.post(f"{base}/wp-json/wp/v2/categories", json=body, auth=auth, timeout=30)
+                  if rn.status_code in (200, 201):
+                      cid = rn.json()["id"]
+                      print(f"카테고리 생성: {cat} (id={cid})")
+                  elif rn.status_code == 400:
+                      cid = (rn.json().get("data") or {}).get("term_id")
+                      if cid:
+                          print(f"카테고리 기존 사용: {cat} (id={cid})")
+                  if not cid:
+                      print(f"::warning::카테고리 생성 실패: {rn.status_code} {rn.text[:150]}")
               if cid:
                   payload["categories"] = [cid]
               else:
-                  print(f"::warning::카테고리를 찾지 못했습니다: {cat}")
+                  print(f"::warning::카테고리를 찾지 못했습니다: {cat} (새로 만들려면 create_category=y)")
           if not payload:
               print("::error::변경할 값이 없습니다(slug/tags/category 중 하나는 필요)"); raise SystemExit(1)
           u = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}", json=payload, auth=auth, timeout=60)
