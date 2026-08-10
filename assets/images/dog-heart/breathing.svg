@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="720" fill="#FFFCF7"/>
+  <text x="60" y="80" font-size="40" font-weight="800" fill="#33302B">수면 호흡수 <tspan fill="#2F9C95">재는 법</tspan></text>
+  <rect x="62" y="98" width="90" height="8" rx="4" fill="#E8825A"/>
+  <text x="62" y="136" font-size="19" fill="#8A8378">심장병 아이에게 집에서 잴 수 있는 가장 정확한 지표예요. 매일 같은 조건으로 기록하세요.</text>
+
+  <!-- steps -->
+  <g>
+    <circle cx="118" cy="216" r="30" fill="#2F9C95"/>
+    <text x="118" y="228" font-size="28" font-weight="800" fill="#fff" text-anchor="middle">1</text>
+    <text x="170" y="208" font-size="25" font-weight="700" fill="#33302B">깊이 잠들었을 때</text>
+    <text x="170" y="240" font-size="19" fill="#8A8378">졸고 있거나 헐떡인 직후는 제외</text>
+  </g>
+  <g>
+    <circle cx="118" cy="312" r="30" fill="#2F9C95"/>
+    <text x="118" y="324" font-size="28" font-weight="800" fill="#fff" text-anchor="middle">2</text>
+    <text x="170" y="304" font-size="25" font-weight="700" fill="#33302B">가슴이 오르내리는 횟수</text>
+    <text x="170" y="336" font-size="19" fill="#8A8378">오르내림 한 번을 1회로 · 15초간</text>
+  </g>
+  <g>
+    <circle cx="118" cy="408" r="30" fill="#2F9C95"/>
+    <text x="118" y="420" font-size="28" font-weight="800" fill="#fff" text-anchor="middle">3</text>
+    <text x="170" y="400" font-size="25" font-weight="700" fill="#33302B">4를 곱한다</text>
+    <text x="170" y="432" font-size="19" fill="#8A8378">15초 × 4 = 1분당 호흡수</text>
+  </g>
+
+  <!-- verdict -->
+  <rect x="60" y="480" width="880" height="180" rx="16" fill="#fff" stroke="#EAE3D8" stroke-width="2"/>
+  <text x="90" y="524" font-size="22" font-weight="800" fill="#33302B">나온 숫자로 판단해요</text>
+
+  <circle cx="112" cy="570" r="15" fill="#2F9C95"/>
+  <text x="142" y="578" font-size="21" fill="#33302B"><tspan font-weight="700">30회 미만</tspan> — 대체로 안정적</text>
+
+  <circle cx="112" cy="616" r="15" fill="#E8A33A"/>
+  <text x="142" y="624" font-size="21" fill="#33302B"><tspan font-weight="700">30~35회</tspan> — 며칠 더 기록하며 관찰</text>
+
+  <circle cx="560" cy="570" r="15" fill="#C6553A"/>
+  <text x="590" y="578" font-size="21" fill="#33302B"><tspan font-weight="700">35회 초과 지속</tspan> — 병원 연락</text>
+
+  <circle cx="560" cy="616" r="15" fill="#C6553A"/>
+  <text x="590" y="624" font-size="21" fill="#33302B"><tspan font-weight="700">40회 이상 · 헐떡임</tspan> — 바로 진료</text>
+
+  <text x="60" y="700" font-size="17" fill="#8A8378">※ 기준은 일반적인 참고치예요. 담당 수의사가 우리 아이 기준을 따로 알려줬다면 그 숫자를 우선하세요.</text>
+</svg>
