@@ -5,3 +5,8 @@ id,article_slug,image_role,file_name,alt_text,prompt,source,license,placement,st
 # status: 생성/검토중/승인/교체필요. 아래는 형식 예시입니다.
 IMG001,dishwasher-install-review,썸네일,dishwasher-thumb.jpg,주방에 설치한 은색 식기세척기,"비율 16:9, 모던 주방의 은색 식기세척기, 밝은 자연광, 우상단 텍스트여백, 실사",ChatGPT생성,상업이용가능(생성물·로고없음),썸네일,생성,금지어·실존로고 없음 확인
 IMG002,dog-dental-care,본문,assets/images/dog-dental/criteria.svg,강아지 치석 제거 — 집에서 되는 예방 vs 병원 가야 하는 치료 신호 비교표,"집에서 예방(덴탈껌·칫솔질·워터첨가제) vs 병원부터(굳은 치석·치주염) 좌우 비교 인포그래픽, 브랜드 팔레트",Claude생성(SVG),상업이용가능(자체제작·로고없음),본문2(집에서 되는 것 아래),승인,금지어 없음·수의 일반지식 기준
+IMG003,senior-dog-care,본문,assets/images/senior-dog/criteria.svg,노령견 사료 추천 기준 — 단백질·칼로리·관절·신장·치아 체크리스트,"브랜드 팔레트 기반 자체 제작 SVG(코랄·틸·아이보리), 로고·실존 상표 없음",Claude생성(SVG),상업이용가능(자체제작),본문2(기준 아래),승인,발행 워크플로우가 PNG로 변환해 업로드
+IMG004,cat-auto-litter-box,본문,assets/images/cat-auto-litter/criteria.svg,고양이 자동화장실 구매 판단 기준 — 사도 좋은 집 vs 지금은 미룰 집 비교표,"브랜드 팔레트 기반 자체 제작 SVG(코랄·틸·아이보리), 로고·실존 상표 없음",Claude생성(SVG),상업이용가능(자체제작),본문2(우리 집에 맞을까 아래),승인,발행 워크플로우가 PNG로 변환해 업로드
+IMG005,cat-home-alone,본문,assets/images/cat-alone/timeline.svg,고양이 혼자 두기 기간별 준비 — 1박·2~3박·4박 이상 단계별 체크,"브랜드 팔레트 기반 자체 제작 SVG(코랄·틸·아이보리), 로고·실존 상표 없음",Claude생성(SVG),상업이용가능(자체제작),본문2(기간별 아래),승인,발행 워크플로우가 PNG로 변환해 업로드
+IMG006,pet-shedding-brushing,본문,assets/images/shedding/brushes.svg,털갈이철 빗 종류별 용도 — 슬리커·고무빗·언더코트 제거기·빗살빗 비교,"브랜드 팔레트 기반 자체 제작 SVG(코랄·틸·아이보리), 로고·실존 상표 없음",Claude생성(SVG),상업이용가능(자체제작),본문3(오해3 아래),승인,발행 워크플로우가 PNG로 변환해 업로드
+IMG007,dog-cardiomegaly,본문,assets/images/dog-heart/breathing.svg,강아지 심장비대 — 집에서 수면 호흡수 재는 법과 분당 횟수별 판단 기준,"브랜드 팔레트 기반 자체 제작 SVG(코랄·틸·아이보리), 로고·실존 상표 없음",Claude생성(SVG),상업이용가능(자체제작),본문2(왜 호흡수인가 아래),승인,발행 워크플로우가 PNG로 변환해 업로드

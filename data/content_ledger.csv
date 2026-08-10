@@ -5,3 +5,14 @@ id,blog,title,category,keyword,type,status,published_at,scheduled_at,url,ad_disc
 # 아래는 형식 예시입니다.
 C001,second,Trip.com 렌터카 할인코드 쿠폰 포함 2026년 7월 최신,여행쿠폰,Trip.com 렌터카 할인코드,제휴,초안,,,,y,Trip.com Partners,공식 쿠폰 재확인 후 발행
 N001,naver,쿠쿠 14인용 식기세척기 설치 공간 체크,가전리뷰,쿠쿠 14인용 식기세척기 설치,제휴,초안,,,,y,쿠팡 파트너스,네이버 독자용으로 재작성(복제 금지)
+C010,second,"강아지 사료 추천, 순위표보다 중요한 것 — 성분·노령견·처방식까지 (2026)",사료·간식,강아지 사료 추천,제휴,발행,2026-08-05,,https://jipsa.jaylog.co.kr/dog-food-guide/,y,쿠팡 파트너스,post 25
+C011,second,고양이 사료 추천 — 단백질·타우린·습식 기준 (2026),사료·간식,고양이 사료 추천,제휴,발행,2026-08-05,,https://jipsa.jaylog.co.kr/cat-food-guide/,y,쿠팡 파트너스,post 62
+C012,second,고양이 모래 추천 — 벤토·두부 등 5종 비교 (2026),용품·위생,고양이 모래 추천,제휴,발행,2026-08-05,,https://jipsa.jaylog.co.kr/cat-litter-guide/,y,쿠팡 파트너스,post 33
+C013,second,자동급수기 추천 — 정수·소음·세척으로 고르는 기준 (2026),펫가전·리빙,자동급수기 추천,제휴,발행,2026-08-05,,https://jipsa.jaylog.co.kr/pet-water-fountain/,y,쿠팡 파트너스,post 46 · 분량 보강
+C014,second,고양이 스크래처 고르는 법 — 종류·형태·안정성으로 고르는 기준 (2026),용품·위생,고양이 스크래처,제휴,발행,2026-08-05,,https://jipsa.jaylog.co.kr/cat-scratcher-guide/,y,쿠팡 파트너스,post 50
+C015,second,노령견 사료 추천 — 7살부터 관절·계단까지 꼭 챙길 것 (2026),건강·질병,노령견 사료 추천,제휴,발행,2026-08-06,,https://jipsa.jaylog.co.kr/senior-dog-care/,y,쿠팡 파트너스,post 135 · 장면형/기준나열/요약형
+C016,second,"강아지 치석 제거, 집에서 하는 3단계 관리 루틴 (2026)",건강·질병,강아지 치석 제거,제휴,발행,2026-08-07,,https://jipsa.jaylog.co.kr/dog-dental-care/,y,쿠팡 파트너스,post 144 · 상품 4종
+C017,second,"고양이 자동화장실, 사기 전에 따져봐야 할 5가지 (2026)",펫가전·리빙,고양이 자동화장실,제휴,발행,2026-08-08,,https://jipsa.jaylog.co.kr/cat-auto-litter-box/,y,쿠팡 파트너스,post 165 · 고가템
+C018,second,"고양이 혼자 두기, 며칠까지 괜찮을까 — 1박·3박·그 이상 (2026)",펫가전·리빙,고양이 혼자 두기,제휴,발행,2026-08-09,,https://jipsa.jaylog.co.kr/cat-home-alone/,y,쿠팡 파트너스,post 175 · 지식iN 수요 근거
+C019,second,"강아지 털갈이, 못 막는다고요? 빠지는 양은 줄일 수 있어요 (2026)",용품·위생,강아지 털갈이,제휴,발행,2026-08-10,,https://jipsa.jaylog.co.kr/pet-shedding-brushing/,y,쿠팡 파트너스,post 194 · 가을 털갈이 대비
+C020,second,"강아지 심장비대, 집에서 확인하는 숫자 하나 — 수면 호흡수 (2026)",건강·질병,강아지 심장비대,정보,발행,2026-08-10,,https://jipsa.jaylog.co.kr/dog-cardiomegaly/,y,(상품카드 없음),post 204 · 순수 정보글
