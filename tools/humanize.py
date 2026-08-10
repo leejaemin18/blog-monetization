@@ -262,6 +262,137 @@ def f_conjunction(text):
             "hits": hits, "fixable": False}
 
 
+# ── 어휘 회귀 방지 ───────────────────────────────────────────
+# 지금 우리 글에 0건인 패턴들. 하나라도 나오면 문체가 흘러내리기 시작한 것이다.
+# 임계가 0이라 조용히 있다가, 새 글에 섞이는 순간 잡는다.
+_ZERO_GUARD = [
+    ("A-1", r"에\s*대(?:해|하여)\s", "'~에 대해' → 목적격 조사로 직결"),
+    ("A-4", r"라는\s*점에서", "'~라는 점에서' → '~서', '~라는 이유로'"),
+    ("A-5", r"와\s*관련(?:하여|된|해)", "'~와 관련하여' → '~에', '~의'"),
+    ("A-6", r"에\s*기반(?:하여|한)|을\s*바탕으로", "'~에 기반하여' → '~로', '~을 보고'"),
+    ("A-12", r"만들어지|이루어지", "자동 피동 → 능동으로"),
+    ("A-15", r"보여줍니다|보여준다|가져옵니다|가져온다", "추상 주어 + 만능 동사 → 구체 주어로"),
+    ("B-4", r"라고\s*알려진|로\s*일컬어지", "'~라고 알려진' → 출처를 밝히거나 삭제"),
+    ("C-1", r"첫째|둘째|셋째", "기계적 '첫째/둘째' → 소제목이나 서술로"),
+    ("C-6", r"이\s*(?:섹션|장|글)에서는", "섹션 안내문 → 삭제하고 본문 바로"),
+    ("C-9", r"^\s*\d\)\s", "'1) 2) 3)' 인덱싱 → 본문에 녹이기"),
+    ("C-10", r"^#{2,3} [^\n:]{2,30}:\s", "콜론 부제 헤딩 'X: Y' → 단일 명사구로"),
+    ("D-5", r"(?:기술|시대|시장|데이터)(?:이|가)\s*(?:묻|말하|요구하|부르)", "의인화 주어 → 사람·기관 주어로"),
+    ("D-6", r"할\s*때입니다|시점입니다|순간입니다", "'~할 때입니다' 결말 공식 → 구체 동사 단언"),
+    ("F-2", r"매우\s*중요한|정말\s*중요한|아주\s*큰", "동의어 이중 수식 → 하나만"),
+    ("G-1", r"로\s*보입니다|판단됩니다|여겨집니다|인\s*듯합니다", "추측 종결 → 단언 가능한 곳은 단언"),
+    ("H-2", r"^\s*(?:하지만|그러나)[\s,]", "문두 역접 → 문장 안으로 흡수"),
+    ("H-3", r"^\s*이는\s|이\s*점에서|이\s*관점에서", "'이는 ~' 메타 진입 → 본문에 녹이기"),
+    ("I-1", r"것입니다|것이다", "'것이다' 종결 → '~다' 확정 서술"),
+    ("I-2", r"주목할\s*점|중요한\s*점(?:은|이)", "형식명사 강조 → 'X는 ~다' 직설"),
+]
+
+
+@finding("ZERO", "S2", "새로 섞인 AI 어휘")
+def f_zero_guard(text):
+    hits, tips = [], []
+    for code, pat, tip in _ZERO_GUARD:
+        h = _lines_of(text, re.compile(pat, re.M))
+        if h:
+            hits += h
+            tips.append(f"{code} {tip}")
+    if not hits:
+        return None
+    return {"count": len(hits), "severity": "S2",
+            "message": ("지금까지 우리 글에 한 번도 없던 표현이 들어왔습니다 — "
+                        + " / ".join(tips)),
+            "hits": hits, "fixable": False}
+
+
+# ── 문서 단위 지표 ───────────────────────────────────────────
+# 낱개 표현이 아니라 글 전체 분포로만 보이는 것들.
+
+# C-12 쉼표 포함률. 인간 26% vs AI 61%. 우리 11편은 6~28%로 건강하다 — 방어선만 둔다.
+@finding("C-12", "S2", "쉼표 과다")
+def f_comma_rate(text):
+    ss = sentences(text)
+    if len(ss) < 15:
+        return None
+    rate = sum(1 for s in ss if "," in s) / len(ss)
+    if rate < 0.45:
+        return None
+    return {"count": int(rate * 100), "severity": "S2",
+            "message": (f"쉼표가 들어간 문장이 {rate:.0%}입니다(사람 평균 26%, AI 61%). "
+                        "일부는 마침표로 끊거나 쉼표를 그냥 지우세요."),
+            "hits": [], "fixable": False}
+
+
+# E-2 같은 종결어미 연속. 우리는 대개 2~3인데 한 편이 4였다.
+@finding("E-2", "S2", "같은 종결어미 연속")
+def f_ending_streak(text):
+    ss = sentences(text)
+    ends = [m.group(1) for m in
+            (re.search(r"([가-힣]{2})[\.!?]\s*$", s) for s in ss) if m]
+    best = cur = 1
+    where = 0
+    for i, (a, b) in enumerate(zip(ends, ends[1:])):
+        cur = cur + 1 if a == b else 1
+        if cur > best:
+            best, where = cur, i
+    if best < 4:
+        return None
+    return {"count": best, "severity": "S2",
+            "message": (f"'…{ends[where]}.' 로 끝나는 문장이 {best}번 연달아 나옵니다. "
+                        "하나는 다른 종결형으로 바꾸세요(거든요 · 죠 · 명사 종결 · 물음)."),
+            "hits": [], "fixable": False}
+
+
+# F-4 한자어 명사화 누적. 그쪽 임계 12회. 우리 최대 7회 — 방어선.
+@finding("F-4", "S2", "명사화 남발")
+def f_nominalizer(text):
+    n = len(re.findall(r"[가-힣]{2,}(?:성|적|화)(?=[\s을를이가은는의에로,\.])", body(text)))
+    if n < 12:
+        return None
+    return {"count": n, "severity": "S2",
+            "message": f"'~성/~적/~화' 명사화가 {n}번입니다. 동사·형용사로 풀어쓰세요.",
+            "hits": [], "fixable": False}
+
+
+# A-10 "~할 수 있다" 남발. 해요체 블로그엔 자연스러워서 임계를 6으로 뒀다(우리 최대 5).
+@finding("A-10", "S3", "'~할 수 있다' 남발")
+def f_can(text):
+    hits = _lines_of(text, re.compile(r"(?:할|될|볼|쓸|들|먹일)\s*수\s*있"))
+    if len(hits) < 6:
+        return None
+    return {"count": len(hits), "severity": "S3",
+            "message": (f"'~할 수 있다'가 {len(hits)}번. 단언해도 되는 곳은 단언하세요"
+                        "('높일 수 있어요' → '높아져요')."),
+            "hits": hits, "fixable": False}
+
+
+# J-2 따옴표 강조. 우리 최대 8 — 임계 6.
+@finding("J-2", "S3", "따옴표 강조 과다")
+def f_quotes(text):
+    hits = _lines_of(text, re.compile(r'"[^"\n]{1,30}"|"[^"\n]{1,30}"'))
+    if len(hits) < 6:
+        return None
+    return {"count": len(hits), "severity": "S3",
+            "message": (f"따옴표 강조가 {len(hits)}번. 진짜 인용만 남기고 평서문으로 바꾸세요."),
+            "hits": hits, "fixable": False}
+
+
+# C-4 계열 — '**라벨** — 설명' 골격 반복.
+# 대시 자체는 문제가 아니다(우리 88개 중 72개가 목록 라벨이고 읽기 편하다).
+# 문제는 매 글이 같은 뼈대로 조립된다는 것이다. 3.5 D "기계적으로 붙는 블록" 위반.
+_LABEL_DASH_RE = re.compile(r"^\s*(?:[-*+]\s|\d+[.)]\s|[①-⑩]\s*)?\*\*[^*\n]{1,24}\*\*\s*—", re.M)
+
+
+@finding("C-4", "S3", "'**라벨** — 설명' 골격 반복")
+def f_label_skeleton(text):
+    hits = _lines_of(text, _LABEL_DASH_RE)
+    if len(hits) < 8:
+        return None
+    return {"count": len(hits), "severity": "S3",
+            "message": (f"'**라벨** — 설명' 형태가 {len(hits)}번. 글마다 같은 뼈대로 조립되면 "
+                        "양산형으로 읽힙니다(3.5 D). 일부는 산문 문단이나 표로 바꾸세요."),
+            "hits": hits, "fixable": False}
+
+
 # ── 자동 수정 (삭제만) ────────────────────────────────────────
 def fix(text):
     """뜻이 안 바뀌는 것만 고친다. 지금은 연결어미 뒤 쉼표 삭제 하나뿐."""
