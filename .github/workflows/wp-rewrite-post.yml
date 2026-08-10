@@ -19,6 +19,7 @@ on:
       mid_anchor: { description: '핵심사진을 넣을 소제목(h2)', required: true }
       disclosure_font: { description: '광고표시 문구 글씨 크기(px)', required: false, default: '13' }
       status: { description: 'publish / draft', required: false, default: 'publish' }
+      skip_gate: { description: '발행 전 검사 건너뛰기 (y/n) — 이유가 있을 때만', required: false, default: 'n' }
 
 permissions:
   contents: read
@@ -28,6 +29,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # 규칙을 문서에만 두면 지켜지지 않는다. 발행 경로에 검사를 물려 못 지나가게 한다.
+      # 컴플라이언스(광고표시·금지어) + AI 티(번역투·대구·쉼표) 둘 다 본다.
+      - name: 발행 전 검사
+        env:
+          DRAFT_PATH: ${{ github.event.inputs.draft_path }}
+          SKIP_GATE: ${{ github.event.inputs.skip_gate }}
+        run: |
+          if [ "${SKIP_GATE:0:1}" = "y" ] || [ "${SKIP_GATE:0:1}" = "Y" ]; then
+            echo "::warning::발행 전 검사를 건너뜁니다 (skip_gate=y)"; exit 0
+          fi
+          fail=0
+          python3 tools/compliance.py "$DRAFT_PATH" || fail=1
+          python3 tools/humanize.py  "$DRAFT_PATH" --gate || fail=1
+          if [ "$fail" != "0" ]; then
+            echo "::error::발행 전 검사에서 막혔습니다. 초안을 고치거나, 이유가 있으면 skip_gate=y로 다시 실행하세요."
+            exit 1
+          fi
       - name: 폰트·변환기
         run: sudo apt-get update -qq && sudo apt-get install -y -qq librsvg2-bin fonts-noto-cjk
       - name: SVG → PNG
