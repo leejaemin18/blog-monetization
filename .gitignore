@@ -14,6 +14,7 @@ secrets/
 drafts/*.md
 !drafts/.gitkeep
 !drafts/예시-*.md
+!drafts/README.md
 
 # 파이썬
 __pycache__/

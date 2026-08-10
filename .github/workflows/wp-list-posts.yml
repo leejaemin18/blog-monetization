@@ -33,8 +33,11 @@ jobs:
               raw = p.get("content", {}).get("raw", "")
               has_coupang = "link.coupang.com" in raw
               has_disc = "쿠팡 파트너스 활동의 일환" in raw
-              has_card = "집사가 골라본 추천" in raw
+              has_dyn = "jipsa-dyn-banner" in raw
+              n_inner = raw.count('href="/')
+              # 카드 헤더 문구는 글마다 다르므로 공통 구조(제휴 버튼)로 판정한다
+              has_card = ("쿠팡에서 보기" in raw) or ("nofollow sponsored" in raw)
               print(f"#{p['id']} [{p['status']}] {t}")
               print(f"    링크: {p.get('link')}")
-              print(f"    쿠팡링크={has_coupang} 광고문구={has_disc} 상품카드={has_card} 본문길이={len(raw)}")
+              print(f"    상품카드={has_card} 쿠팡링크={has_coupang} 광고문구={has_disc} 다이나믹배너={has_dyn} 내부링크={n_inner} 본문길이={len(raw)}")
           PY
