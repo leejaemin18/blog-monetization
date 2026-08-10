@@ -284,6 +284,95 @@ def c_geo_faq(text, is_affiliate):
     return None
 
 
+# ─────────────────────────────────────────────────────────────
+# AI 티(번역투) 검사
+#
+# 분류 체계 출처: epoko77-ai/im-not-ai "Humanize KR" (MIT) 의 ai-tell-taxonomy.
+# 그 저장소의 정량 지표(metrics_v2.py)를 우리 초안 6편에 실제로 돌려보고,
+# **우리 글에서 수치로 확인된 항목만** 가져왔다. 근거 없는 규칙은 넣지 않는다.
+#
+# 가져오지 않은 것:
+#  - 종결어미 다양성·정규화 z점수: 그쪽 문장 분리기가 표 행과 불릿을 문장으로
+#    세어 우리 글이 나쁘게 나온다. 산문만 따로 세면 45문장에 종결형 28~31종,
+#    최빈 12% — 문제 없음. 장르(에세이) 기준선이 해요체 블로그와 안 맞는다.
+#  - 불릿·볼드·이모지 금지(C-2/C-5/J-1): 칼럼·리포트용 규칙이다.
+#    우리는 모바일에서 훑어 읽는 블로그라 오히려 필요하다.
+# ─────────────────────────────────────────────────────────────
+
+# C-11 — 연결어미 직후 쉼표. 한국어에서는 선택 사항인데 AI 글은 영어 습관대로 찍는다.
+_ENDING_COMMA_RE = re.compile(r"(?:고|며|지만|면서|아서|어서)\s*,")
+
+
+@check("WARN", "연결어미 뒤 쉼표")
+def c_ending_comma(text, is_affiliate):
+    n = len(_ENDING_COMMA_RE.findall(_body(text)))
+    if n >= 5:
+        return (f"'~고, ~지만, ~어서,' 처럼 연결어미 뒤에 쉼표를 {n}번 찍었습니다. "
+                "한국어에선 대부분 없어도 되고, 이 습관이 AI 글 판별에서 가장 크게 걸립니다. "
+                "뜻이 안 바뀌니 절반 이상 지우세요.")
+    return None
+
+
+# C-8 — "X가 아니라 Y" 대구. 우리 글 6편 전부에 있었고 3편은 3회씩 썼다.
+_ANTITHESIS_RE = re.compile(r"(?:가|이)\s*아니라|이기\s*이전에|이기보다")
+
+
+@check("WARN", "'A가 아니라 B' 대구 반복")
+def c_antithesis(text, is_affiliate):
+    n = len(_ANTITHESIS_RE.findall(_body(text)))
+    if n >= 3:
+        return (f"'~가 아니라 ~' 구문이 {n}번 나옵니다. 매 글 소제목 결론마다 쓰던 버릇입니다. "
+                "한 번만 남기고 나머지는 그냥 단언하세요.")
+    return None
+
+
+# A 계열 — 번역투. 지금은 0건이라 앞으로 섞이지 않게 막는 용도.
+TRANSLATIONESE = [
+    (r"되어진|되어졌|여진다|보여진|쓰여진|잊혀진", "이중 피동('되어진다') → '된다'"),
+    (r"에\s*의(?:해|하여)\s+\S{0,10}?(?:되|받|당하)", "'~에 의해' 피동 → 행위자를 주어로"),
+    (r"가지고\s*있(?:다|어|습니다|어요)", "'가지고 있다' → '~가 있다/~이 강하다'"),
+    (r"에\s*있어서?\s", "'~에 있어서' → '~에서'"),
+    (r"~?에\s*대해서?\s+\S+(?:하|되)", "'~에 대해' → 목적격 조사로 직결"),
+]
+
+
+@check("WARN", "번역투")
+def c_translationese(text, is_affiliate):
+    body = _body(text)
+    hits = [tip for pat, tip in TRANSLATIONESE if re.search(pat, body)]
+    if hits:
+        return "영어 번역투가 섞였습니다 — " + " / ".join(hits)
+    return None
+
+
+# D 계열 — AI가 유난히 좋아하는 결산·의의 관용구.
+AI_SIGNATURES = [
+    "결론적으로", "시사하는 바", "주목할 만", "다음과 같습니다", "크게 세 가지",
+    "중요한 역할을 합니다", "혁신적", "획기적", "필수적입니다",
+]
+
+
+@check("WARN", "AI 관용구")
+def c_ai_signature(text, is_affiliate):
+    body = _body(text)
+    hits = [w for w in AI_SIGNATURES if w in body]
+    if hits:
+        return ("AI 글에서 흔한 관용구입니다: " + ", ".join(f"'{h}'" for h in hits)
+                + " — 삭제하거나 구체적인 사실로 바꾸세요.")
+    return None
+
+
+# G 계열 — 이중 완곡. 단언할 수 있는 곳까지 흐려진다.
+@check("WARN", "이중 완곡")
+def c_hedging(text, is_affiliate):
+    body = _body(text)
+    if re.search(r"(?:할|될|일)\s*수\s*있을\s*(?:것으로|것\s*같)", body) or re.search(
+        r"가능성이\s*있을\s*수\s*있", body
+    ):
+        return "'~할 수 있을 것으로 보인다' 같은 이중 완곡입니다. 완곡은 하나만 남기세요."
+    return None
+
+
 def detect_affiliate(text):
     kws = [r"제휴", r"쿠팡", r"파트너스", r"할인\s*코드", r"쿠폰", r"affiliate", r"Trip\.com"]
     return any(re.search(k, text, re.IGNORECASE) for k in kws)
