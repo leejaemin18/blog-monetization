@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="860" viewBox="0 0 1000 860" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="860" fill="#FFFCF7"/>
+
+  <text x="60" y="80" font-size="40" font-weight="800" fill="#33302B">발 냄새 <tspan fill="#2F9C95">감별 순서도</tspan></text>
+  <rect x="62" y="98" width="90" height="8" rx="4" fill="#E8825A"/>
+  <text x="62" y="136" font-size="19" fill="#8A8378">코를 대고 어떤 계열인지부터 가려내세요. 대부분은 정상입니다.</text>
+
+  <!-- start -->
+  <rect x="330" y="172" width="340" height="62" rx="31" fill="#33302B"/>
+  <text x="500" y="212" font-size="23" font-weight="700" fill="#FFFCF7" text-anchor="middle">발바닥에 코를 대본다</text>
+  <path d="M500 234 L500 268" stroke="#C9C0B4" stroke-width="3"/>
+  <path d="M492 262 L500 274 L508 262 Z" fill="#C9C0B4"/>
+
+  <!-- branch 1 : normal -->
+  <g>
+    <rect x="60" y="278" width="420" height="150" rx="16" fill="#fff" stroke="#2F9C95" stroke-width="3"/>
+    <circle cx="104" cy="318" r="15" fill="#2F9C95"/>
+    <text x="104" y="326" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">1</text>
+    <text x="132" y="326" font-size="25" font-weight="700" fill="#33302B">고소한 꼬순내</text>
+    <text x="86" y="362" font-size="18" fill="#8A8378">팝콘 · 콘칩 · 구운 옥수수 계열</text>
+    <rect x="86" y="378" width="368" height="34" rx="8" fill="#EAF5F4"/>
+    <text x="102" y="401" font-size="19" font-weight="700" fill="#217B75">정상 — 닦고 말리기만 하면 됩니다</text>
+  </g>
+
+  <!-- branch 2 : yeast -->
+  <g>
+    <rect x="520" y="278" width="420" height="150" rx="16" fill="#fff" stroke="#E8B45A" stroke-width="3"/>
+    <circle cx="564" cy="318" r="15" fill="#E8B45A"/>
+    <text x="564" y="326" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">2</text>
+    <text x="592" y="326" font-size="25" font-weight="700" fill="#33302B">시큼한 쉰내</text>
+    <text x="546" y="362" font-size="18" fill="#8A8378">쉰 빵 반죽 같은 냄새 · 습한 계절에 흔함</text>
+    <rect x="546" y="378" width="368" height="34" rx="8" fill="#FBF1DE"/>
+    <text x="562" y="401" font-size="19" font-weight="700" fill="#A9711A">발가락 사이를 벌려서 확인하세요</text>
+  </g>
+
+  <!-- branch 3 : infection -->
+  <g>
+    <rect x="60" y="452" width="420" height="150" rx="16" fill="#fff" stroke="#D9534F" stroke-width="3"/>
+    <circle cx="104" cy="492" r="15" fill="#D9534F"/>
+    <text x="104" y="500" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">3</text>
+    <text x="132" y="500" font-size="25" font-weight="700" fill="#33302B">비린내 · 고름 냄새</text>
+    <text x="86" y="536" font-size="18" fill="#8A8378">부기 · 진물 · 발톱 주변 붉어짐 동반</text>
+    <rect x="86" y="552" width="368" height="34" rx="8" fill="#FBE9E8"/>
+    <text x="102" y="575" font-size="19" font-weight="700" fill="#B3403C">병원 — 절뚝이면 더 급합니다</text>
+  </g>
+
+  <!-- branch 4 : licking -->
+  <g>
+    <rect x="520" y="452" width="420" height="150" rx="16" fill="#fff" stroke="#8A7FBF" stroke-width="3"/>
+    <circle cx="564" cy="492" r="15" fill="#8A7FBF"/>
+    <text x="564" y="500" font-size="18" font-weight="800" fill="#fff" text-anchor="middle">4</text>
+    <text x="592" y="500" font-size="25" font-weight="700" fill="#33302B">냄새는 보통인데 계속 핥음</text>
+    <text x="546" y="536" font-size="18" fill="#8A8378">한쪽 발만 · 밤에 심해짐</text>
+    <rect x="546" y="552" width="368" height="34" rx="8" fill="#EFEDF7"/>
+    <text x="562" y="575" font-size="19" font-weight="700" fill="#5F5490">알레르기 · 아토피 신호일 수 있어요</text>
+  </g>
+
+  <!-- check box -->
+  <rect x="60" y="636" width="880" height="150" rx="16" fill="#F5EFE4"/>
+  <text x="88" y="678" font-size="23" font-weight="800" fill="#33302B">발가락 사이를 벌렸을 때 이게 보이면 병원</text>
+  <g font-size="19" fill="#5b554d">
+    <circle cx="98" cy="712" r="5" fill="#E8825A"/><text x="116" y="719">살이 붉거나 축축하게 짓물러 있다</text>
+    <circle cx="98" cy="748" r="5" fill="#E8825A"/><text x="116" y="755">털이 침으로 갈색으로 물들어 있다</text>
+    <circle cx="530" cy="712" r="5" fill="#E8825A"/><text x="548" y="719">그 발만 유난히 오래 핥는다</text>
+    <circle cx="530" cy="748" r="5" fill="#E8825A"/><text x="548" y="755">발을 디딜 때 절뚝인다</text>
+  </g>
+
+  <text x="60" y="826" font-size="16" fill="#9a938a">집사의 발견 · jipsa.jaylog.co.kr — 일반 정보이며 진단을 대신하지 않습니다</text>
+</svg>
