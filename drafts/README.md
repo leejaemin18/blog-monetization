@@ -14,6 +14,7 @@
 | `예시-고양이-혼자두기.md` | #175 | /cat-home-alone/ |
 | `예시-털갈이-빗질.md` | #194 | /pet-shedding-brushing/ |
 | `예시-강아지-심장비대.md` | #204 | /dog-cardiomegaly/ |
+| `예시-강아지-발사탕.md` | #219 | /dog-paw-smell/ |
 
 ## 초기 5편 — 원본이 두 벌인 것에 주의
 
