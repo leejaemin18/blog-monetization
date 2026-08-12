@@ -55,7 +55,7 @@ def body(text):
     return t
 
 
-_STRUCT_LINE_RE = re.compile(r"^\s*(?:#{1,6}\s|>|\||[-*+]\s|\d+[.)]\s)")
+_STRUCT_LINE_RE = re.compile(r"^\s*(?:#{1,6}\s|>|\||[-*+]\s|\d+[.)]\s|-{3,}\s*$)")
 
 
 def prose(text):
@@ -70,10 +70,14 @@ _SENT_SPLIT_RE = re.compile(r"(?<=[\.!?])\s+")
 
 def sentences(text):
     out = []
-    for s in _SENT_SPLIT_RE.split(prose(text)):
-        s = s.strip()
-        if len(s) > 8 and re.search(r"[가-힣]", s):
-            out.append(s)
+    # 마침표뿐 아니라 문단 경계로도 끊는다. 안 그러면 마침표 없는 줄(링크 목록 등)이
+    # 다음 문단과 붙어 한 문장처럼 세어져 장문 개수가 부풀려진다.
+    for para in re.split(r"\n\s*\n", prose(text)):
+        for s in _SENT_SPLIT_RE.split(para):
+            # 주석·토큰을 공백으로 지운 자리가 남지 않게 접는다
+            s = re.sub(r"\s+", " ", s).strip()
+            if len(s) > 8 and re.search(r"[가-힣]", s):
+                out.append(s)
     return out
 
 

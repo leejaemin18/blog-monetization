@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="700" fill="#FFFCF7"/>
+
+  <text x="60" y="80" font-size="40" font-weight="800" fill="#33302B">신장병 <tspan fill="#2F9C95">4단계</tspan>, 무엇이 달라지나</text>
+  <rect x="62" y="98" width="90" height="8" rx="4" fill="#E8825A"/>
+  <text x="62" y="136" font-size="19" fill="#8A8378">단계가 올라갈수록 남은 기능이 줄어요. 정확한 기준치는 병원에서 확인하세요.</text>
+
+  <!-- 남은 기능 게이지 -->
+  <text x="62" y="188" font-size="17" font-weight="700" fill="#8A8378">남은 신장 기능</text>
+  <rect x="62" y="200" width="876" height="26" rx="13" fill="#EFE9DF"/>
+  <rect x="62" y="200" width="876" height="26" rx="13" fill="#2F9C95" opacity=".18"/>
+  <rect x="62" y="200" width="240" height="26" rx="13" fill="#2F9C95"/>
+  <rect x="302" y="200" width="230" height="26" fill="#7FBE8C"/>
+  <rect x="532" y="200" width="220" height="26" fill="#E8B45A"/>
+  <rect x="752" y="200" width="186" height="26" rx="13" fill="#D9534F"/>
+  <text x="182" y="219" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">많음</text>
+  <text x="845" y="219" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">적음</text>
+
+  <!-- 단계 카드 -->
+  <g>
+    <rect x="62" y="256" width="212" height="250" rx="14" fill="#fff" stroke="#2F9C95" stroke-width="3"/>
+    <circle cx="106" cy="300" r="20" fill="#2F9C95"/>
+    <text x="106" y="308" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">1</text>
+    <text x="138" y="308" font-size="23" font-weight="700" fill="#33302B">증상 없음</text>
+    <text x="86" y="352" font-size="17" fill="#8A8378">검진에서 우연히</text>
+    <text x="86" y="378" font-size="17" fill="#8A8378">발견되는 시기</text>
+    <rect x="86" y="400" width="164" height="82" rx="9" fill="#EAF5F4"/>
+    <text x="102" y="428" font-size="17" font-weight="700" fill="#217B75">할 일</text>
+    <text x="102" y="454" font-size="16" fill="#217B75">기준선 만들기</text>
+    <text x="102" y="474" font-size="16" fill="#217B75">체중·수치 기록</text>
+  </g>
+
+  <g>
+    <rect x="292" y="256" width="212" height="250" rx="14" fill="#fff" stroke="#7FBE8C" stroke-width="3"/>
+    <circle cx="336" cy="300" r="20" fill="#7FBE8C"/>
+    <text x="336" y="308" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">2</text>
+    <text x="368" y="308" font-size="23" font-weight="700" fill="#33302B">수치 상승</text>
+    <text x="316" y="352" font-size="17" fill="#8A8378">물 많이 마시고</text>
+    <text x="316" y="378" font-size="17" fill="#8A8378">소변량이 늘어남</text>
+    <rect x="316" y="400" width="164" height="82" rx="9" fill="#EDF6EE"/>
+    <text x="332" y="428" font-size="17" font-weight="700" fill="#3E7A4B">할 일</text>
+    <text x="332" y="454" font-size="16" fill="#3E7A4B">식이 관리 논의</text>
+    <text x="332" y="474" font-size="16" fill="#3E7A4B">재검 일정 잡기</text>
+  </g>
+
+  <g>
+    <rect x="522" y="256" width="212" height="250" rx="14" fill="#fff" stroke="#E8B45A" stroke-width="3"/>
+    <circle cx="566" cy="300" r="20" fill="#E8B45A"/>
+    <text x="566" y="308" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">3</text>
+    <text x="598" y="308" font-size="23" font-weight="700" fill="#33302B">증상 발현</text>
+    <text x="546" y="352" font-size="17" fill="#8A8378">체중 감소·식욕 저하</text>
+    <text x="546" y="378" font-size="17" fill="#8A8378">구토가 생기기도</text>
+    <rect x="546" y="400" width="164" height="82" rx="9" fill="#FBF1DE"/>
+    <text x="562" y="428" font-size="17" font-weight="700" fill="#A9711A">할 일</text>
+    <text x="562" y="454" font-size="16" fill="#A9711A">수분·인 조절</text>
+    <text x="562" y="474" font-size="16" fill="#A9711A">혈압 관리</text>
+  </g>
+
+  <g>
+    <rect x="752" y="256" width="186" height="250" rx="14" fill="#fff" stroke="#D9534F" stroke-width="3"/>
+    <circle cx="796" cy="300" r="20" fill="#D9534F"/>
+    <text x="796" y="308" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">4</text>
+    <text x="828" y="308" font-size="23" font-weight="700" fill="#33302B">관리기</text>
+    <text x="776" y="352" font-size="17" fill="#8A8378">먹는 양이 줄고</text>
+    <text x="776" y="378" font-size="17" fill="#8A8378">기력이 떨어짐</text>
+    <rect x="776" y="400" width="138" height="82" rx="9" fill="#FBE9E8"/>
+    <text x="792" y="428" font-size="17" font-weight="700" fill="#B3403C">할 일</text>
+    <text x="792" y="454" font-size="16" fill="#B3403C">편하게 지내기</text>
+    <text x="792" y="474" font-size="16" fill="#B3403C">수의사와 상의</text>
+  </g>
+
+  <!-- 하단 강조 -->
+  <rect x="62" y="536" width="876" height="102" rx="14" fill="#F5EFE4"/>
+  <text x="90" y="578" font-size="22" font-weight="800" fill="#33302B">망가진 신장 조직은 돌아오지 않아요</text>
+  <text x="90" y="612" font-size="18" fill="#5b554d">그래서 목표는 낫게 하는 것이 아니라 남은 기능을 오래 쓰는 것 — 7살이 넘으면 해마다 검사하세요.</text>
+
+  <text x="60" y="672" font-size="16" fill="#9a938a">집사의 발견 · jipsa.jaylog.co.kr — 일반 정보이며 진단을 대신하지 않습니다</text>
+</svg>
