@@ -1,0 +1,104 @@
+name: 지식iN 질문 본문 읽기
+
+# 미답변 목록에서 고른 질문의 **본문 전체**를 읽어온다.
+# 제목만 보고 답하면 엉뚱한 답이 나온다(실제로 겪음 — 사료 문제인 줄 알았는데 심장병이었다).
+#
+# docId를 콤마로 여러 개 넣을 수 있다. 답변하기 직전에 실행한다.
+# ※ 읽기 전용. 답변 자동 등록은 하지 않는다(운영정책상 매크로 금지).
+
+on:
+  workflow_dispatch:
+    inputs:
+      doc_ids:
+        description: "질문 docId (콤마 구분). 예: 494715244,494714978"
+        required: true
+      dir_id:
+        description: "dirId (선택 — 없어도 대개 열린다)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 질문 본문 조회
+        env:
+          DOC_IDS: ${{ github.event.inputs.doc_ids }}
+          DIR_ID: ${{ github.event.inputs.dir_id }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, re, html, requests
+
+          docs = [x.strip() for x in (os.environ.get("DOC_IDS") or "").split(",") if x.strip()]
+          dir_id = (os.environ.get("DIR_ID") or "").strip()
+          UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
+          H = {"User-Agent": UA, "Accept-Language": "ko-KR,ko;q=0.9"}
+
+          def strip(s):
+              s = re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", s or "", flags=re.S | re.I)
+              s = re.sub(r"<br\s*/?>", "\n", s, flags=re.I)
+              s = re.sub(r"</p>|</div>", "\n", s, flags=re.I)
+              s = re.sub(r"<[^>]+>", "", s)
+              s = html.unescape(s)
+              s = re.sub(r"[ \t]+", " ", s)
+              return re.sub(r"\n{3,}", "\n\n", s).strip()
+
+          for d in docs:
+              url = f"https://kin.naver.com/qna/detail.naver?d1id=8&docId={d}"
+              if dir_id:
+                  url += f"&dirId={dir_id}"
+              print("=" * 66)
+              print(f"docId {d}")
+              print(url)
+              print("=" * 66)
+              try:
+                  r = requests.get(url, headers=H, timeout=25)
+              except Exception as e:
+                  print(f"::warning::조회 실패 {type(e).__name__}"); continue
+              if not r.ok:
+                  print(f"::warning::HTTP {r.status_code}"); continue
+              t = r.text
+
+              m = re.search(r'<div class="title[^"]*">(.*?)</div>', t, re.S)
+              if m:
+                  print(f"[제목] {strip(m.group(1))}\n")
+
+              # 본문 — endContentsArea 안이 질문 내용
+              body = ""
+              for pat in (r'<div class="questionDetail"[^>]*>(.*?)</div>\s*</div>',
+                          r'<div class="questionDetail"[^>]*>(.*?)</div>',
+                          r'<div class="c-heading__content"[^>]*>(.*?)</div>'):
+                  mm = re.search(pat, t, re.S)
+                  if mm:
+                      body = strip(mm.group(1))
+                      if body:
+                          break
+              print("[본문]")
+              print(body if body else "(본문을 찾지 못했습니다 — 아래 원문 조각 참고)")
+              print()
+
+              # 첨부 이미지가 있으면 알려준다 (사진 판독이 필요한 질문인지 구분)
+              imgs = re.findall(r'https://kin-phinf\.pstatic\.net/\S+?\.(?:jpg|jpeg|png)', t)
+              if imgs:
+                  print(f"[첨부 이미지 {len(set(imgs))}장] — 사진 판독이 필요한 질문일 수 있습니다")
+                  for u in list(dict.fromkeys(imgs))[:5]:
+                      print("   " + u)
+                  print()
+
+              # 태그·분류
+              tags = re.findall(r'<a[^>]*class="tag[^"]*"[^>]*>(.*?)</a>', t, re.S)
+              if tags:
+                  print("[태그] " + ", ".join(strip(x) for x in tags[:8]) + "\n")
+
+              if not body:
+                  seg = re.search(r'questionDetail(.{0,1200})', t, re.S)
+                  if seg:
+                      print("[원문 조각]")
+                      print(strip(seg.group(1))[:900])
+                      print()
+          PY
