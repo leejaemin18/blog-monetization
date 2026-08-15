@@ -85,8 +85,7 @@ jobs:
                   ttl = re.sub(r"\s*:\s*네이버 지식iN\s*$", "", ttl)
                   print(f"[제목] {ttl}\n")
 
-              # 본문 추출 — og:description 이 가장 안정적이다.
-              # div 클래스는 템플릿마다 다르고, 페이지 뒤쪽 모달 템플릿까지 긁히는 문제가 있었다.
+              # 본문 추출 1 — og:description. 안정적이지만 150자쯤에서 '...' 로 잘린다.
               def meta(prop):
                   m = re.search(
                       r'<meta[^>]+(?:property|name)=["\']' + prop + r'["\'][^>]+content=["\'](.*?)["\']',
@@ -97,12 +96,39 @@ jobs:
                           t, re.S | re.I)
                   return html.unescape(m.group(1)).strip() if m else ""
 
-              body = meta("og:description") or meta("description")
-              body = re.sub(r"\s*\|\s*네이버 지식iN\s*$", "", body)
+              summ = re.sub(r"\s*\|\s*네이버 지식iN\s*$", "", meta("og:description") or meta("description"))
 
-              print("[본문]")
-              print(body if body else "(본문을 찾지 못했습니다 — 링크를 직접 열어보세요)")
+              # 본문 추출 2 — 잘리지 않은 전문. 질문 영역만 잘라내서 태그를 턴다.
+              # 끝 지점을 못 찾으면 문서 끝까지 긁혀 모달 템플릿까지 딸려온다(예전에 겪음).
+              # 그래서 끝 마커가 없으면 8000자에서 강제로 자른다.
+              START = ("questionDetail", "c-heading__content", "_questionContentsArea",
+                       "endContentsArea", "질문자 채택")
+              END = ("answerArea", "_answerListArea", "answer_area", "answerList",
+                     "adAnswerArea", "footer", "u_cbox")
+              UI = re.compile(
+                  r"^(댓글|나도 궁금해요|답변 알림 받기|닫기|신고|공유|목록|이전|다음|더보기|"
+                  r"좋아요|답변하기|채택|프로필|팔로우|검색|로그인|취소|확인|삭제|수정|"
+                  r".*(하시겠습니까|하시겠어요|개수 초과|선물 실패|이동합니다)$)")
+
+              full = ""
+              lo = min((t.find(m) for m in START if t.find(m) >= 0), default=-1)
+              if lo >= 0:
+                  cands = [t.find(m, lo + 40) for m in END]
+                  cands = [c for c in cands if c > lo]
+                  hi = min(cands) if cands else lo + 8000
+                  hi = min(hi, lo + 8000)
+                  lines = [x.strip() for x in strip(t[lo:hi]).split("\n")]
+                  keep = [x for x in lines if x and len(x) > 1 and not UI.match(x)]
+                  # 중복 줄 제거(템플릿이 같은 문구를 여러 번 뿌린다)
+                  full = "\n".join(dict.fromkeys(keep))
+
+              print("[본문 요약 · og:description]")
+              print(summ if summ else "(없음)")
               print()
+              print("[본문 전문 · 질문 영역]")
+              print(full[:4000] if full else "(추출 실패 — 위 요약과 링크로 판단하세요)")
+              print()
+              body = full or summ
 
               # 첨부 이미지가 있으면 알려준다 (사진 판독이 필요한 질문인지 구분)
               imgs = re.findall(r'https://kin-phinf\.pstatic\.net/\S+?\.(?:jpg|jpeg|png)', t)
