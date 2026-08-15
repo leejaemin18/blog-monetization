@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="720" fill="#FFFCF7"/>
+
+  <text x="60" y="80" font-size="40" font-weight="800" fill="#33302B">여름 끝 피부 <tspan fill="#2F9C95">일주일 루틴</tspan></text>
+  <rect x="62" y="98" width="90" height="8" rx="4" fill="#E8825A"/>
+  <text x="62" y="136" font-size="19" fill="#8A8378">씻는 횟수를 늘리지 말고 말리는 시간을 늘리세요. 목욕은 주 1회면 충분합니다.</text>
+
+  <!-- 요일 헤더 -->
+  <g font-size="19" font-weight="700" fill="#8A8378" text-anchor="middle">
+    <text x="128" y="196">월</text><text x="252" y="196">화</text><text x="376" y="196">수</text>
+    <text x="500" y="196">목</text><text x="624" y="196">금</text><text x="748" y="196">토</text><text x="872" y="196">일</text>
+  </g>
+
+  <!-- 매일 하는 것 -->
+  <rect x="66" y="212" width="868" height="96" rx="12" fill="#EAF5F4"/>
+  <text x="90" y="248" font-size="21" font-weight="800" fill="#217B75">매일 — 산책 후 발 말리기 · 접힌 자리 손으로 확인</text>
+  <text x="90" y="284" font-size="18" fill="#3E8A84">겨드랑이 · 사타구니 · 발가락 사이 · 귓속 · 목덜미 · 꼬리 안쪽</text>
+
+  <!-- 요일 칸 -->
+  <g>
+    <rect x="66" y="326" width="112" height="150" rx="12" fill="#fff" stroke="#EAE3D8" stroke-width="2"/>
+    <rect x="190" y="326" width="112" height="150" rx="12" fill="#fff" stroke="#EAE3D8" stroke-width="2"/>
+    <rect x="314" y="326" width="112" height="150" rx="12" fill="#FBF1DE" stroke="#E8B45A" stroke-width="3"/>
+    <rect x="438" y="326" width="112" height="150" rx="12" fill="#fff" stroke="#EAE3D8" stroke-width="2"/>
+    <rect x="562" y="326" width="112" height="150" rx="12" fill="#fff" stroke="#EAE3D8" stroke-width="2"/>
+    <rect x="686" y="326" width="112" height="150" rx="12" fill="#FBE9E8" stroke="#E8825A" stroke-width="3"/>
+    <rect x="810" y="326" width="124" height="150" rx="12" fill="#fff" stroke="#EAE3D8" stroke-width="2"/>
+  </g>
+
+  <g font-size="17" fill="#8A8378" text-anchor="middle">
+    <text x="122" y="360">빗질</text>
+    <text x="246" y="360">빗질</text>
+    <text x="494" y="360">빗질</text>
+    <text x="618" y="360">빗질</text>
+    <text x="872" y="360">쉬기</text>
+  </g>
+
+  <!-- 수요일 귀 -->
+  <text x="370" y="362" font-size="19" font-weight="800" fill="#A9711A" text-anchor="middle">귀 세정</text>
+  <text x="370" y="392" font-size="16" fill="#A9711A" text-anchor="middle">주 1~2회</text>
+  <text x="370" y="418" font-size="15" fill="#A9711A" text-anchor="middle">액상으로 적신 뒤</text>
+  <text x="370" y="440" font-size="15" fill="#A9711A" text-anchor="middle">고개 털게 두고</text>
+  <text x="370" y="462" font-size="15" fill="#A9711A" text-anchor="middle">겉만 닦기</text>
+
+  <!-- 토요일 목욕 -->
+  <text x="742" y="362" font-size="19" font-weight="800" fill="#B3403C" text-anchor="middle">목욕</text>
+  <text x="742" y="392" font-size="16" fill="#B3403C" text-anchor="middle">주 1회</text>
+  <text x="742" y="418" font-size="15" fill="#B3403C" text-anchor="middle">거품 5분 두기</text>
+  <text x="742" y="440" font-size="15" fill="#B3403C" text-anchor="middle">충분히 헹구기</text>
+  <text x="742" y="462" font-size="15" font-weight="700" fill="#B3403C" text-anchor="middle">+ 완전 건조</text>
+
+  <!-- 강조 박스 -->
+  <rect x="66" y="506" width="868" height="118" rx="14" fill="#33302B"/>
+  <text x="100" y="552" font-size="24" font-weight="800" fill="#FFFCF7">말리기가 8할입니다</text>
+  <text x="100" y="588" font-size="18" fill="#D9D2C6">수건으로 누르고 → 바람으로 마무리 → 접힌 자리는 손으로 벌려가며</text>
+  <text x="100" y="612" font-size="17" fill="#B9AF9F">사람용 드라이어는 온도가 높아요. 저소음 반려동물용이 훨씬 수월합니다.</text>
+
+  <rect x="66" y="640" width="868" height="42" rx="10" fill="#FBE9E8"/>
+  <text x="500" y="668" font-size="18" font-weight="700" fill="#B3403C" text-anchor="middle">2주 해보고 차도가 없거나 진물·탈모·귀 분비물이 있으면 병원부터</text>
+
+  <text x="60" y="710" font-size="15" fill="#9a938a">집사의 발견 · jipsa.jaylog.co.kr — 일반 정보이며 진단을 대신하지 않습니다</text>
+</svg>
