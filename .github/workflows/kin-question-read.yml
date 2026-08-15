@@ -10,10 +10,10 @@ on:
   workflow_dispatch:
     inputs:
       doc_ids:
-        description: "질문 docId (콤마 구분). 예: 494715244,494714978"
+        description: "질문 URL 또는 docId:dirId 쌍 (콤마 구분). dirId 없으면 404 난다"
         required: true
       dir_id:
-        description: "dirId (선택 — 없어도 대개 열린다)"
+        description: "공통 dirId (쌍으로 안 줄 때만)"
         required: false
         default: ""
 
@@ -33,8 +33,21 @@ jobs:
           python3 - <<'PY'
           import os, re, html, requests
 
-          docs = [x.strip() for x in (os.environ.get("DOC_IDS") or "").split(",") if x.strip()]
-          dir_id = (os.environ.get("DIR_ID") or "").strip()
+          raw = [x.strip() for x in (os.environ.get("DOC_IDS") or "").split(",") if x.strip()]
+          common_dir = (os.environ.get("DIR_ID") or "").strip()
+
+          def parse(tok):
+              """URL / 'docId:dirId' / 'docId' 를 모두 받는다. dirId가 없으면 404가 나므로 꼭 챙긴다."""
+              if "docId=" in tok:
+                  doc = re.search(r"docId=(\d+)", tok)
+                  dr = re.search(r"dirId=(\d+)", tok)
+                  return (doc.group(1) if doc else None), (dr.group(1) if dr else common_dir)
+              if ":" in tok:
+                  a, b = tok.split(":", 1)
+                  return a.strip(), b.strip()
+              return tok, common_dir
+
+          docs = [p for p in (parse(t) for t in raw) if p[0]]
           UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                 "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
           H = {"User-Agent": UA, "Accept-Language": "ko-KR,ko;q=0.9"}
@@ -48,10 +61,12 @@ jobs:
               s = re.sub(r"[ \t]+", " ", s)
               return re.sub(r"\n{3,}", "\n\n", s).strip()
 
-          for d in docs:
+          for d, dr in docs:
               url = f"https://kin.naver.com/qna/detail.naver?d1id=8&docId={d}"
-              if dir_id:
-                  url += f"&dirId={dir_id}"
+              if dr:
+                  url += f"&dirId={dr}"
+              else:
+                  print("::warning::dirId가 없습니다 — 404가 날 수 있어요")
               print("=" * 66)
               print(f"docId {d}")
               print(url)
