@@ -16,6 +16,7 @@
 | `예시-강아지-심장비대.md` | #204 | /dog-cardiomegaly/ |
 | `예시-강아지-발사탕.md` | #219 | /dog-paw-smell/ |
 | `예시-고양이-신부전.md` | #230 | /cat-kidney-disease/ |
+| `예시-고양이-습식-건식.md` | #239 | /cat-wet-vs-dry/ |
 
 ## 초기 5편 — 원본이 두 벌인 것에 주의
 
