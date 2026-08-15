@@ -83,18 +83,46 @@ jobs:
               if m:
                   print(f"[제목] {strip(m.group(1))}\n")
 
-              # 본문 — endContentsArea 안이 질문 내용
+              # 본문 추출 — 질문 영역만 잘라낸 뒤 페이지 부속(댓글·버튼)을 걸러낸다
+              CHROME = ("댓글", "나도 궁금해요", "답변 알림 받기", "닫기", "신고", "공유하기",
+                        "프로필", "알림으로 보내드립니다", "보관됩니다", "확인하기",
+                        "질문자 채택", "지식인", "이 답변", "채택answer", "URL 복사",
+                        "네이버", "로그인", "카페", "블로그", "더보기")
+
+              def clean_block(raw_html):
+                  txt = strip(raw_html)
+                  out = []
+                  for ln in txt.split("\n"):
+                      ln = ln.strip()
+                      if not ln or len(ln) < 2:
+                          continue
+                      if any(c in ln for c in CHROME) and len(ln) < 30:
+                          continue
+                      out.append(ln)
+                  return "\n".join(out)
+
               body = ""
-              for pat in (r'<div class="questionDetail"[^>]*>(.*?)</div>\s*</div>',
-                          r'<div class="questionDetail"[^>]*>(.*?)</div>',
-                          r'<div class="c-heading__content"[^>]*>(.*?)</div>'):
-                  mm = re.search(pat, t, re.S)
-                  if mm:
-                      body = strip(mm.group(1))
-                      if body:
-                          break
+              # 질문 영역의 시작~끝을 넉넉히 잡고, 답변 영역 앞에서 자른다
+              seg = None
+              for a in ("_questionContentsArea", 'class="questionDetail"', "c-heading__content"):
+                  i = t.find(a)
+                  if i == -1:
+                      continue
+                  j = len(t)
+                  for b in ("_answerArea", 'class="answer-content', "answerArea",
+                            "c-heading__extra", "적립포인트"):
+                      k = t.find(b, i)
+                      if k != -1:
+                          j = min(j, k)
+                  seg = t[i:j]
+                  break
+              if seg:
+                  body = clean_block(seg)
+                  if len(body) > 2500:
+                      body = body[:2500] + "\n… (이하 생략)"
+
               print("[본문]")
-              print(body if body else "(본문을 찾지 못했습니다 — 아래 원문 조각 참고)")
+              print(body if body else "(본문을 찾지 못했습니다)")
               print()
 
               # 첨부 이미지가 있으면 알려준다 (사진 판독이 필요한 질문인지 구분)
