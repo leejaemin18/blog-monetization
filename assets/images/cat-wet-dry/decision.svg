@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="760" fill="#FFFCF7"/>
+
+  <text x="60" y="80" font-size="40" font-weight="800" fill="#33302B">습식·건식 <tspan fill="#2F9C95">판단 트리</tspan></text>
+  <rect x="62" y="98" width="90" height="8" rx="4" fill="#E8825A"/>
+  <text x="62" y="136" font-size="19" fill="#8A8378">둘 다 완전사료면 영양은 충족돼요. 갈리는 건 수분과 생활 패턴입니다.</text>
+
+  <!-- Q1 -->
+  <rect x="290" y="172" width="420" height="66" rx="33" fill="#33302B"/>
+  <text x="500" y="213" font-size="22" font-weight="700" fill="#FFFCF7" text-anchor="middle">물그릇이 눈에 띄게 줄어드나요?</text>
+
+  <!-- 분기선 -->
+  <path d="M500 238 L500 262" stroke="#C9C0B4" stroke-width="3"/>
+  <path d="M250 262 L750 262" stroke="#C9C0B4" stroke-width="3"/>
+  <path d="M250 262 L250 296" stroke="#C9C0B4" stroke-width="3"/>
+  <path d="M750 262 L750 296" stroke="#C9C0B4" stroke-width="3"/>
+  <path d="M242 290 L250 302 L258 290 Z" fill="#C9C0B4"/>
+  <path d="M742 290 L750 302 L758 290 Z" fill="#C9C0B4"/>
+  <text x="250" y="254" font-size="18" font-weight="700" fill="#B3403C" text-anchor="middle">거의 안 줄어요</text>
+  <text x="750" y="254" font-size="18" font-weight="700" fill="#217B75" text-anchor="middle">잘 마셔요</text>
+
+  <!-- 왼쪽 카드 -->
+  <rect x="60" y="310" width="380" height="176" rx="16" fill="#fff" stroke="#E8825A" stroke-width="3"/>
+  <text x="90" y="356" font-size="25" font-weight="700" fill="#33302B">습식 비중을 올리세요</text>
+  <text x="90" y="392" font-size="18" fill="#8A8378">하루 한 끼만 바꿔도 수분이 확 늘어요</text>
+  <g font-size="18" fill="#5b554d">
+    <circle cx="100" cy="424" r="5" fill="#E8825A"/><text x="118" y="431">신장·방광 이력이 있다</text>
+    <circle cx="100" cy="456" r="5" fill="#E8825A"/><text x="118" y="463">중성화한 수컷이다</text>
+  </g>
+
+  <!-- 오른쪽 카드 -->
+  <rect x="560" y="310" width="380" height="176" rx="16" fill="#fff" stroke="#2F9C95" stroke-width="3"/>
+  <text x="590" y="356" font-size="25" font-weight="700" fill="#33302B">건식 위주도 괜찮아요</text>
+  <text x="590" y="392" font-size="18" fill="#8A8378">관리가 편한 쪽을 택해도 됩니다</text>
+  <g font-size="18" fill="#5b554d">
+    <circle cx="600" cy="424" r="5" fill="#2F9C95"/><text x="618" y="431">집을 오래 비운다</text>
+    <circle cx="600" cy="456" r="5" fill="#2F9C95"/><text x="618" y="463">여러 마리를 키운다</text>
+  </g>
+
+  <!-- 합류 -->
+  <path d="M250 486 L250 522 L750 522 L750 486" stroke="#C9C0B4" stroke-width="3" fill="none"/>
+  <path d="M500 522 L500 548" stroke="#C9C0B4" stroke-width="3"/>
+  <path d="M492 542 L500 554 L508 542 Z" fill="#C9C0B4"/>
+
+  <!-- 공통 결론 -->
+  <rect x="150" y="562" width="700" height="76" rx="16" fill="#2F9C95"/>
+  <text x="500" y="598" font-size="24" font-weight="800" fill="#fff" text-anchor="middle">어느 쪽이든 — 시간을 나눠 섞는 게 대부분의 답</text>
+  <text x="500" y="626" font-size="18" fill="#DCEFEE" text-anchor="middle">아침 건식 · 저녁 습식. 한 그릇에 섞으면 남은 건식이 눅눅해져요</text>
+
+  <rect x="150" y="654" width="700" height="46" rx="10" fill="#F5EFE4"/>
+  <text x="500" y="683" font-size="18" font-weight="700" fill="#A9711A" text-anchor="middle">바꿀 땐 일주일에 걸쳐 조금씩 — 갑자기 바꾸면 설사해요</text>
+
+  <text x="60" y="734" font-size="16" fill="#9a938a">집사의 발견 · jipsa.jaylog.co.kr — 일반 정보이며 진단을 대신하지 않습니다</text>
+</svg>
