@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="720" fill="#FFFCF7"/>
+
+  <text x="60" y="76" font-size="38" font-weight="800" fill="#33302B">본가에 도착하면 <tspan fill="#2F9C95">방 한 칸부터</tspan></text>
+  <rect x="62" y="94" width="90" height="8" rx="4" fill="#E8825A"/>
+  <text x="62" y="132" font-size="18" fill="#8A8378">거실에 풀어놓기 전에 문 닫히는 방을 하나 빌리세요. 위에서 본 배치입니다.</text>
+
+  <!-- 방 -->
+  <rect x="80" y="176" width="580" height="424" rx="6" fill="#fff" stroke="#33302B" stroke-width="5"/>
+
+  <!-- 문 (아래 벽) -->
+  <rect x="300" y="592" width="140" height="16" fill="#FFFCF7"/>
+  <path d="M300 600 A140 140 0 0 1 440 600" fill="none" stroke="#C9C0B2" stroke-width="3" stroke-dasharray="7 6"/>
+  <text x="370" y="640" font-size="19" font-weight="700" fill="#8A8378" text-anchor="middle">문 — 닫아둡니다</text>
+
+  <!-- 창문 (위 벽) -->
+  <rect x="430" y="169" width="170" height="14" fill="#CFE6E4"/>
+  <text x="515" y="158" font-size="17" fill="#8A8378" text-anchor="middle">창문</text>
+
+  <!-- 켄넬 — 벽 두 면에 붙임 -->
+  <rect x="98" y="194" width="176" height="132" rx="10" fill="#EAF5F4" stroke="#2F9C95" stroke-width="4"/>
+  <text x="186" y="248" font-size="21" font-weight="800" fill="#217B75" text-anchor="middle">이동장</text>
+  <text x="186" y="278" font-size="16" fill="#3E8A84" text-anchor="middle">문은 열어둔 채로</text>
+  <text x="186" y="302" font-size="16" fill="#3E8A84" text-anchor="middle">담요는 집에서 쓰던 것</text>
+  <text x="186" y="352" font-size="15" fill="#8A8378" text-anchor="middle">벽 두 면에 붙여야</text>
+  <text x="186" y="374" font-size="15" fill="#8A8378" text-anchor="middle">등 뒤가 안전해집니다</text>
+
+  <!-- 물그릇 -->
+  <circle cx="360" cy="250" r="38" fill="#F3F7FA" stroke="#7FA8BF" stroke-width="4"/>
+  <text x="360" y="256" font-size="17" font-weight="700" fill="#4E7A93" text-anchor="middle">물</text>
+  <text x="360" y="320" font-size="15" fill="#8A8378" text-anchor="middle">이동장에서 한 걸음,</text>
+  <text x="360" y="342" font-size="15" fill="#8A8378" text-anchor="middle">밥그릇과는 떨어뜨려서</text>
+
+  <!-- 배변패드 — 대각선 반대편, 문에서 떨어진 자리 -->
+  <rect x="470" y="416" width="158" height="118" rx="8" fill="#FBE9E8" stroke="#E8825A" stroke-width="4"/>
+  <text x="549" y="466" font-size="20" font-weight="800" fill="#B3403C" text-anchor="middle">배변패드</text>
+  <text x="549" y="494" font-size="15" fill="#B3403C" text-anchor="middle">집에서 쓰던 것과</text>
+  <text x="549" y="516" font-size="15" fill="#B3403C" text-anchor="middle">같은 제품으로</text>
+
+  <!-- 잠자리와 화장실 사이 거리 표시 -->
+  <path d="M250 300 L470 430" stroke="#C9C0B2" stroke-width="3" stroke-dasharray="8 7"/>
+  <text x="330" y="392" font-size="15" fill="#9a938a" transform="rotate(31 330 392)">멀수록 좋습니다</text>
+
+  <!-- 오른쪽 설명 -->
+  <text x="700" y="200" font-size="21" font-weight="800" fill="#33302B">이렇게 두는 이유</text>
+  <rect x="700" y="212" width="56" height="6" rx="3" fill="#2F9C95"/>
+
+  <g font-size="17" fill="#5b554d">
+    <text x="700" y="262" font-weight="700" fill="#217B75">이동장은 구석에</text>
+    <text x="700" y="290">등 뒤와 옆이 벽이면</text>
+    <text x="700" y="314">경계를 덜 합니다. 문은</text>
+    <text x="700" y="338">열어두세요. 가두면</text>
+    <text x="700" y="362">쉬는 자리가 아니라</text>
+    <text x="700" y="386">갇히는 자리가 됩니다.</text>
+
+    <text x="700" y="440" font-weight="700" fill="#B3403C">패드는 대각선 끝에</text>
+    <text x="700" y="468">자는 자리 옆에 두면</text>
+    <text x="700" y="492">안 씁니다. 참다가</text>
+    <text x="700" y="516">거실에서 실수해요.</text>
+
+    <text x="700" y="570" font-weight="700" fill="#4E7A93">문 앞은 비웁니다</text>
+    <text x="700" y="598">사람이 드나들 때마다</text>
+    <text x="700" y="622">놀라는 자리입니다.</text>
+  </g>
+
+  <rect x="80" y="654" width="860" height="40" rx="10" fill="#33302B"/>
+  <text x="510" y="680" font-size="18" font-weight="700" fill="#FFFCF7" text-anchor="middle">도착하자마자 5분, 이 세 자리부터 잡아두면 남은 이틀이 편합니다</text>
+
+  <text x="60" y="712" font-size="14" fill="#9a938a">집사의 발견 · jipsa.jaylog.co.kr</text>
+</svg>
