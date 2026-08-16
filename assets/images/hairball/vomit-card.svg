@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760" viewBox="0 0 1000 760" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="760" fill="#FFFCF7"/>
+
+  <text x="60" y="76" font-size="38" font-weight="800" fill="#33302B">토한 것을 <tspan fill="#2F9C95">색으로 가릅니다</tspan></text>
+  <rect x="62" y="94" width="90" height="8" rx="4" fill="#E8825A"/>
+  <text x="62" y="132" font-size="18" fill="#8A8378">치우기 전에 한 번 보세요. 사진을 찍어두면 병원에서 훨씬 빨리 판단합니다.</text>
+
+  <!-- 안심 -->
+  <rect x="60" y="164" width="880" height="128" rx="14" fill="#EAF5F4" stroke="#2F9C95" stroke-width="3"/>
+  <circle cx="118" cy="212" r="24" fill="#C9A227"/>
+  <text x="160" y="204" font-size="23" font-weight="800" fill="#217B75">원통형으로 뭉친 털 — 헤어볼</text>
+  <text x="160" y="238" font-size="18" fill="#3E8A84">한 달에 한두 번 · 토한 뒤 바로 밥그릇으로 감 · 체중 그대로</text>
+  <text x="160" y="268" font-size="17" fill="#5FA39D">털갈이철에 늘었다가 다시 줄어드는 게 정상입니다</text>
+
+  <!-- 살펴보기 -->
+  <text x="60" y="336" font-size="21" font-weight="800" fill="#A9711A">지켜보되 원인을 찾을 것</text>
+  <rect x="62" y="346" width="50" height="5" rx="2" fill="#E8B45A"/>
+
+  <rect x="60" y="362" width="430" height="98" rx="12" fill="#FBF1DE" stroke="#E8B45A" stroke-width="2"/>
+  <circle cx="106" cy="398" r="20" fill="#EFC75E"/>
+  <text x="142" y="394" font-size="19" font-weight="700" fill="#A9711A">노란 맑은 액체만</text>
+  <text x="142" y="422" font-size="16" fill="#A9711A">담즙 · 공복이 길었다는 뜻</text>
+  <text x="142" y="446" font-size="16" fill="#A9711A">식사를 나눠 주면 줄어듭니다</text>
+
+  <rect x="510" y="362" width="430" height="98" rx="12" fill="#FBF1DE" stroke="#E8B45A" stroke-width="2"/>
+  <circle cx="556" cy="398" r="20" fill="#B98A5A"/>
+  <text x="592" y="394" font-size="19" font-weight="700" fill="#A9711A">사료가 그대로</text>
+  <text x="592" y="422" font-size="16" fill="#A9711A">급하게 먹었거나 안 맞는 사료</text>
+  <text x="592" y="446" font-size="16" fill="#A9711A">천천히 먹는 그릇부터 시도</text>
+
+  <!-- 응급 -->
+  <text x="60" y="516" font-size="21" font-weight="800" fill="#B3403C">그날 병원 — 기다리지 마세요</text>
+  <rect x="62" y="526" width="50" height="5" rx="2" fill="#E8825A"/>
+
+  <rect x="60" y="542" width="280" height="112" rx="12" fill="#FBE9E8" stroke="#E8825A" stroke-width="3"/>
+  <circle cx="104" cy="580" r="20" fill="#C24A46"/>
+  <text x="138" y="576" font-size="18" font-weight="700" fill="#B3403C">붉은 것이 섞임</text>
+  <text x="84" y="612" font-size="16" fill="#B3403C">출혈입니다</text>
+  <text x="84" y="636" font-size="16" fill="#B3403C">양이 적어도 봐야 합니다</text>
+
+  <rect x="360" y="542" width="280" height="112" rx="12" fill="#FBE9E8" stroke="#E8825A" stroke-width="3"/>
+  <circle cx="404" cy="580" r="20" fill="#3A322C"/>
+  <text x="438" y="576" font-size="18" font-weight="700" fill="#B3403C">커피 찌꺼기 같은 것</text>
+  <text x="384" y="612" font-size="16" fill="#B3403C">위 출혈이 소화된 상태</text>
+  <text x="384" y="636" font-size="16" fill="#B3403C">응급입니다</text>
+
+  <rect x="660" y="542" width="280" height="112" rx="12" fill="#FBE9E8" stroke="#E8825A" stroke-width="3"/>
+  <circle cx="704" cy="580" r="20" fill="#5E7A3A"/>
+  <text x="738" y="576" font-size="18" font-weight="700" fill="#B3403C">초록빛 + 변 냄새</text>
+  <text x="684" y="612" font-size="16" fill="#B3403C">장이 막혔을 수 있습니다</text>
+  <text x="684" y="636" font-size="16" fill="#B3403C">응급입니다</text>
+
+  <rect x="60" y="672" width="880" height="44" rx="10" fill="#33302B"/>
+  <text x="500" y="700" font-size="18" font-weight="700" fill="#FFFCF7" text-anchor="middle">헛구역질만 하고 아무것도 안 나오는데 배가 부풀었다면 — 색과 상관없이 바로 병원</text>
+
+  <text x="60" y="744" font-size="14" fill="#9a938a">집사의 발견 · jipsa.jaylog.co.kr — 일반 정보이며 진단을 대신하지 않습니다</text>
+</svg>
