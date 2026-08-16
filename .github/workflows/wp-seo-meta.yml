@@ -55,6 +55,22 @@ jobs:
           meta = {"rank_math_description": desc}
           if fk: meta["rank_math_focus_keyword"] = fk
 
+          # 경로 0 — 워드프레스 발췌문(excerpt).
+          # Rank Math 기본 설명 템플릿이 %excerpt% 라서, 발췌문이 비어 있으면 본문 앞부분으로
+          # 떨어진다. 우리 글은 앞부분이 광고표시 문구라 검색결과에 "쿠팡 파트너스…"가 뜬다.
+          # excerpt 는 rank_math_* 와 달리 REST 에 정식 등록된 필드라 실제로 저장된다.
+          ex = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}",
+                             json={"excerpt": desc}, auth=auth, timeout=60)
+          print(f"[excerpt] HTTP {ex.status_code}")
+          if ex.ok:
+              got = (ex.json().get("excerpt") or {}).get("raw", "")
+              if desc[:12] in got:
+                  print("   저장 확인 — 스니펫이 발췌문을 쓰게 됩니다")
+              else:
+                  print(f"   ::warning::발췌문 미반영: {got[:80]}")
+          else:
+              print("   " + ex.text[:200])
+
           def read_meta():
               r = requests.get(f"{base}/wp-json/wp/v2/posts/{pid}",
                                params={"context": "edit"}, auth=auth, timeout=40)
