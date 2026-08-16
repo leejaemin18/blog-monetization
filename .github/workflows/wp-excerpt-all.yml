@@ -1,0 +1,106 @@
+name: 발췌문 일괄 적용 (검색결과 스니펫)
+
+# data/seo_excerpts.csv 를 읽어 각 글의 워드프레스 발췌문(excerpt)을 채운다.
+#
+# 왜: Rank Math 기본 설명 템플릿이 %excerpt% 인데 발췌문이 비어 있으면 본문 앞부분으로
+# 떨어진다. 우리 글은 앞부분이 광고표시 문구라 검색결과에 "쿠팡 파트너스…"가 뜬다.
+# rank_math_description 은 show_in_rest 미등록이라 200을 주고도 저장되지 않는다.
+# excerpt 는 REST 정식 필드라 실제로 저장된다.
+#
+# 본문은 건드리지 않는다. 발췌문만 쓴다.
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_ids:
+        description: '대상 글 번호(콤마). 비우면 CSV 전체'
+        required: false
+        default: ''
+      dry_run:
+        description: '무엇을 쓸지 출력만 하고 저장하지 않기 (y/n)'
+        required: false
+        default: 'n'
+      overwrite:
+        description: '이미 발췌문이 있어도 덮어쓰기 (y/n)'
+        required: false
+        default: 'n'
+
+permissions:
+  contents: read
+
+jobs:
+  excerpt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 발췌문 적용
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          POST_IDS: ${{ github.event.inputs.post_ids }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+          OVERWRITE: ${{ github.event.inputs.overwrite }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, csv, re, html, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          dry = (os.environ.get("DRY_RUN") or "n")[:1].lower() == "y"
+          over = (os.environ.get("OVERWRITE") or "n")[:1].lower() == "y"
+          only = {x.strip() for x in (os.environ.get("POST_IDS") or "").split(",") if x.strip()}
+
+          rows = []
+          with open("data/seo_excerpts.csv", encoding="utf-8") as f:
+              for r in csv.DictReader(f):
+                  pid = (r.get("post_id") or "").strip()
+                  if not pid or pid.startswith("#"):
+                      continue
+                  rows.append((pid, (r.get("slug") or "").strip(), (r.get("description") or "").strip()))
+
+          if only:
+              rows = [r for r in rows if r[0] in only]
+          print(f"대상 {len(rows)}편" + (" · DRY RUN" if dry else ""))
+          print("=" * 66)
+
+          done = skipped = failed = 0
+          for pid, slug, desc in rows:
+              g = requests.get(f"{base}/wp-json/wp/v2/posts/{pid}",
+                               params={"context": "edit"}, auth=auth, timeout=40)
+              if not g.ok:
+                  print(f"X #{pid} 조회 실패 {g.status_code}"); failed += 1; continue
+
+              cur = ((g.json().get("excerpt") or {}).get("raw") or "").strip()
+              cur_txt = html.unescape(re.sub(r"<[^>]+>", "", cur)).strip()
+
+              if cur_txt and not over:
+                  print(f"-  #{pid} {slug} 발췌문 이미 있음 → 건너뜀")
+                  print(f"      현재: {cur_txt[:60]}")
+                  skipped += 1
+                  continue
+
+              if dry:
+                  print(f"·  #{pid} {slug}")
+                  print(f"      → {desc}")
+                  done += 1
+                  continue
+
+              p = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}",
+                                json={"excerpt": desc}, auth=auth, timeout=60)
+              if not p.ok:
+                  print(f"X #{pid} 저장 실패 {p.status_code}: {p.text[:150]}"); failed += 1; continue
+
+              # 200 만으로 믿지 않는다. 다시 읽어서 확인한다.
+              saved = ((p.json().get("excerpt") or {}).get("raw") or "")
+              if desc[:12] in saved:
+                  print(f"O  #{pid} {slug}")
+                  done += 1
+              else:
+                  print(f"X  #{pid} 미반영: {saved[:80]}"); failed += 1
+
+          print("=" * 66)
+          print(f"적용 {done} · 건너뜀 {skipped} · 실패 {failed}")
+          if failed:
+              raise SystemExit(1)
+          PY
