@@ -1,0 +1,176 @@
+name: 시장조사 (판매량순 상품 · 실수요)
+
+# 마케터 에이전트가 "잘 팔릴 아이템"을 감이 아니라 데이터로 정하게 한다.
+#
+# 세션은 쿠팡·네이버쇼핑에 직접 접속할 수 없다(프록시 차단). GitHub 러너가 대신 열어
+# 로그로 뱉고, 마케터가 그 로그를 읽는다.
+#
+# ※ 두 사이트 모두 봇 차단이 있다. 막히면 막혔다고 찍는다. 빈손을 성공으로 위장하지 않는다.
+# ※ 제휴 딥링크는 파트너스 계정에서만 만들 수 있다. 여기서는 "무엇을 고를지"까지만 한다.
+
+on:
+  workflow_dispatch:
+    inputs:
+      keywords:
+        description: '조사할 검색어 (콤마 구분). 예: 고양이 빗, 펫 드라이룸'
+        required: true
+      top_n:
+        description: '검색어당 볼 상품 수'
+        required: false
+        default: '10'
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 조사
+        env:
+          KEYWORDS: ${{ github.event.inputs.keywords }}
+          TOP_N: ${{ github.event.inputs.top_n }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, re, html, json, urllib.parse as up, requests
+
+          kws = [k.strip() for k in (os.environ.get("KEYWORDS") or "").split(",") if k.strip()]
+          topn = int((os.environ.get("TOP_N") or "10").strip() or 10)
+
+          UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
+          H = {"User-Agent": UA, "Accept-Language": "ko-KR,ko;q=0.9",
+               "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"}
+
+          def won(s):
+              d = re.sub(r"[^\d]", "", s or "")
+              return int(d) if d else None
+
+          def coupang(kw):
+              """판매량순 검색. SSR 리스트가 내려오면 파싱되고, 막히면 상태코드를 남긴다."""
+              url = ("https://www.coupang.com/np/search?q=" + up.quote(kw)
+                     + "&sorter=saleCountDesc&listSize=36")
+              try:
+                  r = requests.get(url, headers=H, timeout=25)
+              except Exception as e:
+                  return None, f"예외 {type(e).__name__}", url
+              if not r.ok:
+                  return None, f"HTTP {r.status_code}", url
+              t = r.text
+              items = []
+              for blk in re.findall(r'<li[^>]+class="[^"]*search-product[^"]*"[^>]*>(.*?)</li>', t, re.S)[:topn]:
+                  if "search-product__ad-badge" in blk or "AD" == (re.search(r'>\s*AD\s*<', blk) or [None]) :
+                      ad = True
+                  else:
+                      ad = bool(re.search(r'ad-badge|adMark', blk))
+                  name = re.search(r'class="name"[^>]*>(.*?)</div>', blk, re.S)
+                  price = re.search(r'class="price-value"[^>]*>(.*?)</strong>', blk, re.S)
+                  rate = re.search(r'class="rating"[^>]*>(.*?)</em>', blk, re.S)
+                  cnt = re.search(r'class="rating-total-count"[^>]*>\((.*?)\)</span>', blk, re.S)
+                  if not name:
+                      continue
+                  items.append({
+                      "ad": ad,
+                      "name": html.unescape(re.sub(r"<[^>]+>", "", name.group(1))).strip(),
+                      "price": won(price.group(1)) if price else None,
+                      "rating": (re.sub(r"<[^>]+>", "", rate.group(1)).strip() if rate else None),
+                      "reviews": won(cnt.group(1)) if cnt else None,
+                  })
+              if not items:
+                  hint = "봇 차단(빈 SSR)" if len(t) < 200000 else "구조 변경 가능"
+                  return None, f"HTTP 200 이지만 상품이 안 잡힘 — {hint}", url
+              return items, None, url
+
+          def naver_shop(kw):
+              """네이버쇼핑 — 쿠팡이 막힐 때 가격대·인기 상품군을 가늠하는 보조 지표."""
+              url = "https://search.shopping.naver.com/search/all?query=" + up.quote(kw) + "&sort=rel"
+              try:
+                  r = requests.get(url, headers=H, timeout=25)
+              except Exception as e:
+                  return None, f"예외 {type(e).__name__}", url
+              if not r.ok:
+                  return None, f"HTTP {r.status_code}", url
+              m = re.search(r'__NEXT_DATA__[^>]*>(\{.*?\})</script>', r.text, re.S)
+              if not m:
+                  return None, "HTTP 200 이지만 데이터 블록 없음 — 봇 차단 가능", url
+              try:
+                  data = json.loads(m.group(1))
+              except Exception:
+                  return None, "JSON 파싱 실패", url
+              found = []
+              def walk(o):
+                  if len(found) >= topn: return
+                  if isinstance(o, dict):
+                      if o.get("productTitle") or (o.get("productName") and o.get("price")):
+                          found.append({
+                              "name": re.sub(r"<[^>]+>", "", str(o.get("productTitle") or o.get("productName"))),
+                              "price": won(str(o.get("price") or o.get("lowPrice") or "")),
+                              "reviews": won(str(o.get("reviewCount") or "")),
+                          })
+                      for v in o.values(): walk(v)
+                  elif isinstance(o, list):
+                      for v in o: walk(v)
+              walk(data)
+              return (found or None), (None if found else "상품이 안 잡힘"), url
+
+          def kin_demand(kw):
+              """지식iN 검색 결과 수 — '사람들이 실제로 묻는 양'의 대리 지표."""
+              url = "https://kin.naver.com/search/list.naver?query=" + up.quote(kw)
+              try:
+                  r = requests.get(url, headers=H, timeout=25)
+              except Exception as e:
+                  return None, f"예외 {type(e).__name__}"
+              if not r.ok:
+                  return None, f"HTTP {r.status_code}"
+              m = re.search(r'검색결과[^\d]{0,20}([\d,]+)\s*건', r.text)
+              if not m:
+                  m = re.search(r'class="number"[^>]*>[^\d]*([\d,]+)', r.text)
+              return (won(m.group(1)) if m else None), (None if m else "건수 표기를 못 찾음")
+
+          print(f"검색어 {len(kws)}개 · 상품 {topn}개씩\n")
+
+          for kw in kws:
+              print("=" * 70)
+              print(f"■ {kw}")
+              print("=" * 70)
+
+              dem, derr = kin_demand(kw)
+              if dem is not None:
+                  print(f"[지식iN 실수요] 검색 결과 약 {dem:,}건")
+              else:
+                  print(f"[지식iN 실수요] 확인 못 함 — {derr}")
+
+              items, err, url = coupang(kw)
+              print(f"\n[쿠팡 판매량순] {url}")
+              if err:
+                  print(f"  ::warning::{err}")
+              else:
+                  real = [i for i in items if not i["ad"]]
+                  print(f"  광고 제외 {len(real)}개")
+                  for i, it in enumerate(real, 1):
+                      p = f"{it['price']:,}원" if it["price"] else "가격?"
+                      rv = f"리뷰 {it['reviews']:,}" if it["reviews"] else "리뷰?"
+                      print(f"  {i:>2}. {it['name'][:58]}")
+                      print(f"      {p} · 평점 {it['rating'] or '?'} · {rv}")
+                  ps = [i["price"] for i in real if i["price"]]
+                  if ps:
+                      ps.sort()
+                      mid = ps[len(ps)//2]
+                      print(f"  → 가격대 {min(ps):,}~{max(ps):,}원 · 중앙값 {mid:,}원")
+                      print(f"  → 수수료 3% 가정 시 건당 약 {int(mid*0.03):,}원")
+
+              nitems, nerr, nurl = naver_shop(kw)
+              print(f"\n[네이버쇼핑 참고] {nurl}")
+              if nerr:
+                  print(f"  ::warning::{nerr}")
+              else:
+                  for i, it in enumerate(nitems[:topn], 1):
+                      p = f"{it['price']:,}원" if it["price"] else "가격?"
+                      print(f"  {i:>2}. {it['name'][:58]} — {p}")
+              print()
+
+          print("=" * 70)
+          print("※ 딥링크는 파트너스 계정에서만 생성된다. 운영자에게 상품 1개를 지정해 요청할 것.")
+          print("※ AD 배지 상품은 판매량순이 아니다. 위 목록은 광고를 걸러낸 결과다.")
+          PY
