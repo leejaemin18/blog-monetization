@@ -1,0 +1,166 @@
+name: 서치콘솔 리포트 (노출·클릭·CTR·순위)
+
+# 마케터가 유입을 직접 읽게 한다. 지금까지는 운영자가 화면을 보고 옮겨줘야 했다.
+#
+# 필요한 것: GitHub Secrets 에 GSC_SA_JSON (구글 서비스 계정 키 JSON 전문)
+#   1) console.cloud.google.com 에서 프로젝트 생성 → Search Console API 사용 설정
+#   2) 서비스 계정 만들고 JSON 키 다운로드
+#   3) search.google.com/search-console → 설정 → 사용자 및 권한 →
+#      서비스 계정 이메일(...gserviceaccount.com)을 '제한됨' 권한으로 추가
+#   4) JSON 파일 내용 전체를 GSC_SA_JSON 시크릿에 붙여넣기
+#
+# ※ 서비스 계정을 속성에 추가하지 않으면 403이 난다. 3번을 빼먹기 쉽다.
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: '조회 기간(일). 기본 28'
+        required: false
+        default: '28'
+      site_url:
+        description: "속성 URL (비우면 자동 탐색). 예: sc-domain:jaylog.co.kr"
+        required: false
+        default: ''
+      top_pages:
+        description: '페이지 상위 몇 개'
+        required: false
+        default: '15'
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 조회
+        env:
+          SA_JSON: ${{ secrets.GSC_SA_JSON }}
+          DAYS: ${{ github.event.inputs.days }}
+          SITE_URL: ${{ github.event.inputs.site_url }}
+          TOP_PAGES: ${{ github.event.inputs.top_pages }}
+        run: |
+          pip -q install google-auth requests
+          python3 - <<'PY'
+          import os, json, datetime as dt, requests
+
+          raw = (os.environ.get("SA_JSON") or "").strip()
+          if not raw:
+              print("::error::GSC_SA_JSON 시크릿이 없습니다.")
+              print("""
+          서치콘솔에 사이트가 등록된 것과, 이 워크플로우가 API로 읽는 것은 다릅니다.
+          API로 읽으려면 서비스 계정이 필요합니다.
+
+            1) console.cloud.google.com → 프로젝트 → 'Search Console API' 사용 설정
+            2) 서비스 계정 생성 → 키(JSON) 만들기 → 파일 다운로드
+            3) search.google.com/search-console → 설정 → 사용자 및 권한 →
+               사용자 추가 → 서비스 계정 이메일(...gserviceaccount.com), 권한 '제한됨'
+            4) 저장소 Settings → Secrets and variables → Actions →
+               New repository secret → 이름 GSC_SA_JSON, 값은 JSON 파일 내용 전체
+
+          3번을 빼먹으면 자격증명은 맞아도 403이 납니다.
+          """)
+              raise SystemExit(1)
+
+          try:
+              info = json.loads(raw)
+          except Exception as e:
+              print(f"::error::GSC_SA_JSON 이 올바른 JSON이 아닙니다 ({type(e).__name__}).")
+              print("JSON 파일 내용을 통째로, 따옴표나 줄바꿈 손대지 말고 붙여넣으세요.")
+              raise SystemExit(1)
+
+          from google.oauth2 import service_account
+          from google.auth.transport.requests import Request as GRequest
+
+          creds = service_account.Credentials.from_service_account_info(
+              info, scopes=["https://www.googleapis.com/auth/webmasters.readonly"])
+          creds.refresh(GRequest())
+          H = {"Authorization": f"Bearer {creds.token}", "Content-Type": "application/json"}
+          print(f"서비스 계정: {info.get('client_email')}\n")
+
+          BASE = "https://searchconsole.googleapis.com/webmasters/v3"
+
+          # 속성 결정 — 지정 안 하면 목록에서 우리 도메인을 찾는다
+          site = (os.environ.get("SITE_URL") or "").strip()
+          r = requests.get(f"{BASE}/sites", headers=H, timeout=30)
+          if not r.ok:
+              print(f"::error::속성 목록 조회 실패 {r.status_code}: {r.text[:300]}")
+              raise SystemExit(1)
+          entries = r.json().get("siteEntry", [])
+          if not entries:
+              print("::error::이 서비스 계정에 연결된 속성이 없습니다.")
+              print("  서치콘솔 → 설정 → 사용자 및 권한 에서 서비스 계정 이메일을 추가하세요.")
+              raise SystemExit(1)
+
+          print("접근 가능한 속성:")
+          for e in entries:
+              print(f"  · {e.get('siteUrl')}  ({e.get('permissionLevel')})")
+          print()
+
+          if not site:
+              cand = [e["siteUrl"] for e in entries if "jaylog" in e.get("siteUrl", "")]
+              site = cand[0] if cand else entries[0]["siteUrl"]
+          print(f"조회 속성: {site}\n")
+
+          days = int((os.environ.get("DAYS") or "28").strip() or 28)
+          topn = int((os.environ.get("TOP_PAGES") or "15").strip() or 15)
+          # 서치콘솔 데이터는 2~3일 지연된다. 오늘을 끝으로 잡으면 빈 구간이 섞인다.
+          end = dt.date.today() - dt.timedelta(days=3)
+          start = end - dt.timedelta(days=days - 1)
+          print(f"기간: {start} ~ {end} ({days}일, 데이터 지연 3일 반영)\n")
+
+          def q(dims, limit=25):
+              body = {"startDate": str(start), "endDate": str(end),
+                      "dimensions": dims, "rowLimit": limit}
+              rr = requests.post(f"{BASE}/sites/{requests.utils.quote(site, safe='')}/searchAnalytics/query",
+                                 headers=H, json=body, timeout=60)
+              if not rr.ok:
+                  print(f"::warning::쿼리 실패({dims}) {rr.status_code}: {rr.text[:200]}")
+                  return []
+              return rr.json().get("rows", [])
+
+          print("=" * 72)
+          print("■ 전체 합계")
+          print("=" * 72)
+          tot = q([], 1)
+          if not tot:
+              print("  데이터가 없습니다.")
+              print("  발행 직후이거나 아직 색인이 안 됐을 수 있습니다. 이건 정상입니다.")
+          else:
+              t = tot[0]
+              print(f"  노출 {int(t['impressions']):,}  ·  클릭 {int(t['clicks']):,}  ·  "
+                    f"CTR {t['ctr']*100:.2f}%  ·  평균순위 {t['position']:.1f}")
+
+          print()
+          print("=" * 72)
+          print(f"■ 페이지 상위 {topn}")
+          print("=" * 72)
+          rows = q(["page"], topn)
+          if not rows:
+              print("  없음")
+          for i, x in enumerate(rows, 1):
+              page = x["keys"][0].split("jaylog.co.kr")[-1] or "/"
+              print(f"  {i:>2}. {page[:52]}")
+              print(f"      노출 {int(x['impressions']):>6,} · 클릭 {int(x['clicks']):>4,} · "
+                    f"CTR {x['ctr']*100:>5.2f}% · 순위 {x['position']:>5.1f}")
+
+          print()
+          print("=" * 72)
+          print("■ 검색어 상위 25")
+          print("=" * 72)
+          rows = q(["query"], 25)
+          if not rows:
+              print("  없음 — 노출이 아직 안 잡혔다는 뜻입니다.")
+          for i, x in enumerate(rows, 1):
+              print(f"  {i:>2}. {x['keys'][0][:40]:<40} 노출 {int(x['impressions']):>5,} · "
+                    f"클릭 {int(x['clicks']):>3,} · CTR {x['ctr']*100:>5.2f}% · 순위 {x['position']:>5.1f}")
+
+          print()
+          print("=" * 72)
+          print("■ 판단 기준 (마케터용)")
+          print("=" * 72)
+          print("  노출 0        → 색인 문제. 순위·CTR·카드 얘기를 꺼내지 말 것")
+          print("  노출 O 클릭 0 → 제목·스니펫 문제. wp-seo-meta.yml 로 교체")
+          print("  클릭 O 전환 0 → 카드 위치·문구. 단, 클릭 수가 수백 미만이면 표본 부족")
+          PY
