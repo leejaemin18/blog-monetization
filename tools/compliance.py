@@ -36,15 +36,25 @@ DISCLOSURE_PATTERNS = [
 ]
 BAD_DISCLOSURE_ONLY = [r"체험\s*후기", r"홍보성\s*글", r"소정의\s*원고료"]
 
+# 발행 파이프라인 흔적. [[PRODUCT:키]] 는 wp-rewrite-post.yml 이 상품 카드로 치환하고,
+# 같은 워크플로우가 광고표시 문구를 본문 맨 위에 무조건 삽입한다.
+# 그래서 초안 자체에는 문구가 없는 게 정상이다 — 넣으면 발행본에 두 번 나온다.
+PRODUCT_TOKEN = re.compile(r"\[\[PRODUCT:")
+# 초안에 제휴 링크가 직접 박혀 있으면 파이프라인 밖으로 나갈 수 있다는 뜻이다.
+RAW_AFFILIATE_LINK = re.compile(r"link\.coupang\.com|partners\.coupang\.com")
+
 
 @check("ERROR", "광고 표시 문구")
 def c_disclosure(text, is_affiliate):
     if not is_affiliate:
         return None
-    if not any(re.search(p, text) for p in DISCLOSURE_PATTERNS):
-        return ("제휴 글인데 경제적 이해관계 공개 문구가 없습니다. "
-                "'제휴 링크가 포함되며 구매 시 수수료를 받습니다' 등을 제목/첫 부분에 넣으세요.")
-    return None
+    if any(re.search(p, text) for p in DISCLOSURE_PATTERNS):
+        return None
+    # 파이프라인 초안이면 wp-rewrite-post.yml 이 상단에 넣어준다. 여기서 또 넣으면 중복이다.
+    if PRODUCT_TOKEN.search(text) and not RAW_AFFILIATE_LINK.search(text):
+        return None
+    return ("제휴 글인데 경제적 이해관계 공개 문구가 없습니다. "
+            "'제휴 링크가 포함되며 구매 시 수수료를 받습니다' 등을 제목/첫 부분에 넣으세요.")
 
 
 @check("ERROR", "광고 표시 위치(첫 부분)")
@@ -57,6 +67,19 @@ def c_disclosure_position(text, is_affiliate):
         re.search(p, head) for p in DISCLOSURE_PATTERNS
     ):
         return "광고 표시 문구가 본문 뒷부분에만 있습니다. 제목 또는 첫 문단으로 옮기세요."
+    return None
+
+
+@check("INFO", "광고 표시 — 파이프라인 삽입")
+def c_disclosure_pipeline(text, is_affiliate):
+    """초안에 문구가 없어도 정상인 경우를 명시적으로 알려준다."""
+    if not is_affiliate:
+        return None
+    if any(re.search(p, text) for p in DISCLOSURE_PATTERNS):
+        return None
+    if PRODUCT_TOKEN.search(text) and not RAW_AFFILIATE_LINK.search(text):
+        return ("광고표시 문구는 발행 워크플로우가 본문 맨 위에 넣습니다. "
+                "초안에 직접 쓰지 마세요 — 발행본에 두 번 나옵니다.")
     return None
 
 
@@ -374,7 +397,16 @@ def c_hedging(text, is_affiliate):
 
 
 def detect_affiliate(text):
-    kws = [r"제휴", r"쿠팡", r"파트너스", r"할인\s*코드", r"쿠폰", r"affiliate", r"Trip\.com"]
+    """제휴 글인가.
+
+    [[PRODUCT:키]] 토큰만 있고 '쿠팡'이라는 낱말이 본문에 없는 초안이 제휴가 아닌 것으로
+    판정돼 광고표시·확인일 검사를 통째로 건너뛰던 문제가 있었다(2026-08-17 발견).
+    상품 카드가 들어갈 자리가 있으면 제휴 글이다.
+    """
+    if PRODUCT_TOKEN.search(text) or RAW_AFFILIATE_LINK.search(text):
+        return True
+    kws = [r"제휴", r"쿠팡", r"coupang", r"파트너스", r"할인\s*코드", r"쿠폰",
+           r"affiliate", r"Trip\.com"]
     return any(re.search(k, text, re.IGNORECASE) for k in kws)
 
 
