@@ -123,11 +123,17 @@ jobs:
                   return None, f"예외 {type(e).__name__}"
               if not r.ok:
                   return None, f"HTTP {r.status_code}"
-              m = re.search(r'검색결과[^\d]{0,20}([\d,]+)\s*건', r.text)
+              # 폴백 정규식(class="number")은 페이지 곳곳의 숫자에 오매치해서
+              # 어떤 키워드든 "1건"을 반환했다. 틀린 숫자는 없는 것보다 나쁘다 — 폴백을 뺀다.
+              m = re.search(r'검색결과[^\d]{0,20}([\d,]{2,})\s*건', r.text)
               if not m:
-                  m = re.search(r'class="number"[^>]*>[^\d]*([\d,]+)', r.text)
-              return (won(m.group(1)) if m else None), (None if m else "건수 표기를 못 찾음")
+                  return None, "건수 표기를 못 찾음 (구조 변경). 이 지표는 쓰지 말 것"
+              n = won(m.group(1))
+              if n is None or n < 10:
+                  return None, f"파싱값이 비정상({n}) — 오파싱으로 보고 버린다"
+              return n, None
 
+          blocked = 0
           print(f"검색어 {len(kws)}개 · 상품 {topn}개씩\n")
 
           for kw in kws:
@@ -144,6 +150,7 @@ jobs:
               items, err, url = coupang(kw)
               print(f"\n[쿠팡 판매량순] {url}")
               if err:
+                  blocked += 1
                   print(f"  ::warning::{err}")
               else:
                   real = [i for i in items if not i["ad"]]
@@ -163,6 +170,7 @@ jobs:
               nitems, nerr, nurl = naver_shop(kw)
               print(f"\n[네이버쇼핑 참고] {nurl}")
               if nerr:
+                  blocked += 1
                   print(f"  ::warning::{nerr}")
               else:
                   for i, it in enumerate(nitems[:topn], 1):
@@ -171,6 +179,13 @@ jobs:
               print()
 
           print("=" * 70)
+          if blocked == len(kws) * 2 and kws:
+              print("::warning::쇼핑 사이트 조회가 전부 차단됐습니다.")
+              print("  GitHub 러너 IP는 쿠팡(403)·네이버쇼핑(418)에서 차단되는 경우가 많습니다.")
+              print("  상품 데이터 없이 객단가를 추정하지 마세요. 아래 방법으로 대체합니다:")
+              for kw in kws:
+                  print(f"    · {kw}: https://www.coupang.com/np/search?q={up.quote(kw)}&sorter=saleCountDesc")
+              print("  → 운영자가 브라우저에서 열어 AD 제외 상위 5개의 상품명·가격·평점·리뷰수를 붙여주면 됩니다.")
           print("※ 딥링크는 파트너스 계정에서만 생성된다. 운영자에게 상품 1개를 지정해 요청할 것.")
           print("※ AD 배지 상품은 판매량순이 아니다. 위 목록은 광고를 걸러낸 결과다.")
           PY
