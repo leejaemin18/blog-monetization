@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="720" fill="#FFFCF7"/>
+
+  <text x="56" y="66" font-size="37" font-weight="800" fill="#33302B">턱드름은 어디에 앉고 <tspan fill="#2F9C95">혀는 어디까지 닿나</tspan></text>
+  <rect x="58" y="84" width="90" height="8" rx="4" fill="#E8825A"/>
+  <text x="58" y="122" font-size="18" fill="#8A8378">검은 점이 앉는 자리와 고양이가 스스로 닦는 범위를 겹쳐 보면 사각지대가 드러납니다.</text>
+
+  <!-- ── 왼쪽: 부위 지도 ───────────────────────────────── -->
+  <rect x="56" y="146" width="548" height="454" rx="16" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+
+  <!-- 앞발로 닦는 범위 (점선 틸) -->
+  <ellipse cx="344" cy="298" rx="118" ry="90" fill="#2F9C95" fill-opacity="0.10" stroke="#2F9C95" stroke-width="3" stroke-dasharray="9 7"/>
+
+  <!-- 혀가 직접 닿는 범위 (실선 틸) -->
+  <path d="M 404,470 C 458,496 494,536 506,594 L 318,594 C 316,556 310,528 292,504 Z"
+        fill="#2F9C95" fill-opacity="0.16" stroke="#2F9C95" stroke-width="3"/>
+
+  <!-- 고양이 옆모습 실루엣 -->
+  <path d="M 175,336
+           C 168,316 190,298 216,290
+           L 240,262 L 246,184 L 302,232
+           L 372,214 L 428,180 L 440,254
+           C 452,302 448,372 416,418
+           C 462,452 494,522 506,594
+           L 302,594
+           C 302,536 292,486 268,452
+           C 240,432 214,420 202,400
+           C 190,384 180,360 175,336 Z"
+        fill="none" stroke="#33302B" stroke-width="3.5" stroke-linejoin="round"/>
+
+  <!-- 귀 안쪽 -->
+  <path d="M 258,206 L 262,240 L 292,236 Z" fill="#E8825A" fill-opacity="0.35"/>
+  <path d="M 424,206 L 430,242 L 402,232 Z" fill="#E8825A" fill-opacity="0.35"/>
+
+  <!-- 주둥이 -->
+  <ellipse cx="236" cy="352" rx="66" ry="46" fill="none" stroke="#33302B" stroke-width="2.5" stroke-opacity="0.4"/>
+  <path d="M 178,332 L 200,326 L 190,346 Z" fill="#33302B"/>
+  <path d="M 190,346 L 190,362 M 190,362 C 178,372 172,364 170,358 M 190,362 C 202,372 210,364 212,358"
+        fill="none" stroke="#33302B" stroke-width="2.5" stroke-linecap="round"/>
+  <ellipse cx="298" cy="298" rx="11" ry="14" fill="#33302B"/>
+
+  <!-- 수염 -->
+  <g stroke="#33302B" stroke-width="1.6" stroke-opacity="0.4" stroke-linecap="round" fill="none">
+    <path d="M 186,318 C 150,300 128,296 106,300"/>
+    <path d="M 190,330 C 152,322 128,322 104,328"/>
+    <path d="M 194,342 C 156,344 132,350 110,358"/>
+  </g>
+
+  <!-- 사각지대 (점선 코랄) -->
+  <ellipse cx="274" cy="430" rx="100" ry="56" transform="rotate(-11 274 430)"
+           fill="#E8825A" fill-opacity="0.16" stroke="#E8825A" stroke-width="3.5" stroke-dasharray="10 8"/>
+
+  <!-- 검은 점(면포) -->
+  <g fill="#33302B">
+    <circle cx="230" cy="402" r="3.4"/><circle cx="246" cy="410" r="3"/><circle cx="250" cy="420" r="2.6"/>
+    <circle cx="264" cy="426" r="3.4"/><circle cx="278" cy="434" r="3"/><circle cx="262" cy="438" r="2.6"/>
+    <circle cx="284" cy="446" r="3.4"/><circle cx="272" cy="452" r="2.8"/><circle cx="296" cy="458" r="3"/>
+    <circle cx="288" cy="468" r="2.6"/><circle cx="308" cy="472" r="3"/>
+  </g>
+
+  <!-- 부위 번호 -->
+  <g font-size="17" font-weight="800" fill="#FFFFFF" text-anchor="middle">
+    <circle cx="214" cy="380" r="15" fill="#E8825A"/><text x="214" y="386">1</text>
+    <circle cx="250" cy="436" r="15" fill="#E8825A"/><text x="250" y="442">2</text>
+    <circle cx="318" cy="468" r="15" fill="#E8825A"/><text x="318" y="474">3</text>
+  </g>
+
+  <text x="344" y="192" font-size="16" fill="#217B75" text-anchor="middle">앞발로 닦는 쪽</text>
+  <text x="492" y="582" font-size="16" fill="#217B75" text-anchor="end">혀가 닿는 쪽</text>
+
+  <!-- ── 오른쪽: 범례 ─────────────────────────────────── -->
+  <rect x="624" y="146" width="320" height="454" rx="16" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+
+  <text x="650" y="186" font-size="19" font-weight="800" fill="#B3403C">검은 점이 앉는 자리</text>
+  <line x1="650" y1="198" x2="918" y2="198" stroke="#EAE3D8" stroke-width="2"/>
+
+  <g font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">
+    <circle cx="664" cy="226" r="14" fill="#E8825A"/><text x="664" y="232">1</text>
+    <circle cx="664" cy="268" r="14" fill="#E8825A"/><text x="664" y="274">2</text>
+    <circle cx="664" cy="310" r="14" fill="#E8825A"/><text x="664" y="316">3</text>
+  </g>
+  <g font-size="17" fill="#33302B">
+    <text x="690" y="232">아랫입술 가장자리</text>
+    <text x="690" y="274">아래턱 밑 정중앙</text>
+    <text x="690" y="316">목 앞쪽 위</text>
+  </g>
+
+  <text x="650" y="368" font-size="19" font-weight="800" fill="#217B75">그루밍이 닿는 범위</text>
+  <line x1="650" y1="380" x2="918" y2="380" stroke="#EAE3D8" stroke-width="2"/>
+
+  <rect x="650" y="398" width="28" height="18" rx="4" fill="#2F9C95" fill-opacity="0.16" stroke="#2F9C95" stroke-width="2.5"/>
+  <text x="690" y="412" font-size="16" font-weight="700" fill="#33302B">혀가 직접 닿는 곳</text>
+  <text x="690" y="434" font-size="15" fill="#8A8378">가슴 · 배 · 옆구리 · 앞다리</text>
+
+  <rect x="650" y="460" width="28" height="18" rx="4" fill="#2F9C95" fill-opacity="0.10" stroke="#2F9C95" stroke-width="2.5" stroke-dasharray="6 5"/>
+  <text x="690" y="474" font-size="16" font-weight="700" fill="#33302B">앞발로 닦는 곳</text>
+  <text x="690" y="496" font-size="15" fill="#8A8378">볼 · 눈가 · 귀 뒤</text>
+
+  <rect x="650" y="522" width="28" height="18" rx="4" fill="#E8825A" fill-opacity="0.16" stroke="#E8825A" stroke-width="2.5" stroke-dasharray="6 5"/>
+  <text x="690" y="536" font-size="16" font-weight="700" fill="#B3403C">어느 쪽도 안 닿는 곳</text>
+  <text x="690" y="558" font-size="15" fill="#8A8378">아래턱 밑</text>
+
+  <rect x="650" y="572" width="268" height="28" rx="6" fill="#FBF1DE"/>
+  <text x="784" y="591" font-size="15" fill="#A9711A" text-anchor="middle">그릇 테두리가 매일 닿는 자리</text>
+
+  <!-- ── 하단 ─────────────────────────────────────────── -->
+  <rect x="56" y="620" width="888" height="76" rx="12" fill="#FFF4EE" stroke="#E8825A" stroke-width="2.5"/>
+  <text x="80" y="653" font-size="18" font-weight="700" fill="#33302B">이 한 자리는 고양이가 스스로 관리하지 못합니다. 청결보다 <tspan fill="#B3403C">매일 닿는 면</tspan>을 먼저 봅니다.</text>
+  <text x="80" y="678" font-size="14" fill="#8A8378">부위 표시는 이해를 돕기 위한 도식입니다. 감별과 진단은 병원에서 하세요.</text>
+</svg>
