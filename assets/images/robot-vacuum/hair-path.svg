@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="720" fill="#FFFCF7"/>
+
+  <text x="56" y="62" font-size="36" font-weight="800" fill="#33302B">털 한 올이 만나는 <tspan fill="#2F9C95">세 가지 갈림길</tspan></text>
+  <rect x="58" y="80" width="90" height="8" rx="4" fill="#E8825A"/>
+  <text x="58" y="118" font-size="18" fill="#8A8378">감기는 자리는 축 한 곳입니다. 그 축을 어떻게 하느냐로 결과가 갈려요.</text>
+
+  <rect x="56" y="140" width="888" height="524" rx="16" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+  <text x="84" y="176" font-size="17" fill="#8A8378">축이 문제라면 답은 둘 — 감기지 않게 만들거나, 축을 아예 없애거나.</text>
+
+  <!-- ── 들어오는 길: 바닥 → 흡입구 ─────────────────────── -->
+  <line x1="76" y1="438" x2="300" y2="438" stroke="#33302B" stroke-width="3"/>
+  <g stroke="#8A8378" stroke-width="1.6" stroke-opacity="0.5">
+    <line x1="86" y1="446" x2="76" y2="456"/><line x1="116" y1="446" x2="106" y2="456"/>
+    <line x1="146" y1="446" x2="136" y2="456"/><line x1="176" y1="446" x2="166" y2="456"/>
+    <line x1="206" y1="446" x2="196" y2="456"/><line x1="236" y1="446" x2="226" y2="456"/>
+    <line x1="266" y1="446" x2="256" y2="456"/><line x1="296" y1="446" x2="286" y2="456"/>
+  </g>
+  <polygon points="168,438 252,438 274,380 190,380" fill="#F1EBE0" stroke="#EAE3D8" stroke-width="2"/>
+  <text x="222" y="366" font-size="16" fill="#8A8378" text-anchor="middle">흡입구</text>
+  <text x="84" y="416" font-size="15" font-weight="700" fill="#E8825A">털 한 올</text>
+
+  <!-- ── 갈림 경로 (코랄) ──────────────────────────────── -->
+  <path d="M 86,434 C 130,428 168,438 196,428 C 226,417 252,410 300,402" fill="none" stroke="#E8825A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 300,402 C 332,402 336,248 368,248" fill="none" stroke="#E8825A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 300,402 L 368,402" fill="none" stroke="#E8825A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 300,402 C 332,402 336,556 368,556" fill="none" stroke="#E8825A" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="300" cy="402" r="7" fill="#E8825A"/>
+
+  <!-- ── 갈래 A · 강모 롤러 : 축에 감김 ─────────────────── -->
+  <circle cx="420" cy="248" r="52" fill="#FFFFFF" stroke="#33302B" stroke-width="3"/>
+  <g stroke="#33302B" stroke-width="2" stroke-opacity="0.5">
+    <line x1="420" y1="218" x2="420" y2="200"/><line x1="441" y1="227" x2="454" y2="214"/>
+    <line x1="450" y1="248" x2="468" y2="248"/><line x1="441" y1="269" x2="454" y2="282"/>
+    <line x1="420" y1="278" x2="420" y2="296"/><line x1="399" y1="269" x2="386" y2="282"/>
+    <line x1="390" y1="248" x2="372" y2="248"/><line x1="399" y1="227" x2="386" y2="214"/>
+  </g>
+  <circle cx="420" cy="248" r="16" fill="#FFFFFF" stroke="#33302B" stroke-width="3"/>
+  <g fill="none" stroke="#E8825A" stroke-width="3.2" stroke-linecap="round">
+    <circle cx="420" cy="248" r="21"/>
+    <path d="M 445,252 A 25,25 0 1 1 417,223"/>
+    <path d="M 417,223 A 29,29 0 1 0 449,239"/>
+  </g>
+  <line x1="476" y1="248" x2="528" y2="248" stroke="#8A8378" stroke-width="2.5" stroke-dasharray="7 6"/>
+  <circle cx="560" cy="248" r="26" fill="#E8825A"/>
+  <path d="M 550,238 L 570,258 M 570,238 L 550,258" stroke="#FFFCF7" stroke-width="4" stroke-linecap="round"/>
+  <text x="650" y="242" font-size="21" font-weight="800" fill="#33302B">강모 롤러</text>
+  <text x="650" y="272" font-size="16" fill="#5b554d">축에 감겨 며칠 만에 멈춥니다</text>
+
+  <!-- ── 갈래 B · 고무 롤러 : 훑고 지나감 ───────────────── -->
+  <circle cx="420" cy="402" r="52" fill="#2F9C95" fill-opacity="0.12" stroke="#2F9C95" stroke-width="3"/>
+  <g fill="none" stroke="#2F9C95" stroke-width="2.2" stroke-opacity="0.7">
+    <path d="M 386,368 L 420,402"/><path d="M 404,360 L 458,414"/><path d="M 436,360 L 382,414"/>
+    <path d="M 456,378 L 422,412"/>
+  </g>
+  <circle cx="420" cy="402" r="16" fill="#FFFFFF" stroke="#33302B" stroke-width="3"/>
+  <path d="M 364,404 A 60,60 0 0 1 476,404 L 510,400" fill="none" stroke="#E8825A" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="508,390 524,398 508,406" fill="#E8825A"/>
+  <rect x="528" y="372" width="86" height="62" rx="8" fill="#2F9C95" fill-opacity="0.12" stroke="#2F9C95" stroke-width="2.5"/>
+  <text x="571" y="409" font-size="16" font-weight="700" fill="#2F9C95" text-anchor="middle">먼지통</text>
+  <text x="650" y="396" font-size="21" font-weight="800" fill="#33302B">고무 롤러</text>
+  <text x="650" y="426" font-size="16" fill="#5b554d">표면에서 미끄러져 먼지통까지</text>
+
+  <!-- ── 갈래 C · 롤러 없는 흡입형 : 바로 먼지통 ────────── -->
+  <circle cx="420" cy="556" r="52" fill="#FFFCF7" stroke="#EAE3D8" stroke-width="3" stroke-dasharray="9 8"/>
+  <text x="420" y="528" font-size="16" fill="#8A8378" text-anchor="middle">롤러 없음</text>
+  <path d="M 368,556 L 510,556" fill="none" stroke="#E8825A" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="508,548 524,556 508,564" fill="#E8825A"/>
+  <rect x="528" y="526" width="86" height="62" rx="8" fill="#2F9C95" fill-opacity="0.12" stroke="#2F9C95" stroke-width="2.5"/>
+  <text x="571" y="563" font-size="16" font-weight="700" fill="#2F9C95" text-anchor="middle">먼지통</text>
+  <text x="650" y="538" font-size="21" font-weight="800" fill="#33302B">롤러 없는 흡입형</text>
+  <text x="650" y="568" font-size="16" fill="#5b554d">감길 축이 없어 멈추지 않아요</text>
+  <text x="650" y="594" font-size="16" fill="#E8825A">다만 카펫에 박힌 털은 약합니다</text>
+
+  <text x="56" y="700" font-size="14" fill="#8A8378">※ 구조를 이해하기 위한 도식입니다. 내부 배치와 부품 모양은 모델마다 다릅니다.</text>
+</svg>
