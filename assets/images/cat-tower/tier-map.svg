@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="720" fill="#FFFCF7"/>
+
+  <text x="56" y="60" font-size="35" font-weight="800" fill="#33302B">겉모습은 같은데 <tspan fill="#2F9C95">길이 다릅니다</tspan></text>
+  <rect x="58" y="78" width="90" height="8" rx="4" fill="#E8825A"/>
+  <text x="58" y="114" font-size="18" fill="#8A8378">층수를 세지 말고, 층마다 오르내리는 길이 몇 개인지 세어 보세요. 둘 다 5층입니다.</text>
+
+  <!-- ══════════ A 캣타워 ══════════ -->
+  <rect x="56" y="134" width="434" height="548" rx="16" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+  <text x="273" y="170" font-size="21" font-weight="800" fill="#33302B" text-anchor="middle">A 캣타워</text>
+
+  <!-- 실루엣 A -->
+  <rect x="181" y="386" width="184" height="14" rx="4" fill="#F1EBE0" stroke="#EAE3D8" stroke-width="2"/>
+  <rect x="265" y="216" width="16" height="170" fill="#F1EBE0" stroke="#EAE3D8" stroke-width="2"/>
+  <rect x="187" y="336" width="78" height="50" rx="6" fill="#FFFFFF" stroke="#33302B" stroke-width="2"/>
+  <circle cx="226" cy="364" r="13" fill="#F1EBE0" stroke="#33302B" stroke-width="1.5"/>
+  <rect x="317" y="332" width="10" height="54" fill="#F1EBE0" stroke="#EAE3D8" stroke-width="2"/>
+  <rect x="281" y="320" width="84" height="12" rx="3" fill="#FFFFFF" stroke="#33302B" stroke-width="2"/>
+  <rect x="318" y="296" width="8" height="24" fill="#F1EBE0" stroke="#EAE3D8" stroke-width="2"/>
+  <circle cx="322" cy="268" r="28" fill="#FFFFFF" stroke="#33302B" stroke-width="2"/>
+  <path d="M 305,258 A 22,22 0 0 1 339,258" fill="none" stroke="#EAE3D8" stroke-width="3"/>
+  <rect x="217" y="212" width="96" height="12" rx="3" fill="#FFFFFF" stroke="#33302B" stroke-width="2"/>
+  <g font-size="13" font-weight="700" fill="#FFFCF7" text-anchor="middle">
+    <circle cx="171" cy="361" r="12" fill="#33302B"/><text x="171" y="366">2</text>
+    <circle cx="381" cy="326" r="12" fill="#33302B"/><text x="381" y="331">3</text>
+    <circle cx="374" cy="240" r="12" fill="#33302B"/><text x="374" y="245">4</text>
+    <circle cx="199" cy="218" r="12" fill="#33302B"/><text x="199" y="223">5</text>
+  </g>
+  <text x="273" y="412" font-size="14" fill="#8A8378" text-anchor="middle">2 은신처 · 3 중간 발판 · 4 투명 캡슐 · 5 전망대</text>
+
+  <line x1="80" y1="432" x2="466" y2="432" stroke="#EAE3D8" stroke-width="2" stroke-dasharray="7 6"/>
+  <text x="80" y="458" font-size="15" font-weight="700" fill="#8A8378">층 연결도</text>
+
+  <!-- 연결도 A : 2-3 사이만 통하고 4·5는 길이 하나 -->
+  <g stroke="#2F9C95" stroke-width="3" stroke-linecap="round">
+    <line x1="203" y1="592" x2="203" y2="548"/>
+    <line x1="203" y1="548" x2="277" y2="516"/>
+  </g>
+  <g stroke="#E8825A" stroke-width="3" stroke-linecap="round">
+    <line x1="277" y1="516" x2="345" y2="482"/>
+    <line x1="277" y1="516" x2="233" y2="474"/>
+  </g>
+  <rect x="173" y="586" width="200" height="12" rx="6" fill="#EAE3D8"/>
+  <text x="273" y="618" font-size="14" fill="#8A8378" text-anchor="middle">바닥</text>
+  <g font-size="15" font-weight="800" text-anchor="middle">
+    <circle cx="203" cy="548" r="18" fill="#FFFFFF" stroke="#2F9C95" stroke-width="3"/><text x="203" y="554" fill="#2F9C95">2</text>
+    <circle cx="277" cy="516" r="18" fill="#FFFFFF" stroke="#2F9C95" stroke-width="3"/><text x="277" y="522" fill="#2F9C95">3</text>
+    <circle cx="345" cy="482" r="18" fill="#FFFFFF" stroke="#E8825A" stroke-width="3"/><text x="345" y="488" fill="#E8825A">4</text>
+    <circle cx="233" cy="474" r="18" fill="#FFFFFF" stroke="#E8825A" stroke-width="3"/><text x="233" y="480" fill="#E8825A">5</text>
+  </g>
+  <text x="80" y="652" font-size="17" font-weight="800" fill="#E8825A">막다른 층 2개</text>
+  <text x="80" y="674" font-size="15" fill="#5b554d">4·5는 들어간 길로만 나옵니다. 잠깐 올라갔다 내려오는 자리로 끝나요.</text>
+
+  <!-- ══════════ B 캣타워 ══════════ -->
+  <rect x="510" y="134" width="434" height="548" rx="16" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+  <text x="727" y="170" font-size="21" font-weight="800" fill="#33302B" text-anchor="middle">B 캣타워</text>
+
+  <!-- 실루엣 B (A와 동일) -->
+  <rect x="635" y="386" width="184" height="14" rx="4" fill="#F1EBE0" stroke="#EAE3D8" stroke-width="2"/>
+  <rect x="719" y="216" width="16" height="170" fill="#F1EBE0" stroke="#EAE3D8" stroke-width="2"/>
+  <rect x="641" y="336" width="78" height="50" rx="6" fill="#FFFFFF" stroke="#33302B" stroke-width="2"/>
+  <circle cx="680" cy="364" r="13" fill="#F1EBE0" stroke="#33302B" stroke-width="1.5"/>
+  <rect x="771" y="332" width="10" height="54" fill="#F1EBE0" stroke="#EAE3D8" stroke-width="2"/>
+  <rect x="735" y="320" width="84" height="12" rx="3" fill="#FFFFFF" stroke="#33302B" stroke-width="2"/>
+  <rect x="772" y="296" width="8" height="24" fill="#F1EBE0" stroke="#EAE3D8" stroke-width="2"/>
+  <circle cx="776" cy="268" r="28" fill="#FFFFFF" stroke="#33302B" stroke-width="2"/>
+  <path d="M 759,258 A 22,22 0 0 1 793,258" fill="none" stroke="#EAE3D8" stroke-width="3"/>
+  <rect x="671" y="212" width="96" height="12" rx="3" fill="#FFFFFF" stroke="#33302B" stroke-width="2"/>
+  <g font-size="13" font-weight="700" fill="#FFFCF7" text-anchor="middle">
+    <circle cx="625" cy="361" r="12" fill="#33302B"/><text x="625" y="366">2</text>
+    <circle cx="835" cy="326" r="12" fill="#33302B"/><text x="835" y="331">3</text>
+    <circle cx="828" cy="240" r="12" fill="#33302B"/><text x="828" y="245">4</text>
+    <circle cx="653" cy="218" r="12" fill="#33302B"/><text x="653" y="223">5</text>
+  </g>
+  <text x="727" y="412" font-size="14" fill="#8A8378" text-anchor="middle">2 은신처 · 3 중간 발판 · 4 투명 캡슐 · 5 전망대</text>
+
+  <line x1="534" y1="432" x2="920" y2="432" stroke="#EAE3D8" stroke-width="2" stroke-dasharray="7 6"/>
+  <text x="534" y="458" font-size="15" font-weight="700" fill="#8A8378">층 연결도</text>
+
+  <!-- 연결도 B : 모든 층에 길이 둘 이상 -->
+  <g stroke="#2F9C95" stroke-width="3" stroke-linecap="round">
+    <line x1="657" y1="592" x2="657" y2="548"/>
+    <line x1="731" y1="592" x2="731" y2="516"/>
+    <line x1="657" y1="548" x2="731" y2="516"/>
+    <line x1="731" y1="516" x2="799" y2="482"/>
+    <line x1="799" y1="482" x2="687" y2="474"/>
+    <line x1="687" y1="474" x2="731" y2="516"/>
+  </g>
+  <rect x="627" y="586" width="200" height="12" rx="6" fill="#EAE3D8"/>
+  <text x="727" y="618" font-size="14" fill="#8A8378" text-anchor="middle">바닥</text>
+  <g font-size="15" font-weight="800" text-anchor="middle">
+    <circle cx="657" cy="548" r="18" fill="#FFFFFF" stroke="#2F9C95" stroke-width="3"/><text x="657" y="554" fill="#2F9C95">2</text>
+    <circle cx="731" cy="516" r="18" fill="#FFFFFF" stroke="#2F9C95" stroke-width="3"/><text x="731" y="522" fill="#2F9C95">3</text>
+    <circle cx="799" cy="482" r="18" fill="#FFFFFF" stroke="#2F9C95" stroke-width="3"/><text x="799" y="488" fill="#2F9C95">4</text>
+    <circle cx="687" cy="474" r="18" fill="#FFFFFF" stroke="#2F9C95" stroke-width="3"/><text x="687" y="480" fill="#2F9C95">5</text>
+  </g>
+  <text x="534" y="652" font-size="17" font-weight="800" fill="#2F9C95">막다른 층 0개</text>
+  <text x="534" y="674" font-size="15" fill="#5b554d">모든 층에 길이 둘. 한 마리가 통로를 막아도 다른 길로 나옵니다.</text>
+
+  <text x="56" y="708" font-size="14" fill="#8A8378">※ 층 구성을 이해하기 위한 도식입니다. 실제 제품의 층 연결은 상세 이미지에서 직접 세어 확인하세요.</text>
+</svg>
