@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" font-family="Noto Sans CJK KR, Noto Sans KR, sans-serif">
+  <rect width="1000" height="720" fill="#FFFCF7"/>
+
+  <text x="56" y="62" font-size="36" font-weight="800" fill="#33302B">털 한 올이 <tspan fill="#2F9C95">청소기 안에서 가는 길</tspan></text>
+  <rect x="58" y="80" width="90" height="8" rx="4" fill="#E8825A"/>
+  <text x="58" y="118" font-size="18" fill="#8A8378">바닥에서 먼지통까지, 털이 걸리는 자리는 딱 한 곳입니다.</text>
+
+  <!-- ── 패널 A · 옆에서 자른 단면 ───────────────────────── -->
+  <rect x="56" y="142" width="888" height="286" rx="16" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+
+  <!-- 바닥 -->
+  <line x1="76" y1="392" x2="704" y2="392" stroke="#33302B" stroke-width="3"/>
+  <g stroke="#8A8378" stroke-width="1.6" stroke-opacity="0.5">
+    <line x1="86" y1="400" x2="76" y2="410"/><line x1="116" y1="400" x2="106" y2="410"/>
+    <line x1="146" y1="400" x2="136" y2="410"/><line x1="176" y1="400" x2="166" y2="410"/>
+    <line x1="206" y1="400" x2="196" y2="410"/><line x1="236" y1="400" x2="226" y2="410"/>
+    <line x1="266" y1="400" x2="256" y2="410"/><line x1="296" y1="400" x2="286" y2="410"/>
+    <line x1="326" y1="400" x2="316" y2="410"/><line x1="356" y1="400" x2="346" y2="410"/>
+    <line x1="386" y1="400" x2="376" y2="410"/><line x1="416" y1="400" x2="406" y2="410"/>
+    <line x1="446" y1="400" x2="436" y2="410"/><line x1="476" y1="400" x2="466" y2="410"/>
+    <line x1="506" y1="400" x2="496" y2="410"/><line x1="536" y1="400" x2="526" y2="410"/>
+    <line x1="566" y1="400" x2="556" y2="410"/><line x1="596" y1="400" x2="586" y2="410"/>
+    <line x1="626" y1="400" x2="616" y2="410"/><line x1="656" y1="400" x2="646" y2="410"/>
+    <line x1="686" y1="400" x2="676" y2="410"/>
+  </g>
+
+  <!-- 본체 -->
+  <path d="M 150,388 L 150,240 Q 150,200 190,200 L 660,200 Q 700,200 700,240 L 700,388 Z" fill="#FFFFFF"/>
+  <path d="M 150,388 L 150,240 Q 150,200 190,200 L 660,200 Q 700,200 700,240 L 700,388"
+        fill="none" stroke="#33302B" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="150" y1="388" x2="188" y2="388" stroke="#33302B" stroke-width="3"/>
+  <line x1="322" y1="388" x2="700" y2="388" stroke="#33302B" stroke-width="3"/>
+  <rect x="352" y="384" width="36" height="12" rx="6" fill="#33302B" fill-opacity="0.28"/>
+  <rect x="624" y="384" width="36" height="12" rx="6" fill="#33302B" fill-opacity="0.28"/>
+
+  <!-- 흡입 통로 -->
+  <path d="M 300,318 C 360,296 412,284 468,276" fill="none" stroke="#F1EBE0" stroke-width="30" stroke-linecap="round"/>
+
+  <!-- 먼지통 -->
+  <rect x="470" y="222" width="170" height="140" rx="10" fill="#2F9C95" fill-opacity="0.10" stroke="#2F9C95" stroke-width="2.5"/>
+  <text x="555" y="252" font-size="19" font-weight="700" fill="#2F9C95" text-anchor="middle">먼지통</text>
+  <g fill="none" stroke="#8A8378" stroke-width="2.2" stroke-linecap="round" stroke-opacity="0.75">
+    <path d="M 498,332 C 514,316 532,338 550,320"/>
+    <path d="M 516,346 C 534,330 552,352 572,334"/>
+    <path d="M 552,300 C 566,286 584,306 602,290"/>
+  </g>
+
+  <!-- 팬 -->
+  <circle cx="668" cy="300" r="22" fill="none" stroke="#8A8378" stroke-width="2.2"/>
+  <path d="M 668,282 L 668,318 M 652,291 L 684,309 M 652,309 L 684,291" stroke="#8A8378" stroke-width="2.2" stroke-linecap="round"/>
+  <text x="668" y="348" font-size="14" fill="#8A8378" text-anchor="middle">팬</text>
+
+  <!-- 브러시 롤러 -->
+  <circle cx="252" cy="344" r="44" fill="#FFFFFF" stroke="#33302B" stroke-width="3"/>
+  <g stroke="#33302B" stroke-width="1.8" stroke-opacity="0.35">
+    <line x1="252" y1="300" x2="252" y2="312"/><line x1="283" y1="313" x2="274" y2="322"/>
+    <line x1="296" y1="344" x2="284" y2="344"/><line x1="283" y1="375" x2="274" y2="366"/>
+    <line x1="252" y1="388" x2="252" y2="376"/><line x1="221" y1="375" x2="230" y2="366"/>
+    <line x1="208" y1="344" x2="220" y2="344"/><line x1="221" y1="313" x2="230" y2="322"/>
+  </g>
+  <circle cx="252" cy="344" r="8" fill="#33302B"/>
+
+  <!-- 털 한 올의 경로 -->
+  <path d="M 86,386 C 112,380 132,388 152,382 C 176,376 190,368 204,358
+           A 44,44 0 1 0 276,320
+           C 332,302 400,288 462,276"
+        fill="none" stroke="#E8825A" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="155,375 172,383 155,391" fill="#E8825A"/>
+  <polygon points="459,266 478,274 461,285" fill="#E8825A"/>
+  <text x="78" y="364" font-size="15" font-weight="700" fill="#E8825A">털 한 올</text>
+
+  <!-- 지점 뱃지 -->
+  <circle cx="112" cy="412" r="14" fill="#E8825A"/><text x="112" y="418" font-size="15" font-weight="700" fill="#FFFCF7" text-anchor="middle">1</text>
+  <line x1="252" y1="282" x2="252" y2="300" stroke="#E8825A" stroke-width="2" stroke-dasharray="5 4"/>
+  <circle cx="252" cy="266" r="14" fill="#E8825A"/><text x="252" y="272" font-size="15" font-weight="700" fill="#FFFCF7" text-anchor="middle">2</text>
+  <circle cx="496" cy="246" r="14" fill="#2F9C95"/><text x="496" y="252" font-size="15" font-weight="700" fill="#FFFCF7" text-anchor="middle">3</text>
+
+  <!-- 오른쪽 순서 설명 -->
+  <circle cx="736" cy="222" r="13" fill="#E8825A"/><text x="736" y="228" font-size="14" font-weight="700" fill="#FFFCF7" text-anchor="middle">1</text>
+  <text x="760" y="216" font-size="16" fill="#33302B">바닥의 털이 브러시를</text>
+  <text x="760" y="240" font-size="16" fill="#33302B">먼저 만납니다</text>
+
+  <circle cx="736" cy="296" r="13" fill="#E8825A"/><text x="736" y="302" font-size="14" font-weight="700" fill="#FFFCF7" text-anchor="middle">2</text>
+  <text x="760" y="290" font-size="16" font-weight="700" fill="#33302B">축에 감기면 롤러가</text>
+  <text x="760" y="314" font-size="16" font-weight="700" fill="#33302B">그 자리에서 멈춥니다</text>
+
+  <circle cx="736" cy="370" r="13" fill="#2F9C95"/><text x="736" y="376" font-size="14" font-weight="700" fill="#FFFCF7" text-anchor="middle">3</text>
+  <text x="760" y="364" font-size="16" fill="#33302B">감기지 않은 털만</text>
+  <text x="760" y="388" font-size="16" fill="#33302B">먼지통으로 갑니다</text>
+
+  <!-- ── 패널 B · 2번 지점 확대 ─────────────────────────── -->
+  <rect x="56" y="446" width="888" height="230" rx="16" fill="#FFFFFF" stroke="#EAE3D8" stroke-width="2"/>
+  <text x="80" y="484" font-size="20" font-weight="800" fill="#33302B">2번 지점을 확대하면 — 재질에서 갈립니다</text>
+
+  <!-- 왼쪽: 강모 브러시 -->
+  <circle cx="176" cy="578" r="74" fill="#FFFCF7" stroke="#EAE3D8" stroke-width="3"/>
+  <g stroke="#33302B" stroke-width="2.2" stroke-opacity="0.55">
+    <line x1="176" y1="552" x2="176" y2="522"/><line x1="194" y1="559" x2="216" y2="538"/>
+    <line x1="202" y1="578" x2="232" y2="578"/><line x1="194" y1="597" x2="216" y2="618"/>
+    <line x1="176" y1="604" x2="176" y2="634"/><line x1="158" y1="597" x2="136" y2="618"/>
+    <line x1="150" y1="578" x2="120" y2="578"/><line x1="158" y1="559" x2="136" y2="538"/>
+    <line x1="188" y1="554" x2="200" y2="527"/><line x1="164" y1="554" x2="152" y2="527"/>
+    <line x1="188" y1="602" x2="200" y2="629"/><line x1="164" y1="602" x2="152" y2="629"/>
+  </g>
+  <circle cx="176" cy="578" r="26" fill="#FFFFFF" stroke="#33302B" stroke-width="3"/>
+  <g fill="none" stroke="#E8825A" stroke-width="3.4" stroke-linecap="round">
+    <circle cx="176" cy="578" r="31"/>
+    <path d="M 207,584 A 35,35 0 1 1 172,543"/>
+    <path d="M 172,543 A 39,39 0 1 0 214,572"/>
+  </g>
+  <circle cx="228" cy="528" r="17" fill="#E8825A"/>
+  <path d="M 221,521 L 235,535 M 235,521 L 221,535" stroke="#FFFCF7" stroke-width="3.4" stroke-linecap="round"/>
+  <text x="274" y="540" font-size="21" font-weight="800" fill="#33302B">강모 브러시</text>
+  <text x="274" y="576" font-size="16" fill="#5b554d">솔 사이로 털이 파고들어</text>
+  <text x="274" y="602" font-size="16" fill="#5b554d">축에 감깁니다. 가위가 필요해요.</text>
+
+  <!-- 오른쪽: 고무 롤러 -->
+  <circle cx="592" cy="578" r="74" fill="#FFFCF7" stroke="#EAE3D8" stroke-width="3"/>
+  <circle cx="592" cy="578" r="52" fill="#2F9C95" fill-opacity="0.12" stroke="#2F9C95" stroke-width="3"/>
+  <g fill="none" stroke="#2F9C95" stroke-width="2.2" stroke-opacity="0.7">
+    <path d="M 556,542 L 592,578"/><path d="M 576,532 L 630,586"/><path d="M 604,532 L 552,584"/>
+    <path d="M 628,552 L 594,586"/>
+  </g>
+  <circle cx="592" cy="578" r="26" fill="#FFFFFF" stroke="#33302B" stroke-width="3"/>
+  <path d="M 530,612 C 560,634 612,628 644,600 C 654,590 658,578 660,566"
+        fill="none" stroke="#E8825A" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="666,550 667,572 650,564" fill="#E8825A"/>
+  <circle cx="644" cy="528" r="17" fill="#2F9C95"/>
+  <path d="M 636,528 L 642,535 L 653,521" stroke="#FFFCF7" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="690" y="540" font-size="21" font-weight="800" fill="#33302B">고무 롤러</text>
+  <text x="690" y="576" font-size="16" fill="#5b554d">표면에서 미끄러져 축까지</text>
+  <text x="690" y="602" font-size="16" fill="#5b554d">못 갑니다. 손으로 훑으면 끝.</text>
+
+  <text x="56" y="702" font-size="14" fill="#8A8378">※ 구조를 이해하기 위한 도식입니다. 내부 배치와 부품 모양은 모델마다 다릅니다.</text>
+</svg>
