@@ -47,14 +47,47 @@ jobs:
             echo "::error::발행 전 검사에서 막혔습니다. 초안을 고치거나, 이유가 있으면 skip_gate=y로 다시 실행하세요."
             exit 1
           fi
+      # 2026-08-19: apt 가 두 번 연속 이 자리에서 7분 넘게 멈췄다(무한 대기).
+      # 미러가 응답을 안 하면 apt 기본 타임아웃이 매우 길어 잡이 통째로 걸린다.
+      # 짧은 타임아웃 + 재시도를 걸고, 그래도 안 되면 실패시키지 않고 넘어간다.
+      # 변환은 cairosvg(pip) 로 대체할 수 있어서 apt 가 죽어도 발행은 계속된다.
       - name: 폰트·변환기
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq librsvg2-bin fonts-noto-cjk
+        timeout-minutes: 4
+        continue-on-error: true
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo apt-get update -qq \
+            -o Acquire::http::Timeout=12 -o Acquire::https::Timeout=12 \
+            -o Acquire::Retries=2 || echo "::warning::apt-get update 실패 — 계속 진행"
+          sudo apt-get install -y -qq \
+            -o Acquire::http::Timeout=12 -o Acquire::https::Timeout=12 \
+            -o Acquire::Retries=2 \
+            librsvg2-bin fonts-noto-cjk || echo "::warning::apt 설치 실패 — cairosvg 로 대체"
+
       - name: SVG → PNG
         env:
           IMAGE_DIR: ${{ github.event.inputs.image_dir }}
         run: |
           DIR="${IMAGE_DIR:-assets/images}"; mkdir -p /tmp/png
-          for f in "$DIR"/*.svg; do [ -e "$f" ] || continue; rsvg-convert "$f" -o "/tmp/png/$(basename "$f" .svg).png"; done
+          if command -v rsvg-convert >/dev/null 2>&1; then
+            echo "변환기: rsvg-convert"
+            for f in "$DIR"/*.svg; do
+              [ -e "$f" ] || continue
+              rsvg-convert "$f" -o "/tmp/png/$(basename "$f" .svg).png"
+            done
+          else
+            echo "::warning::rsvg-convert 없음 — cairosvg 로 변환한다"
+            pip -q install cairosvg
+            python3 - <<'PYCONV'
+          import glob, os, pathlib, cairosvg
+          d = os.environ.get("IMAGE_DIR") or "assets/images"
+          for f in sorted(glob.glob(os.path.join(d, "*.svg"))):
+              out = "/tmp/png/" + pathlib.Path(f).stem + ".png"
+              cairosvg.svg2png(url=f, write_to=out, output_width=1000)
+              print("변환:", f, "→", out)
+          PYCONV
+          fi
           ls -la /tmp/png || true
       - name: 빌드 + 업데이트
         env:
