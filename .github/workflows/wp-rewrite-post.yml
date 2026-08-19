@@ -47,23 +47,48 @@ jobs:
             echo "::error::발행 전 검사에서 막혔습니다. 초안을 고치거나, 이유가 있으면 skip_gate=y로 다시 실행하세요."
             exit 1
           fi
-      # 2026-08-19: apt 가 두 번 연속 이 자리에서 7분 넘게 멈췄다(무한 대기).
+      # 2026-08-19: apt 가 세 번 연속 이 자리에서 멈췄다(7분+ 무한 대기).
       # 미러가 응답을 안 하면 apt 기본 타임아웃이 매우 길어 잡이 통째로 걸린다.
-      # 짧은 타임아웃 + 재시도를 걸고, 그래도 안 되면 실패시키지 않고 넘어간다.
-      # 변환은 cairosvg(pip) 로 대체할 수 있어서 apt 가 죽어도 발행은 계속된다.
-      - name: 폰트·변환기
-        timeout-minutes: 4
+      #
+      # 인포그래픽 SVG 에 한글이 들어가므로 CJK 폰트가 없으면 전부 네모로 깨진다.
+      # 그래서 apt 가 실패해도 폰트만은 반드시 확보해야 한다 —
+      # Google Fonts 저장소에서 Noto Sans KR 을 직접 받아 fontconfig 에 등록한다.
+      # 폰트가 끝내 없으면 깨진 이미지를 발행하느니 여기서 멈춘다.
+      - name: 변환기 (apt, 실패해도 계속)
+        timeout-minutes: 3
         continue-on-error: true
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
           sudo apt-get update -qq \
-            -o Acquire::http::Timeout=12 -o Acquire::https::Timeout=12 \
-            -o Acquire::Retries=2 || echo "::warning::apt-get update 실패 — 계속 진행"
+            -o Acquire::http::Timeout=10 -o Acquire::https::Timeout=10 \
+            -o Acquire::Retries=1 || echo "::warning::apt-get update 실패"
           sudo apt-get install -y -qq \
-            -o Acquire::http::Timeout=12 -o Acquire::https::Timeout=12 \
-            -o Acquire::Retries=2 \
-            librsvg2-bin fonts-noto-cjk || echo "::warning::apt 설치 실패 — cairosvg 로 대체"
+            -o Acquire::http::Timeout=10 -o Acquire::https::Timeout=10 \
+            -o Acquire::Retries=1 \
+            librsvg2-bin fonts-noto-cjk || echo "::warning::apt 설치 실패 — 대체 경로로 간다"
+
+      - name: 한글 폰트 확보
+        run: |
+          have_cjk() { fc-list 2>/dev/null | grep -qiE "noto sans (cjk|kr)|nanum"; }
+          if have_cjk; then
+            echo "CJK 폰트 있음 (apt 로 설치됨)"
+          else
+            echo "::warning::CJK 폰트 없음 — Noto Sans KR 을 직접 받는다"
+            mkdir -p ~/.fonts
+            for u in \
+              "https://github.com/google/fonts/raw/main/ofl/notosanskr/NotoSansKR%5Bwght%5D.ttf" \
+              "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanskr/NotoSansKR%5Bwght%5D.ttf" ; do
+              curl -fsSL --max-time 60 "$u" -o ~/.fonts/NotoSansKR.ttf && break
+            done
+            fc-cache -f >/dev/null 2>&1 || true
+          fi
+          echo "--- 설치된 한글 폰트 ---"
+          fc-list 2>/dev/null | grep -iE "noto sans (cjk|kr)|nanum" | head -3
+          if ! have_cjk; then
+            echo "::error::한글 폰트를 확보하지 못했습니다. 인포그래픽이 네모로 깨진 채 발행되므로 여기서 멈춥니다."
+            exit 1
+          fi
 
       - name: SVG → PNG
         env:
@@ -89,6 +114,7 @@ jobs:
           PYCONV
           fi
           ls -la /tmp/png || true
+
       - name: 빌드 + 업데이트
         env:
           WP_URL: ${{ secrets.WP_URL }}
