@@ -1,0 +1,82 @@
+name: 웹페이지 가져오기 (세션 프록시가 막는 사이트용)
+
+# 세션에서 lge.co.kr·danawa 같은 도메인이 egress 차단된다.
+# 러너는 열려 있으므로 러너로 받아서 필요한 부분만 로그로 본다.
+# (쿠팡·네이버쇼핑은 러너 IP도 403/418로 막혀 있다 — market-research.yml 참고)
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: '가져올 주소. 줄바꿈 또는 쉼표로 여러 개'
+        required: true
+      keywords:
+        description: '이 낱말이 들어간 줄만 뽑는다. 쉼표 구분. 비우면 본문 앞부분 전체'
+        required: false
+        default: ''
+      chars:
+        description: '키워드가 없을 때 보여줄 본문 길이'
+        required: false
+        default: '3000'
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 가져오기
+        env:
+          URLS: ${{ github.event.inputs.urls }}
+          KEYWORDS: ${{ github.event.inputs.keywords }}
+          CHARS: ${{ github.event.inputs.chars }}
+        run: |
+          pip -q install requests beautifulsoup4
+          python3 - <<'PY'
+          import os, re, requests
+          from bs4 import BeautifulSoup
+
+          urls = [u.strip() for u in re.split(r"[,\n]", os.environ["URLS"]) if u.strip()]
+          kws  = [k.strip() for k in os.environ.get("KEYWORDS","").split(",") if k.strip()]
+          chars = int((os.environ.get("CHARS") or "3000").strip() or 3000)
+
+          UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
+
+          for u in urls:
+              print("=" * 78)
+              print(u)
+              print("=" * 78)
+              try:
+                  r = requests.get(u, headers={"User-Agent": UA,
+                                               "Accept-Language": "ko-KR,ko;q=0.9"},
+                                   timeout=40)
+              except Exception as e:
+                  print(f"  실패: {type(e).__name__} {e}")
+                  print()
+                  continue
+              if not r.ok:
+                  print(f"  HTTP {r.status_code} — 이 사이트는 러너에서도 막힌다")
+                  print()
+                  continue
+
+              soup = BeautifulSoup(r.text, "html.parser")
+              for t in soup(["script", "style", "noscript"]):
+                  t.decompose()
+              text = re.sub(r"\n{3,}", "\n\n", soup.get_text("\n"))
+              lines = [l.strip() for l in text.split("\n") if l.strip()]
+
+              if kws:
+                  hit = [l for l in lines if any(k in l for k in kws)]
+                  if hit:
+                      print(f"  키워드 {kws} 걸린 줄 {len(hit)}개")
+                      for l in hit[:80]:
+                          print(f"   · {l[:300]}")
+                  else:
+                      print(f"  키워드 {kws} 없음. 본문 앞부분을 대신 보여준다")
+                      print("\n".join(f"   {l[:200]}" for l in lines[:60]))
+              else:
+                  print("\n".join(lines)[:chars])
+              print()
+          PY
