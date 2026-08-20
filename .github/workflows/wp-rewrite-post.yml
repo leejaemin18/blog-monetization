@@ -21,6 +21,9 @@ on:
       disclosure_font: { description: '광고표시 문구 글씨 크기(px)', required: false, default: '13' }
       status: { description: 'publish / draft', required: false, default: 'publish' }
       skip_gate: { description: '발행 전 검사 건너뛰기 (y/n) — 이유가 있을 때만', required: false, default: 'n' }
+      slug: { description: '영문 슬러그. 넣으면 발행 직후 바로 적용 (예: cat-tower-multi-cat)', required: false, default: '' }
+      tags: { description: '태그(콤마 구분). 넣으면 발행 직후 바로 적용', required: false, default: '' }
+      seo_description: { description: '검색 스니펫 문구. 넣으면 발행 직후 excerpt 로 저장', required: false, default: '' }
 
 permissions:
   contents: read
@@ -252,4 +255,136 @@ jobs:
           print(f"=== {'업데이트' if pid else '발행'} 완료 #{p.get('id')} ({p.get('status')}) ===")
           print("제목:", p.get("title", {}).get("rendered"))
           print("링크:", p.get("link"))
+          with open(os.environ["GITHUB_ENV"], "a") as fh:
+              fh.write(f"PUBLISHED_ID={p.get('id')}\n")
+          PY
+
+
+      # 2026-08-19: 발행 뒤에 슬러그·태그·스니펫·점검을 각각 따로 돌리느라
+      # 워크플로우를 네 번 띄우고 그때마다 기다렸다. 다 잘 돌아도 10분이 넘었다.
+      # 한 잡 안에서 이어서 끝낸다. 입력을 비우면 해당 단계는 건너뛴다.
+      - name: 슬러그·태그
+        if: ${{ github.event.inputs.slug != '' || github.event.inputs.tags != '' }}
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          SLUG: ${{ github.event.inputs.slug }}
+          TAGS: ${{ github.event.inputs.tags }}
+        run: |
+          python3 - <<'PY'
+          import os, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          pid  = os.environ["PUBLISHED_ID"]
+
+          body = {}
+          slug = (os.environ.get("SLUG") or "").strip()
+          if slug:
+              body["slug"] = slug
+
+          names = [x.strip() for x in (os.environ.get("TAGS") or "").split(",") if x.strip()]
+          if names:
+              ids = []
+              for n in names:
+                  r = requests.get(f"{base}/wp-json/wp/v2/tags",
+                                   params={"search": n}, auth=auth, timeout=30)
+                  hit = next((t for t in (r.json() if r.ok else []) if t.get("name") == n), None)
+                  if hit:
+                      ids.append(hit["id"]); continue
+                  c = requests.post(f"{base}/wp-json/wp/v2/tags",
+                                    json={"name": n}, auth=auth, timeout=30)
+                  if c.ok:
+                      ids.append(c.json()["id"])
+                  elif c.status_code == 400 and "term_exists" in c.text:
+                      ids.append(c.json()["data"]["term_id"])
+                  else:
+                      print(f"::warning::태그 '{n}' 처리 실패 {c.status_code}")
+              if ids:
+                  body["tags"] = ids
+
+          if not body:
+              print("적용할 것 없음"); raise SystemExit(0)
+          r = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}", json=body, auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::슬러그·태그 저장 실패 {r.status_code}: {r.text[:300]}"); raise SystemExit(1)
+          j = r.json()
+          print(f"슬러그={j.get('slug')} 태그={len(j.get('tags') or [])}개")
+          print("링크:", j.get("link"))
+          PY
+
+      # Rank Math 메타는 REST 로 안 들어간다(show_in_rest 미등록).
+      # excerpt 는 들어가고, Rank Math 기본 설명 템플릿이 %excerpt% 라 스니펫에 쓰인다.
+      - name: 검색 스니펫 (excerpt)
+        if: ${{ github.event.inputs.seo_description != '' }}
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          DESC: ${{ github.event.inputs.seo_description }}
+        run: |
+          python3 - <<'PY'
+          import os, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          pid  = os.environ["PUBLISHED_ID"]
+          desc = os.environ["DESC"].strip()
+          r = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}",
+                            json={"excerpt": desc}, auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::excerpt 저장 실패 {r.status_code}: {r.text[:300]}"); raise SystemExit(1)
+          print("excerpt 저장됨:", desc[:60], "...")
+          print("::notice::Rank Math 포커스 키워드는 REST 로 안 들어갑니다. 편집기에서 직접 입력하세요.")
+          PY
+
+      - name: 발행 후 점검
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import os, re, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          pid  = os.environ["PUBLISHED_ID"]
+          r = requests.get(f"{base}/wp-json/wp/v2/posts/{pid}",
+                           params={"context": "edit"}, auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::조회 실패 {r.status_code}"); raise SystemExit(1)
+          j = r.json(); c = j.get("content", {}).get("raw", "")
+
+          print("=" * 62)
+          print(f"#{pid}  {j.get('title', {}).get('raw', '')}")
+          print(f"슬러그: {j.get('slug')}   상태: {j.get('status')}   본문 {len(c):,}자")
+          print("링크:", j.get("link"))
+          print("=" * 62)
+
+          fails = []
+          def ok(label, cond):
+              print(f"  {'O' if cond else 'X'}  {label}")
+              if not cond: fails.append(label)
+
+          disc = c.count("쿠팡 파트너스 활동의 일환으로")
+          ok(f"광고표시 문구 1회 (실제 {disc}회)", disc == 1)
+          for tok in ("[[PRODUCT", "[[IMG"):
+              n = c.count(tok); ok(f"미치환 토큰 {tok} 없음 (실제 {n}개)", n == 0)
+          ok(f"이미지 태그 {len(re.findall(r'<img', c))}개", "<img" in c)
+          cdn = len(re.findall(r"coupangcdn", c))
+          ok(f"쿠팡 배너 이미지 미사용 (coupangcdn {cdn}개)", cdn == 0)
+          flex = len(re.findall(r"display:\s*flex", c))
+          ok(f"카드 가로 flex 미사용 ({flex}개)", flex == 0)
+
+          m = re.search(r"link\.coupang\.com/a/([A-Za-z0-9]+)", c)
+          if m:
+              code = m.group(1); n = c.count(code)
+              ok(f"딥링크 {code} {n}개 (기대 3 = 카드제목·CTA·본문인라인)", n == 3)
+          else:
+              print("  ·  딥링크 없음 (정보성 글이면 정상)")
+
+          print()
+          if fails:
+              print("::warning::확인 필요 — " + " / ".join(fails))
+          else:
+              print("전부 통과.")
           PY
