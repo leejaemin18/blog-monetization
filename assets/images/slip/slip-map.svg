@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="660" viewBox="0 0 1000 660" font-family="'Noto Sans KR','Apple SD Gothic Neo',sans-serif">
+  <rect width="1000" height="660" fill="#FFFCF7"/>
+
+  <text x="56" y="58" font-size="33" font-weight="800" fill="#33302B">미끄러지는 자리는 대체로 정해져 있습니다</text>
+  <rect x="56" y="72" width="92" height="7" rx="3.5" fill="#E8825A"/>
+  <text x="58" y="112" font-size="18" fill="#8A8378">집 전체를 덮을 필요는 없습니다. 속도가 붙는 곳과 착지하는 곳부터 잡으면 횟수가 줄어듭니다.</text>
+
+  <!-- 평면도 외벽 -->
+  <rect x="60" y="150" width="620" height="430" rx="6" fill="#fff" stroke="#33302B" stroke-width="3"/>
+
+  <!-- 내벽 -->
+  <g stroke="#33302B" stroke-width="3" fill="none">
+    <path d="M60 320 L250 320"/>
+    <path d="M330 320 L330 150"/>
+    <path d="M410 320 L680 320"/>
+    <path d="M410 320 L410 580"/>
+  </g>
+
+  <!-- 방 이름 -->
+  <g font-size="17" fill="#8A8378">
+    <text x="90" y="192">침실</text>
+    <text x="365" y="192" text-anchor="middle">거실</text>
+    <text x="90" y="360">현관</text>
+    <text x="450" y="360">주방</text>
+  </g>
+
+  <!-- 위험 구간: 복도 (선으로 덮기) -->
+  <rect x="72" y="500" width="326" height="46" rx="23" fill="#E8825A" opacity="0.22"/>
+  <rect x="72" y="500" width="326" height="46" rx="23" fill="none" stroke="#E8825A" stroke-width="2.5" stroke-dasharray="7 5"/>
+  <text x="235" y="530" font-size="16" font-weight="800" fill="#C4562B" text-anchor="middle">복도 — 한 장 말고 한 줄로</text>
+
+  <!-- 소파 -->
+  <rect x="470" y="180" width="170" height="52" rx="8" fill="#EAE3D8"/>
+  <text x="555" y="212" font-size="15" fill="#5b554d" text-anchor="middle">소파</text>
+  <circle cx="555" cy="268" r="30" fill="#E8825A" opacity="0.22"/>
+  <circle cx="555" cy="268" r="30" fill="none" stroke="#E8825A" stroke-width="2.5"/>
+  <text x="555" y="274" font-size="15" font-weight="800" fill="#C4562B" text-anchor="middle">착지</text>
+
+  <!-- 현관 -->
+  <circle cx="120" cy="430" r="30" fill="#E8825A" opacity="0.22"/>
+  <circle cx="120" cy="430" r="30" fill="none" stroke="#E8825A" stroke-width="2.5"/>
+  <text x="120" y="436" font-size="15" font-weight="800" fill="#C4562B" text-anchor="middle">문턱</text>
+
+  <!-- 코너 -->
+  <circle cx="398" cy="470" r="26" fill="#E8825A" opacity="0.22"/>
+  <circle cx="398" cy="470" r="26" fill="none" stroke="#E8825A" stroke-width="2.5"/>
+  <text x="398" y="476" font-size="14" font-weight="800" fill="#C4562B" text-anchor="middle">코너</text>
+
+  <!-- 밥그릇 -->
+  <circle cx="590" cy="430" r="26" fill="#2F9C95" opacity="0.2"/>
+  <circle cx="590" cy="430" r="26" fill="none" stroke="#2F9C95" stroke-width="2.5"/>
+  <text x="590" y="436" font-size="14" font-weight="800" fill="#1F6E69" text-anchor="middle">밥</text>
+
+  <!-- 범례 -->
+  <text x="716" y="182" font-size="18" font-weight="800" fill="#33302B">깔 순서</text>
+
+  <g font-size="15.5">
+    <circle cx="730" cy="228" r="13" fill="#E8825A"/>
+    <text x="730" y="233" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">1</text>
+    <text x="754" y="226" fill="#33302B" font-weight="700">소파 앞</text>
+    <text x="754" y="248" fill="#8A8378" font-size="14">내려올 때 앞다리 두 개가</text>
+    <text x="754" y="268" fill="#8A8378" font-size="14">체중을 다 받는 자리</text>
+
+    <circle cx="730" cy="308" r="13" fill="#E8825A"/>
+    <text x="730" y="313" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">2</text>
+    <text x="754" y="306" fill="#33302B" font-weight="700">복도와 코너</text>
+    <text x="754" y="328" fill="#8A8378" font-size="14">직선에서 속도가 붙고</text>
+    <text x="754" y="348" fill="#8A8378" font-size="14">끝에서 뒷다리가 밀린다</text>
+
+    <circle cx="730" cy="388" r="13" fill="#E8825A"/>
+    <text x="730" y="393" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">3</text>
+    <text x="754" y="386" fill="#33302B" font-weight="700">현관과 문턱</text>
+    <text x="754" y="408" fill="#8A8378" font-size="14">뛰어나가며 방향을 꺾는다</text>
+
+    <circle cx="730" cy="448" r="13" fill="#2F9C95"/>
+    <text x="730" y="453" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">4</text>
+    <text x="754" y="446" fill="#33302B" font-weight="700">밥그릇 앞</text>
+    <text x="754" y="468" fill="#8A8378" font-size="14">서서 먹는 동안 앞다리에</text>
+    <text x="754" y="488" fill="#8A8378" font-size="14">계속 힘이 들어간다</text>
+  </g>
+
+  <line x1="716" y1="516" x2="944" y2="516" stroke="#EAE3D8" stroke-width="1"/>
+  <text x="716" y="546" font-size="15" fill="#5b554d">발소리가 나는 자리가</text>
+  <text x="716" y="568" font-size="15" font-weight="800" fill="#E8825A">깔아야 할 자리입니다</text>
+
+  <text x="60" y="632" font-size="14.5" fill="#8A8378">※ 집 구조는 예시입니다. 계단이 있는 집은 계단이 1순위이고, 매트가 밀리면 오히려 걸림돌이 됩니다.</text>
+</svg>
