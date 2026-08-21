@@ -13,9 +13,11 @@ on:
       product_dir: { description: '[[PRODUCT:key]] 상품 HTML 폴더', required: false, default: 'assets/products' }
       category_name: { description: '카테고리 이름', required: false }
       category_slug: { description: '카테고리 슬러그 (새로 만들 때만)', required: false }
-      thumb_prompt: { description: 'AI 썸네일 프롬프트', required: true }
+      img_slug: { description: '이미지 슬러그. drafts/img/<슬러그>-thumb.png · -body.png 를 쓴다 (권장)', required: false, default: '' }
+      allow_ai_images: { description: 'AI 이미지 생성 허용 (y/n). 기본 n — 운영자 허락 없이 OpenAI 호출 금지', required: false, default: 'n' }
+      thumb_prompt: { description: '[AI 전용] 썸네일 프롬프트. allow_ai_images=y 일 때만 쓴다', required: false, default: '' }
       thumb_alt: { description: '썸네일 alt', required: false, default: '대표 이미지' }
-      mid_prompt: { description: 'AI 핵심사진 프롬프트', required: true }
+      mid_prompt: { description: '[AI 전용] 핵심사진 프롬프트. allow_ai_images=y 일 때만 쓴다', required: false, default: '' }
       mid_alt: { description: '핵심사진 alt', required: false, default: '본문 이미지' }
       mid_anchor: { description: '핵심사진을 넣을 소제목(h2)', required: true }
       disclosure_font: { description: '광고표시 문구 글씨 크기(px)', required: false, default: '13' }
@@ -130,6 +132,8 @@ jobs:
           PRODUCT_DIR: ${{ github.event.inputs.product_dir }}
           CATEGORY_NAME: ${{ github.event.inputs.category_name }}
           CATEGORY_SLUG: ${{ github.event.inputs.category_slug }}
+          IMG_SLUG: ${{ github.event.inputs.img_slug }}
+          ALLOW_AI_IMAGES: ${{ github.event.inputs.allow_ai_images }}
           THUMB_PROMPT: ${{ github.event.inputs.thumb_prompt }}
           THUMB_ALT: ${{ github.event.inputs.thumb_alt }}
           MID_PROMPT: ${{ github.event.inputs.mid_prompt }}
@@ -202,9 +206,45 @@ jobs:
           html = re.sub(r"<p>\s*\[\[PRODUCT:([a-zA-Z0-9_-]+)\]\]\s*</p>", product, html)
           html = re.sub(r"\[\[PRODUCT:([a-zA-Z0-9_-]+)\]\]", product, html)
 
-          # 4) AI 썸네일(대표) + 핵심사진(본문)
-          tid, _ = up(genai(os.environ["THUMB_PROMPT"]), os.environ.get("THUMB_ALT", "대표 이미지"), "thumbnail.png")
-          _, murl = up(genai(os.environ["MID_PROMPT"]), os.environ.get("MID_ALT", "본문 이미지"), "inline.png")
+          # 4) 썸네일(대표) + 핵심사진(본문)
+          #
+          # 2026-08-20 운영자 지시: 이미지는 OpenAI API 로 만들지 않는다.
+          # ChatGPT Plus 가 만든 것을 드라이브로 받아 drafts/img/ 에 넣고 그걸 쓴다.
+          # API 비용 0. allow_ai_images=y 로 명시하지 않으면 OpenAI 를 호출하지 않는다.
+          img_slug = (os.environ.get("IMG_SLUG") or "").strip()
+          allow_ai = (os.environ.get("ALLOW_AI_IMAGES") or "n").strip().lower() == "y"
+
+          def local(kind):
+              """drafts/img/<슬러그>-<kind>.png 를 찾는다. 없으면 None."""
+              if not img_slug:
+                  return None
+              for name in (f"drafts/img/{img_slug}-{kind}.png",
+                           f"drafts/img/{img_slug}-{kind}.jpg"):
+                  if os.path.exists(name):
+                      return name
+              return None
+
+          def pick(kind, prompt_env, label):
+              path = local(kind)
+              if path:
+                  print(f"{label}: 로컬 파일 사용 — {path}")
+                  return open(path, "rb").read()
+              if allow_ai:
+                  prompt = (os.environ.get(prompt_env) or "").strip()
+                  if not prompt:
+                      print(f"::error::{label} 프롬프트가 비었습니다 (allow_ai_images=y)"); raise SystemExit(1)
+                  print(f"::warning::{label}: 로컬 파일이 없어 OpenAI 를 호출합니다 (비용 발생)")
+                  return genai(prompt)
+              print(f"::error::{label} 이미지를 찾지 못했습니다.")
+              print(f"  찾은 경로: drafts/img/{img_slug or '<img_slug 미지정>'}-{kind}.png")
+              print("  ChatGPT 로 만든 이미지를 그 경로에 넣고 커밋한 뒤 다시 돌리세요.")
+              print("  AI 생성을 정말 쓰려면 allow_ai_images=y 로 명시해야 합니다(운영자 허락 필요).")
+              raise SystemExit(1)
+
+          tid, _ = up(pick("thumb", "THUMB_PROMPT", "썸네일"),
+                      os.environ.get("THUMB_ALT", "대표 이미지"), "thumbnail.png")
+          _, murl = up(pick("body", "MID_PROMPT", "본문 이미지"),
+                       os.environ.get("MID_ALT", "본문 이미지"), "inline.png")
           figm = fig(murl, os.environ.get("MID_ALT", "본문 이미지"))
           anchor = os.environ["MID_ANCHOR"].strip()
           pat = re.compile(r'(<h2[^>]*>\s*' + re.escape(anchor) + r'\s*</h2>)')
