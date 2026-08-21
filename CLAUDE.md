@@ -88,6 +88,31 @@ Codex 자동 검토도 PR에 붙는다(실제로 `image_ledger.csv` 누락을 �
 - **외부 링크는 걸기 전에 살아 있는지 확인한다.** 세션이 막히면 `fetch-page.yml`로 러너에서 연다.
   확인 못 한 링크를 발행하고 운영자에게 눌러봐 달라고 하지 마라.
 
+### 이미지 — OpenAI API를 쓰지 않는다 (2026-08-20 운영자 지시 ★)
+
+**허락 없이 OpenAI 이미지 API를 절대 호출하지 마라.** ChatGPT Plus가 만든 것을 받아 쓴다. 비용 0.
+
+1. 초안마다 **영문 슬러그 + 썸네일 프롬프트 + 본문이미지 프롬프트**를 정한다.
+2. 초안은 조기 발행되지 않게 **`drafts/_pending/`** 에 두고, 운영자 Gmail로 아래 메일을 보낸 뒤
+   사용자에게 **"보냈어"(완료형)로 슬러그와 함께** 알린다.
+   ```
+   제목: [MYBLOG-IMG] {슬러그}
+   본문:
+     슬러그: {영문 슬러그}
+     [썸네일 프롬프트]: (팔레트·장면·한글 문구까지 구체적으로, 브랜드 로고 금지)
+     [본문이미지 프롬프트]: (썸네일과 같은 톤, 텍스트 금지·숫자만)
+   ```
+3. 운영자가 **"업로드 완료"** 라고 하면:
+   - Drive에서 `title contains '{슬러그}' and mimeType contains 'image/'` 로 **2장** 검색
+   - `download_file_content` 로 받는다. 용량이 커서 파일로 떨어지면 `content`(base64)를
+     `python base64.b64decode` 로 PNG 저장
+   - **`drafts/img/{슬러그}-thumb.png`**, **`-body.png`** 로 저장 (`git add -f`)
+   - 대기 초안을 `drafts/` 로 옮겨 커밋·푸시 → 발행
+
+발행 워크플로우는 `img_slug` 를 받아 `drafts/img/<슬러그>-thumb.png`·`-body.png` 를 쓴다.
+파일이 없으면 **멈춘다.** `allow_ai_images=y` 로 명시할 때만 OpenAI를 호출하고,
+그건 운영자 허락이 있을 때만이다.
+
 ### 발행 (2026-08-19 개정 — 한 번에 끝낸다)
 `wp-rewrite-post.yml` **한 번**이면 발행 · 슬러그 · 태그 · 스니펫 · 점검까지 끝난다.
 `slug`, `tags`, `seo_description` 을 입력에 같이 넣어라. 비우면 그 단계만 건너뛴다.
