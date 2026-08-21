@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640" font-family="'Noto Sans KR','Apple SD Gothic Neo',sans-serif">
+  <rect width="1000" height="640" fill="#FFFCF7"/>
+
+  <text x="56" y="58" font-size="33" font-weight="800" fill="#33302B">언제 하는지가 절반을 알려줍니다</text>
+  <rect x="56" y="72" width="92" height="7" rx="3.5" fill="#E8825A"/>
+  <text x="58" y="112" font-size="18" fill="#8A8378">같은 소리라도 나오는 시점이 다르면 의심하는 방향이 달라집니다. 아래는 하루 중 어디에 몰리는지를 겹쳐 본 것입니다.</text>
+
+  <!-- 시간 축 -->
+  <line x1="150" y1="176" x2="944" y2="176" stroke="#EAE3D8" stroke-width="2"/>
+  <g font-size="15" fill="#8A8378" text-anchor="middle">
+    <text x="150" y="166">0시</text>
+    <text x="348" y="166">6시</text>
+    <text x="547" y="166">12시</text>
+    <text x="745" y="166">18시</text>
+    <text x="944" y="166">24시</text>
+  </g>
+  <g stroke="#EAE3D8" stroke-width="1" stroke-dasharray="3 5">
+    <line x1="150" y1="176" x2="150" y2="500"/>
+    <line x1="348" y1="176" x2="348" y2="500"/>
+    <line x1="547" y1="176" x2="547" y2="500"/>
+    <line x1="745" y1="176" x2="745" y2="500"/>
+    <line x1="944" y1="176" x2="944" y2="500"/>
+  </g>
+
+  <!-- 밤·새벽 음영 -->
+  <rect x="150" y="176" width="198" height="324" fill="#2F9C95" opacity="0.06"/>
+  <rect x="845" y="176" width="99" height="324" fill="#2F9C95" opacity="0.06"/>
+
+  <!-- 행 1 -->
+  <text x="56" y="222" font-size="17" font-weight="700" fill="#33302B">누웠을 때</text>
+  <text x="56" y="244" font-size="14" fill="#8A8378">심장 쪽 함께</text>
+  <rect x="150" y="202" width="215" height="34" rx="17" fill="#E8825A" opacity="0.85"/>
+  <rect x="861" y="202" width="83" height="34" rx="17" fill="#E8825A" opacity="0.85"/>
+  <text x="257" y="225" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">잠든 뒤 몇 시간</text>
+
+  <!-- 행 2 -->
+  <text x="56" y="298" font-size="17" font-weight="700" fill="#33302B">흥분·목줄</text>
+  <text x="56" y="320" font-size="14" fill="#8A8378">기관 눌림 쪽</text>
+  <g fill="#2F9C95" opacity="0.85">
+    <rect x="392" y="278" width="88" height="34" rx="17"/>
+    <rect x="606" y="278" width="88" height="34" rx="17"/>
+    <rect x="762" y="278" width="88" height="34" rx="17"/>
+  </g>
+  <g font-size="14" font-weight="700" fill="#fff" text-anchor="middle">
+    <text x="436" y="300">산책</text>
+    <text x="650" y="300">초인종</text>
+    <text x="806" y="300">산책</text>
+  </g>
+
+  <!-- 행 3 -->
+  <text x="56" y="374" font-size="17" font-weight="700" fill="#33302B">시간 무관</text>
+  <text x="56" y="396" font-size="14" fill="#8A8378">최근 접촉 이력</text>
+  <rect x="150" y="354" width="794" height="34" rx="17" fill="#C9BFAE" opacity="0.55"/>
+  <text x="547" y="377" font-size="15" font-weight="700" fill="#5b554d" text-anchor="middle">하루 종일 · 2주 안에 다른 개와 있었는지</text>
+
+  <!-- 행 4 -->
+  <text x="56" y="450" font-size="17" font-weight="700" fill="#33302B">먹고 마신 뒤</text>
+  <text x="56" y="472" font-size="14" fill="#8A8378">삼킴 자체를</text>
+  <g fill="#33302B" opacity="0.8">
+    <rect x="300" y="430" width="62" height="34" rx="17"/>
+    <rect x="560" y="430" width="62" height="34" rx="17"/>
+    <rect x="790" y="430" width="62" height="34" rx="17"/>
+  </g>
+  <g font-size="14" font-weight="700" fill="#fff" text-anchor="middle">
+    <text x="331" y="452">밥</text>
+    <text x="591" y="452">밥</text>
+    <text x="821" y="452">밥</text>
+  </g>
+
+  <!-- 하단 안내 -->
+  <line x1="56" y1="534" x2="944" y2="534" stroke="#EAE3D8" stroke-width="1"/>
+  <text x="56" y="568" font-size="17" fill="#33302B">병원에 가져갈 두 줄 — <tspan font-weight="800" fill="#E8825A">어떤 소리로</tspan><tspan fill="#33302B">, </tspan><tspan font-weight="800" fill="#E8825A">언제 하는가</tspan></text>
+  <text x="56" y="600" font-size="15" fill="#8A8378">※ 겹쳐 나타나는 경우도 있습니다. 이 그림은 진단이 아니라 문진에서 무엇을 말할지를 정리하는 용도입니다.</text>
+</svg>
