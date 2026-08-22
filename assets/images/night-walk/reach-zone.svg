@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" font-family="'Noto Sans KR','Apple SD Gothic Neo',sans-serif">
+  <rect width="1000" height="600" fill="#FFFCF7"/>
+
+  <text x="56" y="58" font-size="33" font-weight="800" fill="#33302B">줄 길이가 곧 개가 닿는 범위입니다</text>
+  <rect x="56" y="72" width="92" height="7" rx="3.5" fill="#E8825A"/>
+  <text x="58" y="112" font-size="18" fill="#8A8378">인도 폭 2m를 가정했습니다. 위에서 내려다본 그림이고, 반원은 개가 갈 수 있는 자리입니다.</text>
+
+  <!-- 차도 -->
+  <rect x="56" y="150" width="888" height="96" fill="#33302B" opacity="0.08"/>
+  <line x1="56" y1="150" x2="944" y2="150" stroke="#33302B" stroke-width="2.5"/>
+  <g stroke="#8A8378" stroke-width="3" stroke-dasharray="26 20">
+    <line x1="56" y1="198" x2="944" y2="198"/>
+  </g>
+  <text x="72" y="182" font-size="17" font-weight="700" fill="#5b554d">차도</text>
+
+  <!-- 연석 -->
+  <line x1="56" y1="246" x2="944" y2="246" stroke="#E8825A" stroke-width="4"/>
+  <text x="884" y="240" font-size="14" font-weight="700" fill="#C4562B" text-anchor="end">연석</text>
+
+  <!-- 인도 -->
+  <rect x="56" y="246" width="888" height="150" fill="#fff"/>
+  <line x1="56" y1="396" x2="944" y2="396" stroke="#33302B" stroke-width="2.5"/>
+  <text x="72" y="382" font-size="17" font-weight="700" fill="#5b554d">인도 (폭 2m)</text>
+
+  <!-- 1.5m 잠금 -->
+  <path d="M 250 340 m -94,0 a 94,94 0 0,1 188,0 z" fill="#2F9C95" opacity="0.18"/>
+  <path d="M 250 340 m -94,0 a 94,94 0 0,1 188,0" fill="none" stroke="#2F9C95" stroke-width="3"/>
+  <circle cx="250" cy="340" r="9" fill="#33302B"/>
+  <text x="250" y="372" font-size="14" fill="#5b554d" text-anchor="middle">사람</text>
+  <text x="250" y="272" font-size="17" font-weight="800" fill="#1F6E69" text-anchor="middle">1.5m 잠금</text>
+  <text x="250" y="296" font-size="14.5" fill="#2F9C95" text-anchor="middle">인도 안에서 끝난다</text>
+
+  <!-- 3m 풀림 -->
+  <path d="M 700 340 m -188,0 a 188,188 0 0,1 376,0 z" fill="#E8825A" opacity="0.18"/>
+  <path d="M 700 340 m -188,0 a 188,188 0 0,1 376,0" fill="none" stroke="#E8825A" stroke-width="3" stroke-dasharray="9 6"/>
+  <circle cx="700" cy="340" r="9" fill="#33302B"/>
+  <text x="700" y="372" font-size="14" fill="#5b554d" text-anchor="middle">사람</text>
+  <text x="700" y="136" font-size="17" font-weight="800" fill="#C4562B" text-anchor="middle">3m 풀림</text>
+
+  <!-- 차도 침범 표시 -->
+  <rect x="612" y="164" width="232" height="38" rx="19" fill="#FFFCF7" stroke="#E8825A" stroke-width="2"/>
+  <circle cx="638" cy="183" r="11" fill="#E8825A"/>
+  <text x="638" y="188" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">!</text>
+  <text x="658" y="189" font-size="15.5" font-weight="700" fill="#C4562B">차도까지 나간다</text>
+
+  <!-- 하단 정리 -->
+  <line x1="56" y1="440" x2="944" y2="440" stroke="#EAE3D8" stroke-width="1"/>
+
+  <g font-size="16">
+    <circle cx="70" cy="482" r="8" fill="#2F9C95"/>
+    <text x="92" y="488" fill="#33302B" font-weight="700">잠근 상태</text>
+    <text x="200" y="488" fill="#5b554d">개가 인도를 벗어나지 않는다. 고정 길이 줄과 범위가 같다.</text>
+
+    <circle cx="70" cy="524" r="8" fill="#E8825A"/>
+    <text x="92" y="530" fill="#33302B" font-weight="700">풀린 상태</text>
+    <text x="200" y="530" fill="#5b554d">연석을 넘어 차도에 닿는다. 줄의 종류와는 상관이 없다.</text>
+  </g>
+
+  <text x="56" y="576" font-size="14.5" fill="#8A8378">※ 인도 폭과 아이 크기에 따라 달라집니다. 실제 코스에서 옆에 붙어 걷는지 보고 길이를 정하세요.</text>
+</svg>
