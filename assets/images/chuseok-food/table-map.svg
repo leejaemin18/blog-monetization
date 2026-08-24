@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="680" viewBox="0 0 1000 680" font-family="'Noto Sans KR','Apple SD Gothic Neo',sans-serif">
+  <rect width="1000" height="680" fill="#FFFCF7"/>
+
+  <text x="56" y="58" font-size="33" font-weight="800" fill="#33302B">차례상은 개 코높이에 차려집니다</text>
+  <rect x="56" y="72" width="92" height="7" rx="3.5" fill="#E8825A"/>
+  <text x="58" y="112" font-size="18" fill="#8A8378">위에서 내려다본 상차림입니다. 색은 위험도이고, 빨간 자리는 상 차리기 전에 미리 옮겨두는 쪽이 낫습니다.</text>
+
+  <!-- 상 -->
+  <rect x="56" y="150" width="620" height="420" rx="10" fill="#fff" stroke="#33302B" stroke-width="3"/>
+  <rect x="56" y="150" width="620" height="34" rx="10" fill="#EAE3D8"/>
+  <text x="366" y="173" font-size="16" font-weight="700" fill="#5b554d" text-anchor="middle">병풍 쪽</text>
+
+  <!-- 1열 밥·국·떡 -->
+  <text x="76" y="222" font-size="14" fill="#9a938a">1열</text>
+  <g>
+    <rect x="120" y="200" width="120" height="42" rx="21" fill="#EAF5F4" stroke="#2F9C95" stroke-width="2"/>
+    <text x="180" y="227" font-size="16" fill="#1F6E69" text-anchor="middle">흰밥</text>
+    <rect x="256" y="200" width="150" height="42" rx="21" fill="#FDEDE4" stroke="#E8825A" stroke-width="2"/>
+    <text x="331" y="227" font-size="16" font-weight="700" fill="#C4562B" text-anchor="middle">국 · 탕국</text>
+    <rect x="422" y="200" width="150" height="42" rx="21" fill="#FFF6E3" stroke="#D9A441" stroke-width="2"/>
+    <text x="497" y="227" font-size="16" fill="#9a7420" text-anchor="middle">떡 · 송편</text>
+  </g>
+
+  <!-- 2열 전·적 -->
+  <text x="76" y="292" font-size="14" fill="#9a938a">2열</text>
+  <g>
+    <rect x="120" y="270" width="150" height="42" rx="21" fill="#FDEDE4" stroke="#E8825A" stroke-width="2"/>
+    <text x="195" y="297" font-size="16" font-weight="700" fill="#C4562B" text-anchor="middle">전 · 부침</text>
+    <rect x="286" y="270" width="150" height="42" rx="21" fill="#FDEDE4" stroke="#E8825A" stroke-width="2"/>
+    <text x="361" y="297" font-size="16" font-weight="700" fill="#C4562B" text-anchor="middle">산적 · 갈비</text>
+    <rect x="452" y="270" width="150" height="42" rx="21" fill="#FDEDE4" stroke="#E8825A" stroke-width="2"/>
+    <text x="527" y="297" font-size="16" font-weight="700" fill="#C4562B" text-anchor="middle">생선 · 조기</text>
+  </g>
+
+  <!-- 3열 나물 -->
+  <text x="76" y="362" font-size="14" fill="#9a938a">3열</text>
+  <g>
+    <rect x="120" y="340" width="150" height="42" rx="21" fill="#FDEDE4" stroke="#E8825A" stroke-width="2"/>
+    <text x="195" y="367" font-size="16" font-weight="700" fill="#C4562B" text-anchor="middle">고사리나물</text>
+    <rect x="286" y="340" width="150" height="42" rx="21" fill="#FDEDE4" stroke="#E8825A" stroke-width="2"/>
+    <text x="361" y="367" font-size="16" font-weight="700" fill="#C4562B" text-anchor="middle">도라지·시금치</text>
+    <rect x="452" y="340" width="150" height="42" rx="21" fill="#FDEDE4" stroke="#E8825A" stroke-width="2"/>
+    <text x="527" y="367" font-size="16" font-weight="700" fill="#C4562B" text-anchor="middle">김치 · 잡채</text>
+  </g>
+
+  <!-- 4열 과일 -->
+  <text x="76" y="432" font-size="14" fill="#9a938a">4열</text>
+  <g>
+    <rect x="120" y="410" width="112" height="42" rx="21" fill="#FDEDE4" stroke="#E8825A" stroke-width="2.5"/>
+    <text x="176" y="437" font-size="16" font-weight="800" fill="#C4562B" text-anchor="middle">포도</text>
+    <rect x="248" y="410" width="112" height="42" rx="21" fill="#FFF6E3" stroke="#D9A441" stroke-width="2"/>
+    <text x="304" y="437" font-size="16" fill="#9a7420" text-anchor="middle">곶감·대추</text>
+    <rect x="376" y="410" width="112" height="42" rx="21" fill="#FFF6E3" stroke="#D9A441" stroke-width="2"/>
+    <text x="432" y="437" font-size="16" fill="#9a7420" text-anchor="middle">사과 · 배</text>
+    <rect x="504" y="410" width="112" height="42" rx="21" fill="#FFF6E3" stroke="#D9A441" stroke-width="2"/>
+    <text x="560" y="437" font-size="16" fill="#9a7420" text-anchor="middle">밤 · 견과</text>
+  </g>
+
+  <!-- 개 자리 -->
+  <line x1="56" y1="486" x2="676" y2="486" stroke="#EAE3D8" stroke-width="1.5"/>
+  <circle cx="140" cy="528" r="16" fill="#33302B"/>
+  <text x="168" y="522" font-size="16.5" font-weight="700" fill="#33302B">개가 서는 자리</text>
+  <text x="168" y="546" font-size="15" fill="#8A8378">식탁과 달리 상은 낮아서 코가 바로 닿습니다</text>
+  <path d="M140 510 L262 462" stroke="#E8825A" stroke-width="2.5" stroke-dasharray="8 6"/>
+
+  <!-- 범례 -->
+  <text x="716" y="182" font-size="19" font-weight="800" fill="#33302B">색이 뜻하는 것</text>
+
+  <g>
+    <rect x="716" y="206" width="26" height="26" rx="8" fill="#FDEDE4" stroke="#E8825A" stroke-width="2.5"/>
+    <text x="754" y="226" font-size="16" font-weight="800" fill="#C4562B">상에서 내린다</text>
+    <text x="716" y="256" font-size="14.5" fill="#8A8378">양파·마늘·파가 들어갔거나</text>
+    <text x="716" y="278" font-size="14.5" fill="#8A8378">기름지거나 뼈가 있는 것.</text>
+    <text x="716" y="300" font-size="14.5" fill="#8A8378">포도는 양과 무관하게 위험.</text>
+
+    <rect x="716" y="330" width="26" height="26" rx="8" fill="#FFF6E3" stroke="#D9A441" stroke-width="2.5"/>
+    <text x="754" y="350" font-size="16" font-weight="800" fill="#9a7420">손 닿는 데 두지 않는다</text>
+    <text x="716" y="380" font-size="14.5" fill="#8A8378">씨와 껍질이 걸리고, 견과는</text>
+    <text x="716" y="402" font-size="14.5" fill="#8A8378">지방이 많아 배탈이 납니다.</text>
+    <text x="716" y="424" font-size="14.5" fill="#8A8378">떡은 삼키다 목에 막힙니다.</text>
+
+    <rect x="716" y="454" width="26" height="26" rx="8" fill="#EAF5F4" stroke="#2F9C95" stroke-width="2.5"/>
+    <text x="754" y="474" font-size="16" font-weight="800" fill="#1F6E69">조금은 괜찮다</text>
+    <text x="716" y="504" font-size="14.5" fill="#8A8378">양념 안 한 흰밥, 삶은 고기,</text>
+    <text x="716" y="526" font-size="14.5" fill="#8A8378">껍질 벗긴 과육 한 조각 정도.</text>
+  </g>
+
+  <line x1="716" y1="552" x2="944" y2="552" stroke="#EAE3D8" stroke-width="1"/>
+  <text x="716" y="582" font-size="15" fill="#5b554d">상을 차리는 몇 분 동안</text>
+  <text x="716" y="604" font-size="15" font-weight="800" fill="#E8825A">개는 다른 방에 둡니다</text>
+
+  <text x="56" y="648" font-size="14.5" fill="#8A8378">※ 지역과 집안에 따라 상차림은 다릅니다. 색은 위험도 표시이고, 얼마나 먹어야 위험한지는 정해져 있지 않습니다.</text>
+</svg>
