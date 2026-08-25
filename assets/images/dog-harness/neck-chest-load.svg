@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" font-family="'Noto Sans KR','Apple SD Gothic Neo',sans-serif">
+  <rect width="1000" height="600" fill="#FFFCF7"/>
+
+  <text x="56" y="58" font-size="33" font-weight="800" fill="#33302B">힘이 목에 걸리느냐 가슴에 나뉘느냐</text>
+  <rect x="56" y="72" width="92" height="7" rx="3.5" fill="#E8825A"/>
+  <text x="58" y="112" font-size="18" fill="#8A8378">같은 힘으로 당겨도 목줄은 한 점에, 하네스는 넓은 면에 걸립니다. 옆에서 본 그림입니다.</text>
+
+  <!-- 강아지 옆모습 실루엣 (단순화) -->
+  <g transform="translate(150,300)">
+    <!-- 몸통 -->
+    <path d="M40,40 Q60,-40 160,-40 Q250,-40 270,10 L300,10 Q315,-10 330,-2 Q322,18 300,26 L295,40
+             Q300,90 285,120 L262,120 Q272,90 258,64 Q210,80 150,74 L150,120 L128,120 L128,70
+             Q80,64 52,40 Q40,60 30,66 Q22,44 40,40 Z" fill="#EAE3D8" stroke="#8A8378" stroke-width="2"/>
+    <!-- 목/머리 앞쪽 강조 -->
+    <circle cx="312" cy="8" r="4" fill="#5b554d"/>
+    <!-- 목줄 위치 (목 한 점) -->
+    <ellipse cx="292" cy="24" rx="15" ry="22" fill="none" stroke="#C4562B" stroke-width="6"/>
+    <circle cx="292" cy="24" r="7" fill="#E8825A"/>
+    <!-- 목줄 당기는 힘 화살표 -->
+    <line x1="292" y1="24" x2="360" y2="-30" stroke="#C4562B" stroke-width="5"/>
+    <polygon points="360,-30 344,-30 356,-16" fill="#C4562B"/>
+
+    <!-- 하네스 분산 면 (가슴~어깨 띠) -->
+    <path d="M150,74 Q170,20 240,18 Q258,40 258,64 Q210,80 150,74 Z" fill="#2F9C95" opacity="0.28"/>
+    <path d="M150,74 Q170,20 240,18" fill="none" stroke="#1F6E69" stroke-width="4"/>
+    <!-- 하네스 당기는 힘 화살표(분산) -->
+    <line x1="200" y1="46" x2="270" y2="0" stroke="#1F6E69" stroke-width="5"/>
+    <polygon points="270,0 254,2 264,16" fill="#1F6E69"/>
+  </g>
+
+  <!-- 라벨 -->
+  <g>
+    <circle cx="470" cy="196" r="9" fill="#E8825A"/>
+    <text x="488" y="202" font-size="17" font-weight="800" fill="#C4562B">목줄 — 목 한 점에 집중</text>
+    <text x="488" y="226" font-size="15" fill="#5b554d">그 자리에 기관이 있다. 당길수록</text>
+    <text x="488" y="248" font-size="15" fill="#5b554d">숨길을 눌러 컥컥거림이 나온다.</text>
+
+    <circle cx="470" cy="292" r="9" fill="#2F9C95"/>
+    <text x="488" y="298" font-size="17" font-weight="800" fill="#1F6E69">하네스 — 가슴·어깨로 분산</text>
+    <text x="488" y="322" font-size="15" fill="#5b554d">힘이 넓은 면으로 나뉘어 목을</text>
+    <text x="488" y="344" font-size="15" fill="#5b554d">직접 누르지 않는다.</text>
+  </g>
+
+  <!-- 조임 점검 인셋 -->
+  <rect x="470" y="384" width="474" height="120" rx="12" fill="#F5F1E9" stroke="#EAE3D8" stroke-width="1.5"/>
+  <text x="494" y="418" font-size="16" font-weight="800" fill="#33302B">채운 뒤 조임 점검</text>
+  <text x="494" y="446" font-size="15" fill="#5b554d">등 쪽 끈 아래로 손가락 두 개가 들어가면 적당합니다.</text>
+  <text x="494" y="470" font-size="15" fill="#5b554d">더 헐거우면 당길 때 앞다리로 빠지고,</text>
+  <text x="494" y="490" font-size="15" fill="#5b554d">더 조이면 겨드랑이가 쓸립니다.</text>
+  <!-- 손가락 두 개 아이콘 -->
+  <g transform="translate(884,430)">
+    <rect x="0" y="0" width="14" height="44" rx="7" fill="#C4562B"/>
+    <rect x="20" y="-6" width="14" height="50" rx="7" fill="#E8825A"/>
+  </g>
+
+  <text x="56" y="556" font-size="14.5" fill="#8A8378">※ 실루엣은 이해를 돕는 예시입니다. 진단이 아니며, 기침·호흡 이상이 반복되면 진료가 먼저입니다.</text>
+</svg>
