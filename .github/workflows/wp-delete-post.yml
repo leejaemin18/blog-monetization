@@ -1,0 +1,63 @@
+name: 글 삭제 (휴지통/완전삭제)
+
+# 특정 post_id 를 휴지통으로 보내거나(기본) 완전 삭제한다(force=y).
+# 발행 워크플로우를 취소했을 때 남은 중복/불완전 글을 정리하는 용도.
+# ※ 완전 삭제는 되돌릴 수 없다. post_id 를 반드시 확인하고 돌린다.
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id:
+        description: "삭제할 글 번호(ID)"
+        required: true
+      force:
+        description: "완전 삭제 (y/n). n이면 휴지통으로만 보낸다"
+        required: false
+        default: "n"
+
+permissions:
+  contents: read
+
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 삭제
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          POST_ID: ${{ github.event.inputs.post_id }}
+          FORCE: ${{ github.event.inputs.force }}
+        run: |
+          pip -q install requests
+          python3 - <<'PY'
+          import os, requests
+          base = os.environ["WP_URL"].rstrip("/")
+          auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
+          pid = os.environ["POST_ID"].strip()
+          force = (os.environ.get("FORCE") or "n").strip().lower().startswith("y")
+
+          # 삭제 전 대상 확인
+          g = requests.get(f"{base}/wp-json/wp/v2/posts/{pid}",
+                           params={"context": "edit"}, auth=auth, timeout=60)
+          if not g.ok:
+              print(f"::error::글 {pid} 조회 실패 {g.status_code}: {g.text[:200]}")
+              raise SystemExit(1)
+          info = g.json()
+          title = (info.get("title") or {}).get("raw") or (info.get("title") or {}).get("rendered") or ""
+          print(f"대상 #{pid} [{info.get('status')}] {title}")
+          print(f"슬러그: {info.get('slug')}")
+          print(f"완전삭제 여부: {force}")
+
+          r = requests.delete(f"{base}/wp-json/wp/v2/posts/{pid}",
+                              params={"force": "true" if force else "false"},
+                              auth=auth, timeout=60)
+          if not r.ok:
+              print(f"::error::삭제 실패 {r.status_code}: {r.text[:200]}")
+              raise SystemExit(1)
+          if force:
+              print(f"완전 삭제 완료: #{pid}")
+          else:
+              print(f"휴지통으로 이동 완료: #{pid} (복구 가능)")
+          PY
