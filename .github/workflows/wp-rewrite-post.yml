@@ -355,25 +355,40 @@ jobs:
 
       # Rank Math 메타는 REST 로 안 들어간다(show_in_rest 미등록).
       # excerpt 는 들어가고, Rank Math 기본 설명 템플릿이 %excerpt% 라 스니펫에 쓰인다.
+      # seo_description 입력이 비면 초안의 <!-- 확정 스니펫: ... --> 주석에서 읽는다.
+      # 입력으로 넘긴 한글은 전송 중 깨지는 일이 있어(쉬→쉐, 텨→텔, 컥→컵) 초안 파일을 신뢰한다.
+      # 초안 주석은 디스크에서 그대로 오므로 깨지지 않는다.
       - name: 검색 스니펫 (excerpt)
-        if: ${{ github.event.inputs.seo_description != '' }}
         env:
           WP_URL: ${{ secrets.WP_URL }}
           WP_USER: ${{ secrets.WP_USER }}
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
           DESC: ${{ github.event.inputs.seo_description }}
+          DRAFT_PATH: ${{ github.event.inputs.draft_path }}
         run: |
           python3 - <<'PY'
-          import os, requests
+          import os, re, requests
           base = os.environ["WP_URL"].rstrip("/")
           auth = (os.environ["WP_USER"], os.environ["WP_APP_PASSWORD"].replace(" ", ""))
           pid  = os.environ["PUBLISHED_ID"]
-          desc = os.environ["DESC"].strip()
+          desc = (os.environ.get("DESC") or "").strip()
+          src = "입력"
+          if not desc:
+              path = (os.environ.get("DRAFT_PATH") or "").strip()
+              if path and os.path.exists(path):
+                  txt = open(path, encoding="utf-8").read()
+                  m = re.search(r"확정\s*스니펫\s*[:：]\s*(.+?)-->", txt, re.S)
+                  if m:
+                      desc = re.sub(r"\s+", " ", m.group(1)).strip()
+                      src = "초안 주석"
+          if not desc:
+              print("::notice::스니펫이 없어 excerpt 단계를 건너뜁니다. (입력·초안 주석 모두 없음)")
+              raise SystemExit(0)
           r = requests.post(f"{base}/wp-json/wp/v2/posts/{pid}",
                             json={"excerpt": desc}, auth=auth, timeout=60)
           if not r.ok:
               print(f"::error::excerpt 저장 실패 {r.status_code}: {r.text[:300]}"); raise SystemExit(1)
-          print("excerpt 저장됨:", desc[:60], "...")
+          print(f"excerpt 저장됨 ({src}):", desc[:60], "...")
           print("::notice::Rank Math 포커스 키워드는 REST 로 안 들어갑니다. 편집기에서 직접 입력하세요.")
           PY
 
