@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600" font-family="'Noto Sans KR','Apple SD Gothic Neo',sans-serif">
+  <rect width="1000" height="600" fill="#FFFCF7"/>
+
+  <text x="56" y="58" font-size="33" font-weight="800" fill="#33302B">이동장 적응은 일주일이면 됩니다</text>
+  <rect x="56" y="72" width="92" height="7" rx="3.5" fill="#E8825A"/>
+  <text x="58" y="112" font-size="18" fill="#8A8378">한 번에 넣으려 하지 말고 작은 단계를 쌓습니다. 불안해하면 하루 전으로 돌아가세요.</text>
+
+  <!-- 진행 막대 -->
+  <line x1="92" y1="168" x2="908" y2="168" stroke="#EAE3D8" stroke-width="6" stroke-linecap="round"/>
+  <line x1="92" y1="168" x2="908" y2="168" stroke="#E8825A" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 0"/>
+
+  <!-- Day 1-2 -->
+  <g>
+    <circle cx="150" cy="168" r="13" fill="#2F9C95"/>
+    <text x="150" y="173" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">1</text>
+    <rect x="92" y="210" width="200" height="150" rx="12" fill="#fff" stroke="#EAE3D8" stroke-width="1.5"/>
+    <text x="110" y="242" font-size="15" font-weight="800" fill="#1F6E69">1~2일 · 꺼내 둔다</text>
+    <text x="110" y="272" font-size="14" fill="#5b554d">문을 활짝 열어</text>
+    <text x="110" y="294" font-size="14" fill="#5b554d">거실에 가구처럼 둔다.</text>
+    <text x="110" y="316" font-size="14" fill="#5b554d">아이 냄새 밴 천을</text>
+    <text x="110" y="338" font-size="14" fill="#5b554d">깔면 더 좋다.</text>
+  </g>
+
+  <!-- Day 3-4 -->
+  <g>
+    <circle cx="386" cy="168" r="13" fill="#2F9C95"/>
+    <text x="386" y="173" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">3</text>
+    <rect x="328" y="210" width="200" height="150" rx="12" fill="#fff" stroke="#EAE3D8" stroke-width="1.5"/>
+    <text x="346" y="242" font-size="15" font-weight="800" fill="#1F6E69">3~4일 · 좋은 일</text>
+    <text x="346" y="272" font-size="14" fill="#5b554d">간식·사료를 안에</text>
+    <text x="346" y="294" font-size="14" fill="#5b554d">놓아 준다.</text>
+    <text x="346" y="316" font-size="14" fill="#5b554d">입구 → 안쪽으로</text>
+    <text x="346" y="338" font-size="14" fill="#5b554d">조금씩 들여놓는다.</text>
+  </g>
+
+  <!-- Day 5-6 -->
+  <g>
+    <circle cx="622" cy="168" r="13" fill="#D9A441"/>
+    <text x="622" y="173" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">5</text>
+    <rect x="564" y="210" width="200" height="150" rx="12" fill="#fff" stroke="#EAE3D8" stroke-width="1.5"/>
+    <text x="582" y="242" font-size="15" font-weight="800" fill="#9a7420">5~6일 · 잠깐 닫기</text>
+    <text x="582" y="272" font-size="14" fill="#5b554d">안에 있을 때 문을</text>
+    <text x="582" y="294" font-size="14" fill="#5b554d">몇 초 닫았다 연다.</text>
+    <text x="582" y="316" font-size="14" fill="#5b554d">시간을 아주 조금씩.</text>
+    <text x="582" y="338" font-size="14" fill="#C4562B">불안하면 하루 전으로.</text>
+  </g>
+
+  <!-- Day 7 -->
+  <g>
+    <circle cx="858" cy="168" r="13" fill="#E8825A"/>
+    <text x="858" y="173" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">7</text>
+    <rect x="800" y="210" width="108" height="150" rx="12" fill="#FDEDE4" stroke="#E8825A" stroke-width="1.5"/>
+    <text x="854" y="242" font-size="15" font-weight="800" fill="#C4562B" text-anchor="middle">7일</text>
+    <text x="854" y="264" font-size="14.5" font-weight="800" fill="#C4562B" text-anchor="middle">짧은 나들이</text>
+    <text x="854" y="292" font-size="13.5" fill="#5b554d" text-anchor="middle">넣고 집 한 바퀴</text>
+    <text x="854" y="312" font-size="13.5" fill="#5b554d" text-anchor="middle">또는 현관 앞까지.</text>
+    <text x="854" y="336" font-size="13.5" fill="#5b554d" text-anchor="middle">병원 아닌 이동을</text>
+    <text x="854" y="352" font-size="13.5" fill="#5b554d" text-anchor="middle">한 번 만든다.</text>
+  </g>
+
+  <!-- 하단 강조 -->
+  <rect x="56" y="404" width="888" height="92" rx="12" fill="#EAF5F4" stroke="#2F9C95" stroke-width="1.5"/>
+  <text x="80" y="440" font-size="17" font-weight="800" fill="#1F6E69">핵심은 정면이 아니라 위입니다</text>
+  <text x="80" y="468" font-size="15.5" fill="#5b554d">겁먹은 고양이는 다리를 버텨 정면으로는 안 들어갑니다. 위가 열리는 이동장이면 안아서 내려놓을 수 있고,</text>
+  <text x="80" y="490" font-size="15.5" fill="#5b554d">병원에서 안 나오려 할 때 뚜껑만 열고 아래 칸에서 진료도 됩니다.</text>
+
+  <text x="56" y="540" font-size="14.5" fill="#8A8378">※ 아이 성향에 따라 속도는 다릅니다. 계획표는 예시이고, 무서워하면 언제든 한 단계 뒤로 돌아가세요.</text>
+</svg>
