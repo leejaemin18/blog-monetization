@@ -241,15 +241,44 @@ jobs:
               print("  AI 생성을 정말 쓰려면 allow_ai_images=y 로 명시해야 합니다(운영자 허락 필요).")
               raise SystemExit(1)
 
+          # thumb_alt / mid_alt 입력이 비거나 기본값이면 초안 주석에서 읽는다.
+          # 입력으로 넘기면 전송 중 한글이 깨진다(끝→끕, 세척→세첤). 디스크 파일은 안 깨진다.
+          # 초안에 <!-- 확정 썸네일 alt: ... --> / <!-- 확정 본문 alt: ... --> 주석을 둔다.
+          _draft_txt = open(os.environ["DRAFT_PATH"], encoding="utf-8").read()
+          def alt_from_draft(env, label_re, default):
+              v = (os.environ.get(env) or "").strip()
+              if v and v != default:
+                  return v
+              m = re.search(label_re, _draft_txt, re.S)
+              if m:
+                  return re.sub(r"\s+", " ", m.group(1)).strip()
+              return default
+          THUMB_ALT = alt_from_draft("THUMB_ALT", r"확정\s*썸네일\s*alt\s*[:：]\s*(.+?)-->", "대표 이미지")
+          MID_ALT   = alt_from_draft("MID_ALT",   r"확정\s*본문\s*alt\s*[:：]\s*(.+?)-->",   "본문 이미지")
+          print(f"썸네일 alt = {THUMB_ALT}")
+          print(f"본문 alt   = {MID_ALT}")
+
           tid, _ = up(pick("thumb", "THUMB_PROMPT", "썸네일"),
-                      os.environ.get("THUMB_ALT", "대표 이미지"), "thumbnail.png")
+                      THUMB_ALT, "thumbnail.png")
           _, murl = up(pick("body", "MID_PROMPT", "본문 이미지"),
-                       os.environ.get("MID_ALT", "본문 이미지"), "inline.png")
-          figm = fig(murl, os.environ.get("MID_ALT", "본문 이미지"))
+                       MID_ALT, "inline.png")
+          figm = fig(murl, MID_ALT)
+          def anchor_match(a):
+              a = (a or "").strip()
+              if not a: return None
+              return re.compile(r'(<h2[^>]*>\s*' + re.escape(a) + r'\s*</h2>)')
+          # 입력 anchor 로 먼저 찾고, 못 찾으면(전송 중 한글 깨짐) 초안 주석의 anchor 로 재시도한다.
           anchor = os.environ["MID_ANCHOR"].strip()
-          pat = re.compile(r'(<h2[^>]*>\s*' + re.escape(anchor) + r'\s*</h2>)')
-          if pat.search(html): html = pat.sub(figm + r'\1', html, count=1)
-          else: html += figm
+          pat = anchor_match(anchor)
+          if not (pat and pat.search(html)):
+              m = re.search(r"본문\s*이미지\s*위치[^=]*=\s*['\"]?(.+?)['\"]?\s*-->", _draft_txt, re.S)
+              if m:
+                  alt_anchor = re.sub(r"\s+", " ", m.group(1)).strip()
+                  print(f"::warning::입력 mid_anchor '{anchor}' 로 못 찾아 초안 주석 anchor '{alt_anchor}' 로 재시도")
+                  pat = anchor_match(alt_anchor)
+          if pat and pat.search(html): html = pat.sub(figm + r'\1', html, count=1)
+          else:
+              print(f"::warning::mid_anchor 를 본문에서 못 찾아 이미지를 글 끝에 붙입니다"); html += figm
 
           # 5) 빈 CTA 제거
           html = re.sub(r"<p>[^<]*👉[^<]*</p>\s*", "", html)
