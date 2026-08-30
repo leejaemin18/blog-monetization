@@ -23,7 +23,7 @@ on:
       disclosure_font: { description: '광고표시 문구 글씨 크기(px)', required: false, default: '13' }
       status: { description: 'publish / draft', required: false, default: 'publish' }
       skip_gate: { description: '발행 전 검사 건너뛰기 (y/n) — 이유가 있을 때만', required: false, default: 'n' }
-      slug: { description: '영문 슬러그. 넣으면 발행 직후 바로 적용 (예: cat-tower-multi-cat)', required: false, default: '' }
+      slug: { description: '슬러그(넣으면 발행 직후 적용). 새 글은 한글=포커스 키워드(예: 강아지-귀-청소), 에셋 키는 영문 유지. 저장값 echo 확인', required: false, default: '' }
       tags: { description: '태그(콤마 구분). 넣으면 발행 직후 바로 적용', required: false, default: '' }
       seo_description: { description: '검색 스니펫 문구. 넣으면 발행 직후 excerpt 로 저장', required: false, default: '' }
 
