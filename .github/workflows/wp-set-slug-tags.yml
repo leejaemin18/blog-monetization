@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       post_id: { description: '대상 글 번호(ID)', required: true }
-      slug: { description: '짧은 영문 슬러그 (예: senior-dog-care)', required: false, default: '' }
+      slug: { description: '슬러그. 새 글은 한글(포커스 키워드, 예: 강아지-귀-청소), 에셋 키는 영문 유지. 저장값 echo 확인', required: false, default: '' }
       tags: { description: '태그(콤마 구분)', required: false, default: '' }
       category: { description: '카테고리 이름(정확히)', required: false, default: '' }
       create_category: { description: '카테고리가 없으면 새로 만들기 (y/n)', required: false, default: 'n' }
