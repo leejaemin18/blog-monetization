@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="640" viewBox="0 0 1000 640" font-family="'Noto Sans KR','Apple SD Gothic Neo',sans-serif">
+  <rect x="0" y="0" width="1000" height="640" fill="#FFFCF7"/>
+  <text x="50" y="48" font-size="25" font-weight="800" fill="#33302B">밥 안 먹는 고양이, 병원일까 관찰일까</text>
+  <text x="50" y="76" font-size="13.5" fill="#8A8378">위에서부터 순서대로 확인하세요</text>
+
+  <!-- 연결 화살표 -->
+  <line x1="400" y1="176" x2="400" y2="206" stroke="#C9C1B4" stroke-width="2.5"/>
+  <polygon points="400,214 394,204 406,204" fill="#C9C1B4"/>
+  <line x1="400" y1="286" x2="400" y2="316" stroke="#C9C1B4" stroke-width="2.5"/>
+  <polygon points="400,324 394,314 406,314" fill="#C9C1B4"/>
+  <line x1="400" y1="396" x2="400" y2="426" stroke="#C9C1B4" stroke-width="2.5"/>
+  <polygon points="400,434 394,424 406,424" fill="#2F9C95"/>
+
+  <!-- 노드 1 -->
+  <rect x="160" y="102" width="480" height="74" rx="12" fill="#FFFCF7" stroke="#EAE3D8" stroke-width="1.6"/>
+  <circle cx="192" cy="139" r="16" fill="#2F9C95"/>
+  <text x="192" y="145" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">1</text>
+  <text x="222" y="134" font-size="17.5" font-weight="800" fill="#33302B">물과 기운도 같이 빠졌나?</text>
+  <text x="222" y="158" font-size="12.5" fill="#8A8378">물 끊음 · 축 처짐 · 구토 · 노란 잇몸</text>
+  <rect x="672" y="118" width="296" height="42" rx="10" fill="#FCEBE2" stroke="#E8825A" stroke-width="1.5"/>
+  <text x="820" y="145" font-size="15.5" font-weight="800" fill="#C4562B" text-anchor="middle">예 → 지금 병원</text>
+
+  <!-- 노드 2 -->
+  <rect x="160" y="212" width="480" height="74" rx="12" fill="#FFFCF7" stroke="#EAE3D8" stroke-width="1.6"/>
+  <circle cx="192" cy="249" r="16" fill="#2F9C95"/>
+  <text x="192" y="255" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">2</text>
+  <text x="222" y="244" font-size="17.5" font-weight="800" fill="#33302B">이틀 넘게 굶었나?</text>
+  <text x="222" y="268" font-size="12.5" fill="#8A8378">통통한 고양이는 하루만 지나도 주의</text>
+  <rect x="672" y="228" width="296" height="42" rx="10" fill="#FCEBE2" stroke="#E8825A" stroke-width="1.5"/>
+  <text x="820" y="255" font-size="15.5" font-weight="800" fill="#C4562B" text-anchor="middle">예 → 지금 병원</text>
+
+  <!-- 노드 3 -->
+  <rect x="160" y="322" width="480" height="74" rx="12" fill="#FFFCF7" stroke="#EAE3D8" stroke-width="1.6"/>
+  <circle cx="192" cy="359" r="16" fill="#2F9C95"/>
+  <text x="192" y="365" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">3</text>
+  <text x="222" y="354" font-size="17.5" font-weight="800" fill="#33302B">뭘 줘도 입에 안 대나?</text>
+  <text x="222" y="378" font-size="12.5" fill="#8A8378">습식·간식까지 거부</text>
+  <rect x="672" y="338" width="296" height="42" rx="10" fill="#FCEBE2" stroke="#E8825A" stroke-width="1.5"/>
+  <text x="820" y="365" font-size="15.5" font-weight="800" fill="#C4562B" text-anchor="middle">예 → 병원</text>
+
+  <!-- 결과(관찰) -->
+  <rect x="160" y="434" width="480" height="82" rx="12" fill="#EAF5F4" stroke="#2F9C95" stroke-width="1.8"/>
+  <text x="186" y="466" font-size="13.5" fill="#2b6560">여기까지 다 아니오라면</text>
+  <text x="186" y="492" font-size="17.5" font-weight="800" fill="#1F6E69">습식을 살짝 데워 주고 하루만 관찰</text>
+
+  <!-- 하단 배너 -->
+  <rect x="160" y="536" width="680" height="46" rx="11" fill="#2F9C95"/>
+  <text x="500" y="565" font-size="14.5" font-weight="700" fill="#FFFFFF" text-anchor="middle">애매하면 지켜보기보다 진료 · 고양이는 이틀이 고비예요</text>
+</svg>
