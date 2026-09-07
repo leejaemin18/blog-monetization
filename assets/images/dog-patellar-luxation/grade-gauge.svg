@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" font-family="'Noto Sans KR','Apple SD Gothic Neo',sans-serif">
+  <rect x="0" y="0" width="900" height="400" rx="18" fill="#FBF9F5"/>
+  <text x="40" y="52" font-size="26" font-weight="700" fill="#3A362F">슬개골 탈구, 1기에서 4기로 나뉩니다</text>
+  <text x="40" y="82" font-size="16" fill="#8A8378">단계가 올라갈수록 무릎뼈가 빠진 채로 있는 시간이 길어집니다</text>
+
+  <!-- baseline groove -->
+  <line x1="40" y1="330" x2="860" y2="330" stroke="#E3DED4" stroke-width="2"/>
+
+  <!-- 1기 -->
+  <rect x="70" y="250" width="140" height="80" rx="10" fill="#7FB77E"/>
+  <text x="140" y="300" font-size="30" font-weight="700" fill="#ffffff" text-anchor="middle">1기</text>
+  <text x="140" y="360" font-size="16" fill="#3A362F" text-anchor="middle">어쩌다 한 번</text>
+  <text x="140" y="382" font-size="16" fill="#3A362F" text-anchor="middle">깡충하는 정도</text>
+
+  <!-- 2기 -->
+  <rect x="270" y="200" width="140" height="130" rx="10" fill="#E7C15A"/>
+  <text x="340" y="275" font-size="30" font-weight="700" fill="#ffffff" text-anchor="middle">2기</text>
+  <text x="340" y="360" font-size="16" fill="#3A362F" text-anchor="middle">다리를</text>
+  <text x="340" y="382" font-size="16" fill="#3A362F" text-anchor="middle">자주 듦</text>
+
+  <!-- 3기 -->
+  <rect x="470" y="150" width="140" height="180" rx="10" fill="#E08A4B"/>
+  <text x="540" y="250" font-size="30" font-weight="700" fill="#ffffff" text-anchor="middle">3기</text>
+  <text x="540" y="360" font-size="16" fill="#3A362F" text-anchor="middle">대부분 빠진 채</text>
+  <text x="540" y="382" font-size="16" fill="#3A362F" text-anchor="middle">구부정하게</text>
+
+  <!-- 4기 -->
+  <rect x="670" y="105" width="140" height="225" rx="10" fill="#CC5B5B"/>
+  <text x="740" y="215" font-size="30" font-weight="700" fill="#ffffff" text-anchor="middle">4기</text>
+  <text x="740" y="360" font-size="16" fill="#3A362F" text-anchor="middle">고정돼</text>
+  <text x="740" y="382" font-size="16" fill="#3A362F" text-anchor="middle">제대로 못 폄</text>
+
+  <!-- arrow of progression -->
+  <text x="40" y="140" font-size="15" fill="#A79F92">진행 →</text>
+</svg>
