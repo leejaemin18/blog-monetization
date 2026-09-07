@@ -288,31 +288,43 @@ jobs:
           disc_text = "이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."
           html = f'<p style="font-size:{fs}px;color:#8A8378;">“{disc_text}”</p>\n\n' + html
 
-          # 7) 카테고리 해결 — 없으면 만든다.
-          # 예전엔 못 찾으면 조용히 넘어가서 새 카테고리를 쓰려던 글이 기본 분류로 갔다.
+          # 7) 카테고리 해결 — 입력 카테고리가 전송 중 깨질 수 있어(예: 병→벑) 검색이 빈손이면
+          #    초안 주석/헤더의 카테고리(디스크, 안 깨짐)로 재시도한다. anchor·스니펫·alt 와 같은 방식.
+          #    새로 만들 땐 반드시 디스크 이름으로만 만든다 — 깨진 입력으로 유령 카테고리를 만들지 않는다.
           payload = {"title": title, "content": html, "status": os.environ.get("POST_STATUS", "publish"), "featured_media": tid}
-          name = (os.environ.get("CATEGORY_NAME") or "").strip()
           slug = (os.environ.get("CATEGORY_SLUG") or "").strip()
-          if name:
-              cid = None
-              rc = requests.get(f"{base}/wp-json/wp/v2/categories", params={"search": name}, auth=auth, timeout=30)
+          def _find_cat(nm):
+              nm = (nm or "").strip()
+              if not nm: return None
+              rc = requests.get(f"{base}/wp-json/wp/v2/categories", params={"search": nm}, auth=auth, timeout=30)
               if rc.ok:
-                  mt = [c for c in rc.json() if c.get("name") == name]
-                  if mt: cid = mt[0]["id"]
-              if cid is None:
-                  body = {"name": name}
-                  if slug: body["slug"] = slug
-                  cr = requests.post(f"{base}/wp-json/wp/v2/categories", json=body, auth=auth, timeout=30)
-                  if cr.ok:
-                      cid = cr.json().get("id")
-                      print(f"카테고리 생성: {name} (#{cid}, slug={slug or '자동'})")
-                  elif cr.status_code == 400 and "term_exists" in cr.text:
-                      cid = (cr.json().get("data") or {}).get("term_id")
-                      print(f"카테고리 이미 있음: {name} (#{cid})")
-                  else:
-                      print(f"::warning::카테고리 생성 실패 {cr.status_code}: {cr.text[:200]}")
-              if cid: payload["categories"] = [cid]
-              else:   print(f"::warning::카테고리 '{name}' 을 지정하지 못했습니다 — 기본 분류로 갑니다")
+                  mt = [c for c in rc.json() if c.get("name") == nm]
+                  if mt: return mt[0]["id"]
+              return None
+          name = (os.environ.get("CATEGORY_NAME") or "").strip()
+          cid = _find_cat(name)
+          disk_name = None
+          if cid is None:
+              m = re.search(r"확정\s*카테고리\s*[:：]\s*(.+?)\s*-->", _draft_txt)
+              if not m:
+                  m = re.search(r"카테고리\s+([가-힣A-Za-z·]+)", _draft_txt)
+              if m:
+                  disk_name = re.sub(r"\s+", " ", m.group(1)).strip()
+                  if disk_name and disk_name != name:
+                      print(f"::warning::입력 카테고리 '{name}' 를 못 찾아 초안 '{disk_name}' 로 재시도")
+                  cid = _find_cat(disk_name)
+          if cid is None and disk_name:
+              body = {"name": disk_name}
+              if slug: body["slug"] = slug
+              cr = requests.post(f"{base}/wp-json/wp/v2/categories", json=body, auth=auth, timeout=30)
+              if cr.ok:
+                  cid = cr.json().get("id"); print(f"카테고리 생성: {disk_name} (#{cid}, slug={slug or '자동'})")
+              elif cr.status_code == 400 and "term_exists" in cr.text:
+                  cid = (cr.json().get("data") or {}).get("term_id"); print(f"카테고리 이미 있음: {disk_name} (#{cid})")
+              else:
+                  print(f"::warning::카테고리 생성 실패 {cr.status_code}: {cr.text[:200]}")
+          if cid: payload["categories"] = [cid]
+          elif name or disk_name: print(f"::warning::카테고리 지정 실패 — 기본 분류로 갑니다")
 
           # 8) 업데이트(있으면) 또는 새 발행
           pid = (os.environ.get("POST_ID") or "").strip()
