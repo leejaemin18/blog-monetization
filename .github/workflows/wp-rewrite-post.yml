@@ -22,6 +22,7 @@ on:
       mid_anchor: { description: '핵심사진을 넣을 소제목(h2)', required: true }
       disclosure_font: { description: '광고표시 문구 글씨 크기(px)', required: false, default: '13' }
       status: { description: 'publish / draft', required: false, default: 'publish' }
+      publish_at: { description: '예약발행 시각(사이트 현지=KST 기준 ISO, 예: 2026-09-10T09:00:00). 넣으면 그 시각에 자동 발행(status=future)', required: false, default: '' }
       skip_gate: { description: '발행 전 검사 건너뛰기 (y/n) — 이유가 있을 때만', required: false, default: 'n' }
       slug: { description: '슬러그(넣으면 발행 직후 적용). 새 글은 한글=포커스 키워드(예: 강아지-귀-청소), 에셋 키는 영문 유지. 저장값 echo 확인', required: false, default: '' }
       tags: { description: '태그(콤마 구분). 넣으면 발행 직후 바로 적용', required: false, default: '' }
@@ -141,6 +142,7 @@ jobs:
           MID_ANCHOR: ${{ github.event.inputs.mid_anchor }}
           DISCLOSURE_FONT: ${{ github.event.inputs.disclosure_font }}
           POST_STATUS: ${{ github.event.inputs.status }}
+          PUBLISH_AT: ${{ github.event.inputs.publish_at }}
         run: |
           pip -q install markdown requests
           python3 - <<'PY'
@@ -292,6 +294,12 @@ jobs:
           #    초안 주석/헤더의 카테고리(디스크, 안 깨짐)로 재시도한다. anchor·스니펫·alt 와 같은 방식.
           #    새로 만들 땐 반드시 디스크 이름으로만 만든다 — 깨진 입력으로 유령 카테고리를 만들지 않는다.
           payload = {"title": title, "content": html, "status": os.environ.get("POST_STATUS", "publish"), "featured_media": tid}
+          # 예약발행: publish_at 이 있으면 그 시각(사이트 현지=KST)에 자동 발행되도록 status=future + date
+          pub_at = (os.environ.get("PUBLISH_AT") or "").strip()
+          if pub_at:
+              payload["date"] = pub_at
+              payload["status"] = "future"
+              print(f"예약발행: {pub_at} (KST) 로 status=future 설정")
           slug = (os.environ.get("CATEGORY_SLUG") or "").strip()
           def _find_cat(nm):
               nm = (nm or "").strip()
