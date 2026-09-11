@@ -482,7 +482,8 @@ jobs:
           m = re.search(r"link\.coupang\.com/a/([A-Za-z0-9]+)", c)
           if m:
               code = m.group(1); n = c.count(code)
-              ok(f"딥링크 {code} {n}개 (기대 3 = 카드제목·CTA·본문인라인)", n == 3)
+              # 2026-09-11 개정: 배너는 글 끝 미니카드 1개(정보성처럼). 예전 3개(카드제목·CTA·인라인) 폐지
+              ok(f"딥링크 {code} {n}개 (미니카드 1개 기대)", n == 1)
           else:
               print("  ·  딥링크 없음 (정보성 글이면 정상)")
 
