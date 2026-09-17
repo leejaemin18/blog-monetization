@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 860" width="1200" height="860" font-family="Noto Sans KR, sans-serif">
+<rect x="0" y="0" width="1200" height="860" fill="#FBF8F2"/>
+<text x="60" y="92" font-size="50" font-weight="700" fill="#4a4038">상황별 이동가방 고르기</text>
+<text x="60" y="140" font-size="30" fill="#8a8378">이동 시간과 아이 성향으로 형태가 갈립니다</text>
+<rect x="60" y="195" rx="24" ry="24" width="1080" height="195" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="100" y="273" font-size="40" font-weight="700" fill="#4a4038">짧고 잦은 외출</text>
+<text x="100" y="323" font-size="29" fill="#8a8378">병원·카페·동네 나들이</text>
+<text x="560" y="308" font-size="52" fill="#C08A5E">→</text>
+<rect x="650" y="237" rx="30" ry="30" width="220" height="60" fill="#C08A5E"/>
+<text x="760" y="278" font-size="34" font-weight="700" fill="#ffffff" text-anchor="middle">슬링형</text>
+<text x="650" y="335" font-size="28" fill="#4a4038">가볍고 착용이 빨라 아이도 금방 익숙</text>
+<rect x="60" y="410" rx="24" ry="24" width="1080" height="195" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="100" y="488" font-size="40" font-weight="700" fill="#4a4038">장거리·대중교통·여행</text>
+<text x="100" y="538" font-size="29" fill="#8a8378">30분 이상, 버스·지하철</text>
+<text x="560" y="523" font-size="52" fill="#C08A5E">→</text>
+<rect x="650" y="452" rx="30" ry="30" width="220" height="60" fill="#C08A5E"/>
+<text x="760" y="493" font-size="34" font-weight="700" fill="#ffffff" text-anchor="middle">백팩형</text>
+<text x="650" y="550" font-size="28" fill="#4a4038">두 어깨로 무게 분산, 두 손 자유</text>
+<rect x="60" y="625" rx="24" ry="24" width="1080" height="195" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="100" y="703" font-size="40" font-weight="700" fill="#4a4038">겁 많음·병원 싫어함</text>
+<text x="100" y="753" font-size="29" fill="#8a8378">억지로 밀어 넣기 어려운 아이</text>
+<text x="560" y="738" font-size="52" fill="#C08A5E">→</text>
+<rect x="650" y="667" rx="30" ry="30" width="220" height="60" fill="#C08A5E"/>
+<text x="760" y="708" font-size="34" font-weight="700" fill="#ffffff" text-anchor="middle">톱로딩형</text>
+<text x="650" y="765" font-size="28" fill="#4a4038">위가 열려 안아서 넣고 꺼내기 편함</text>
+</svg>
