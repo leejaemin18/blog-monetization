@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720" font-family="Noto Sans KR, sans-serif">
+<rect x="0" y="0" width="1200" height="720" fill="#FBF8F2"/>
+<text x="60" y="86" font-size="46" font-weight="700" fill="#4a4038">발 씻기 3방식, 뭐가 다를까</text>
+<rect x="60" y="130" width="1080" height="470" rx="22" ry="22" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="560" y="212" font-size="34" font-weight="700" fill="#4a4038" text-anchor="middle">물티슈</text>
+<text x="770" y="212" font-size="34" font-weight="700" fill="#4a4038" text-anchor="middle">대야</text>
+<text x="980" y="212" font-size="34" font-weight="700" fill="#4a4038" text-anchor="middle">세정컵</text>
+<text x="100" y="310" font-size="30" fill="#4a4038">간편함</text>
+<circle cx="560" cy="300" r="20" fill="#C08A5E"/>
+<circle cx="770" cy="300" r="20" fill="none" stroke="#C9C1B3" stroke-width="4"/>
+<circle cx="980" cy="300" r="20" fill="none" stroke="#C08A5E" stroke-width="4"/><path d="M 980 280 A 20 20 0 0 1 980 320 Z" fill="#C08A5E"/>
+<text x="100" y="420" font-size="30" fill="#4a4038">발가락 사이</text>
+<circle cx="560" cy="410" r="20" fill="none" stroke="#C9C1B3" stroke-width="4"/>
+<circle cx="770" cy="410" r="20" fill="#C08A5E"/>
+<circle cx="980" cy="410" r="20" fill="#C08A5E"/>
+<text x="100" y="530" font-size="30" fill="#4a4038">뒤처리(물 안 튐)</text>
+<circle cx="560" cy="520" r="20" fill="#C08A5E"/>
+<circle cx="770" cy="520" r="20" fill="none" stroke="#C9C1B3" stroke-width="4"/>
+<circle cx="980" cy="520" r="20" fill="none" stroke="#C08A5E" stroke-width="4"/><path d="M 980 500 A 20 20 0 0 1 980 540 Z" fill="#C08A5E"/>
+<text x="60" y="652" font-size="24" fill="#8a8378">● 좋음   ◑ 보통   ○ 아쉬움</text>
+<text x="60" y="690" font-size="26" fill="#4a4038">진흙 많은 날은 대야, 가벼운 산책 뒤 매일은 세정컵이 편해요</text>
+</svg>
