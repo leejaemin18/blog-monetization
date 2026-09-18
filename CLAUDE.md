@@ -158,7 +158,7 @@ WP가 percent-encoding으로 저장하고 워크플로우 입력으로 넘겨도
      [썸네일 프롬프트]: (팔레트·장면·한글 문구까지 구체적으로, 브랜드 로고 금지)
      [본문이미지 프롬프트]: (썸네일과 같은 톤, 텍스트 금지·숫자만)
    ```
-3. 운영자가 **"업로드 완료"** 라고 하면:
+3. 운영자가 **"업로드 완료"**(또는 "완", 2026-09-18부터 **"ㅇ"** 한 글자로도 신호) 라고 하면:
    - Drive에서 `title contains '{슬러그}' and mimeType contains 'image/'` 로 **2장** 검색
    - `download_file_content` 로 받는다. 용량이 커서 파일로 떨어지면 `content`(base64)를
      `python base64.b64decode` 로 PNG 저장
