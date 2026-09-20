@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720" font-family="Noto Sans KR, sans-serif">
+<rect x="0" y="0" width="1200" height="720" fill="#FBF8F2"/>
+<text x="60" y="92" font-size="46" font-weight="700" fill="#4a4038">하루 열량 중 간식은 10%까지</text>
+<text x="60" y="146" font-size="28" fill="#8a8378">나머지 90%는 균형 잡힌 주식(사료)에서 채웁니다</text>
+<circle cx="470" cy="400" r="150" fill="none" stroke="#E6D8C3" stroke-width="92"/>
+<circle cx="470" cy="400" r="150" fill="none" stroke="#C08A5E" stroke-width="92"
+  stroke-dasharray="94.2 848.2" transform="rotate(-90 470 400)"/>
+<text x="470" y="394" font-size="60" font-weight="700" fill="#C08A5E" text-anchor="middle">10%</text>
+<text x="470" y="444" font-size="30" fill="#8a8378" text-anchor="middle">간식 상한</text>
+<rect x="760" y="300" width="34" height="34" rx="8" fill="#C08A5E"/>
+<text x="812" y="326" font-size="32" fill="#4a4038">간식 · 하루 열량의 10% 이내</text>
+<rect x="760" y="370" width="34" height="34" rx="8" fill="#E6D8C3"/>
+<text x="812" y="396" font-size="32" fill="#4a4038">주식(사료) · 나머지 90%</text>
+<text x="760" y="470" font-size="26" fill="#8a8378">개수가 아니라 열량 기준 · 훈련 간식과</text>
+<text x="760" y="506" font-size="26" fill="#8a8378">사람이 주는 것까지 모두 포함</text>
+</svg>
