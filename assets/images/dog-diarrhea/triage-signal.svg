@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" width="1200" height="760" font-family="Noto Sans KR, sans-serif">
+<rect x="0" y="0" width="1200" height="760" fill="#FBF8F2"/>
+<text x="60" y="86" font-size="46" font-weight="700" fill="#4a4038">지켜볼까, 병원 갈까 — 설사 신호등</text>
+<text x="60" y="132" font-size="26" fill="#8a8378">며칠째인지와 함께 오는 신호로 판단합니다</text>
+<rect x="60" y="170" width="1080" height="185" rx="22" ry="22" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<circle cx="175" cy="262" r="54" fill="#6E9E5E"/>
+<text x="290" y="242" font-size="38" font-weight="700" fill="#6E9E5E">지켜봐도 됩니다</text>
+<text x="290" y="288" font-size="30" fill="#4a4038">활발하게 잘 놈 · 물도 잘 마심</text>
+<text x="290" y="332" font-size="30" fill="#4a4038">변이 한두 번 무른 정도 · 색 정상</text>
+<rect x="60" y="373" width="1080" height="185" rx="22" ry="22" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<circle cx="175" cy="465" r="54" fill="#E0A64E"/>
+<text x="290" y="445" font-size="38" font-weight="700" fill="#E0A64E">하루 지나면 병원 상담</text>
+<text x="290" y="491" font-size="30" fill="#4a4038">무른 변이 하루 이상 이어짐</text>
+<text x="290" y="535" font-size="30" fill="#4a4038">기운이 조금 없음 · 사료를 바꾼 뒤</text>
+<rect x="60" y="576" width="1080" height="185" rx="22" ry="22" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<circle cx="175" cy="668" r="54" fill="#C0553E"/>
+<text x="290" y="648" font-size="38" font-weight="700" fill="#C0553E">지금 병원</text>
+<text x="290" y="694" font-size="30" fill="#4a4038">혈변·검은 변 · 반복되는 물설사</text>
+<text x="290" y="738" font-size="30" fill="#4a4038">구토 동반 · 축 처짐 · 탈수</text>
+</svg>
