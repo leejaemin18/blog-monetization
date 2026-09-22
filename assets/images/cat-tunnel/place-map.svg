@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" width="1200" height="760" font-family="Noto Sans KR, sans-serif">
+<rect x="0" y="0" width="1200" height="760" fill="#FBF8F2"/>
+<text x="60" y="80" font-size="44" font-weight="700" fill="#4a4038">고양이 터널 놓기 좋은 자리</text>
+<text x="60" y="122" font-size="25" fill="#8a8378">같은 터널도 자리에 따라 반응이 갈립니다</text>
+<rect x="70" y="160" width="1060" height="540" rx="16" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="3"/>
+<rect x="190" y="154" width="360" height="12" fill="#DCEAF1" stroke="#E6DFD2" stroke-width="2"/>
+<text x="370" y="142" font-size="22" fill="#8a8378" text-anchor="middle">창문</text>
+<rect x="110" y="694" width="150" height="12" fill="#Eadfce" stroke="#E6DFD2" stroke-width="2"/>
+<text x="185" y="734" font-size="22" fill="#8a8378" text-anchor="middle">현관</text>
+<rect x="272" y="250" width="116" height="60" rx="30" ry="30" fill="#6E9E5E" fill-opacity="0.16" stroke="#6E9E5E" stroke-width="3"/><ellipse cx="300" cy="280" rx="20" ry="24" fill="#6E9E5E" fill-opacity="0.30"/>
+<circle cx="400" cy="250" r="20" fill="#6E9E5E"/><path d="M 391 250 L 398 258 L 410 242" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="330" y="350" font-size="26" fill="#4a4038" text-anchor="middle">창가 햇볕</text>
+<rect x="912" y="550" width="116" height="60" rx="30" ry="30" fill="#6E9E5E" fill-opacity="0.16" stroke="#6E9E5E" stroke-width="3"/><ellipse cx="940" cy="580" rx="20" ry="24" fill="#6E9E5E" fill-opacity="0.30"/>
+<circle cx="1040" cy="550" r="20" fill="#6E9E5E"/><path d="M 1031 550 L 1038 558 L 1050 542" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="970" y="650" font-size="26" fill="#4a4038" text-anchor="middle">벽·가구 구석</text>
+<rect x="922" y="280" width="116" height="60" rx="30" ry="30" fill="#6E9E5E" fill-opacity="0.16" stroke="#6E9E5E" stroke-width="3"/><ellipse cx="950" cy="310" rx="20" ry="24" fill="#6E9E5E" fill-opacity="0.30"/>
+<circle cx="1050" cy="280" r="20" fill="#6E9E5E"/><path d="M 1041 280 L 1048 288 L 1060 272" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="980" y="380" font-size="26" fill="#4a4038" text-anchor="middle">지나는 길목</text>
+<rect x="482" y="420" width="116" height="60" rx="30" ry="30" fill="#C0553E" fill-opacity="0.16" stroke="#C0553E" stroke-width="3"/><ellipse cx="510" cy="450" rx="20" ry="24" fill="#C0553E" fill-opacity="0.30"/>
+<circle cx="610" cy="420" r="20" fill="#C0553E"/><path d="M 602 412 L 618 428 M 618 412 L 602 428" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+<text x="540" y="520" font-size="26" fill="#4a4038" text-anchor="middle">거실 한복판</text>
+<rect x="152" y="550" width="116" height="60" rx="30" ry="30" fill="#C0553E" fill-opacity="0.16" stroke="#C0553E" stroke-width="3"/><ellipse cx="180" cy="580" rx="20" ry="24" fill="#C0553E" fill-opacity="0.30"/>
+<circle cx="280" cy="550" r="20" fill="#C0553E"/><path d="M 272 542 L 288 558 M 288 542 L 272 558" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+<text x="210" y="650" font-size="26" fill="#4a4038" text-anchor="middle">현관·세탁기 옆</text>
+<circle cx="90" cy="724" r="12" fill="#6E9E5E"/><text x="112" y="732" font-size="24" fill="#8a8378">좋은 자리</text>
+<circle cx="290" cy="724" r="12" fill="#C0553E"/><text x="312" y="732" font-size="24" fill="#8a8378">피할 자리</text>
+</svg>
