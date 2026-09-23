@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 860" width="1200" height="860" font-family="Noto Sans KR, sans-serif">
+<rect width="1200" height="860" fill="#FBF8F2"/>
+<text x="60" y="82" font-size="44" font-weight="700" fill="#4a4038">소량도 위험한 음식 6가지</text>
+<text x="60" y="126" font-size="25" fill="#8a8378">"조금은 괜찮겠지"가 통하지 않는 쪽입니다</text>
+<rect x="60" y="160" width="346" height="300" rx="20" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<circle cx="233" cy="256" r="60" fill="#F3E2DC"/>
+<rect x="203" y="234" width="60" height="44" rx="6" fill="none" stroke="#C0553E" stroke-width="4"/><line x1="233" y1="234" x2="233" y2="278" stroke="#C0553E" stroke-width="3"/><line x1="203" y1="256" x2="263" y2="256" stroke="#C0553E" stroke-width="3"/>
+<text x="233" y="365" font-size="32" font-weight="700" fill="#4a4038" text-anchor="middle">초콜릿</text>
+<text x="233" y="408" font-size="24" fill="#8a8378" text-anchor="middle">테오브로민 · 다크일수록 위험</text>
+<rect x="431" y="160" width="346" height="300" rx="20" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<circle cx="604" cy="256" r="60" fill="#F3E2DC"/>
+<circle cx="588" cy="248" r="10" fill="none" stroke="#C0553E" stroke-width="3.5"/><circle cx="604" cy="248" r="10" fill="none" stroke="#C0553E" stroke-width="3.5"/><circle cx="620" cy="248" r="10" fill="none" stroke="#C0553E" stroke-width="3.5"/><circle cx="596" cy="262" r="10" fill="none" stroke="#C0553E" stroke-width="3.5"/><circle cx="612" cy="262" r="10" fill="none" stroke="#C0553E" stroke-width="3.5"/><circle cx="604" cy="276" r="10" fill="none" stroke="#C0553E" stroke-width="3.5"/>
+<text x="604" y="365" font-size="32" font-weight="700" fill="#4a4038" text-anchor="middle">포도·건포도</text>
+<text x="604" y="408" font-size="24" fill="#8a8378" text-anchor="middle">소량도 급성 신장 손상</text>
+<rect x="802" y="160" width="346" height="300" rx="20" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<circle cx="975" cy="256" r="60" fill="#F3E2DC"/>
+<path d="M 975 230 C 1005 250 1001 286 975 286 C 949 286 945 250 975 230 Z" fill="none" stroke="#C0553E" stroke-width="4"/><line x1="966" y1="242" x2="966" y2="282" stroke="#C0553E" stroke-width="2.5"/><line x1="984" y1="242" x2="984" y2="282" stroke="#C0553E" stroke-width="2.5"/><line x1="975" y1="230" x2="967" y2="218" stroke="#C0553E" stroke-width="3"/><line x1="975" y1="230" x2="983" y2="218" stroke="#C0553E" stroke-width="3"/>
+<text x="975" y="365" font-size="32" font-weight="700" fill="#4a4038" text-anchor="middle">양파·마늘·파류</text>
+<text x="975" y="408" font-size="24" fill="#8a8378" text-anchor="middle">익혀도 적혈구 파괴·빈혈</text>
+<rect x="60" y="486" width="346" height="300" rx="20" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<circle cx="233" cy="582" r="60" fill="#F3E2DC"/>
+<rect x="205" y="564" width="56" height="36" rx="8" fill="none" stroke="#C0553E" stroke-width="4"/><line x1="223" y1="564" x2="223" y2="600" stroke="#C0553E" stroke-width="2.5"/>
+<text x="233" y="691" font-size="32" font-weight="700" fill="#4a4038" text-anchor="middle">자일리톨</text>
+<text x="233" y="734" font-size="24" fill="#8a8378" text-anchor="middle">급격한 저혈당·간 손상</text>
+<rect x="431" y="486" width="346" height="300" rx="20" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<circle cx="604" cy="582" r="60" fill="#F3E2DC"/>
+<ellipse cx="604" cy="582" rx="28" ry="24" fill="none" stroke="#C0553E" stroke-width="4"/><path d="M 590 566 Q 604 582 598 600" fill="none" stroke="#C0553E" stroke-width="2.5"/>
+<text x="604" y="691" font-size="32" font-weight="700" fill="#4a4038" text-anchor="middle">마카다미아</text>
+<text x="604" y="734" font-size="24" fill="#8a8378" text-anchor="middle">무기력·떨림·고열</text>
+<rect x="802" y="486" width="346" height="300" rx="20" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<circle cx="975" cy="582" r="60" fill="#F3E2DC"/>
+<path d="M 951 566 L 993 566 L 989 604 L 955 604 Z" fill="none" stroke="#C0553E" stroke-width="4"/><path d="M 993 572 Q 1013 574 1005 590" fill="none" stroke="#C0553E" stroke-width="3.5"/><line x1="961" y1="552" x2="961" y2="560" stroke="#C0553E" stroke-width="3"/><line x1="975" y1="550" x2="975" y2="560" stroke="#C0553E" stroke-width="3"/>
+<text x="975" y="691" font-size="32" font-weight="700" fill="#4a4038" text-anchor="middle">카페인</text>
+<text x="975" y="734" font-size="24" fill="#8a8378" text-anchor="middle">커피·에너지음료·찻잎</text>
+</svg>
