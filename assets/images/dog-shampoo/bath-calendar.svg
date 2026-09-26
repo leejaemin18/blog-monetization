@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" width="1200" height="820" font-family="Noto Sans KR, sans-serif">
+<rect width="1200" height="820" fill="#FBF8F2"/>
+<text x="60" y="80" font-size="44" font-weight="700" fill="#4a4038">한 달 관리 달력</text>
+<text x="60" y="124" font-size="26" fill="#8a8378">샴푸 목욕은 한 번이면 충분하고 나머지는 부분 관리로</text>
+<text x="161.0" y="176" font-size="24" font-weight="700" fill="#8a8378" text-anchor="middle">월</text>
+<text x="309.0" y="176" font-size="24" font-weight="700" fill="#8a8378" text-anchor="middle">화</text>
+<text x="457.0" y="176" font-size="24" font-weight="700" fill="#8a8378" text-anchor="middle">수</text>
+<text x="605.0" y="176" font-size="24" font-weight="700" fill="#8a8378" text-anchor="middle">목</text>
+<text x="753.0" y="176" font-size="24" font-weight="700" fill="#8a8378" text-anchor="middle">금</text>
+<text x="901.0" y="176" font-size="24" font-weight="700" fill="#8a8378" text-anchor="middle">토</text>
+<text x="1049.0" y="176" font-size="24" font-weight="700" fill="#8a8378" text-anchor="middle">일</text>
+<rect x="90" y="190" width="142" height="112" rx="12" fill="#F3E6D8" stroke="#C08A5E" stroke-width="3"/>
+<text x="102" y="218" font-size="20" fill="#8a8378">1</text>
+<circle cx="161.0" cy="252" r="16" fill="#C08A5E"/>
+<text x="161.0" y="290" font-size="21" font-weight="700" fill="#C08A5E" text-anchor="middle">샴푸 목욕</text>
+<rect x="238" y="190" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="250" y="218" font-size="20" fill="#8a8378">2</text>
+<circle cx="309.0" cy="252" r="11" fill="#6E9E5E"/>
+<text x="309.0" y="288" font-size="20" fill="#6E9E5E" text-anchor="middle">빗질</text>
+<rect x="386" y="190" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="398" y="218" font-size="20" fill="#8a8378">3</text>
+<rect x="534" y="190" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="546" y="218" font-size="20" fill="#8a8378">4</text>
+<rect x="682" y="190" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="694" y="218" font-size="20" fill="#8a8378">5</text>
+<circle cx="753.0" cy="252" r="11" fill="#6E9E5E"/>
+<text x="753.0" y="288" font-size="20" fill="#6E9E5E" text-anchor="middle">빗질</text>
+<rect x="830" y="190" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="842" y="218" font-size="20" fill="#8a8378">6</text>
+<path d="M 901.0 236 Q 914.0 254 901.0 266 Q 888.0 254 901.0 236 Z" fill="#7FA7C2"/>
+<text x="901.0" y="290" font-size="19" fill="#7FA7C2" text-anchor="middle">발·엉덩이</text>
+<rect x="978" y="190" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="990" y="218" font-size="20" fill="#8a8378">7</text>
+<rect x="90" y="308" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="102" y="336" font-size="20" fill="#8a8378">8</text>
+<rect x="238" y="308" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="250" y="336" font-size="20" fill="#8a8378">9</text>
+<circle cx="309.0" cy="370" r="11" fill="#6E9E5E"/>
+<text x="309.0" y="406" font-size="20" fill="#6E9E5E" text-anchor="middle">빗질</text>
+<rect x="386" y="308" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="398" y="336" font-size="20" fill="#8a8378">10</text>
+<rect x="534" y="308" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="546" y="336" font-size="20" fill="#8a8378">11</text>
+<rect x="682" y="308" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="694" y="336" font-size="20" fill="#8a8378">12</text>
+<circle cx="753.0" cy="370" r="11" fill="#6E9E5E"/>
+<text x="753.0" y="406" font-size="20" fill="#6E9E5E" text-anchor="middle">빗질</text>
+<rect x="830" y="308" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="842" y="336" font-size="20" fill="#8a8378">13</text>
+<path d="M 901.0 354 Q 914.0 372 901.0 384 Q 888.0 372 901.0 354 Z" fill="#7FA7C2"/>
+<text x="901.0" y="408" font-size="19" fill="#7FA7C2" text-anchor="middle">발·엉덩이</text>
+<rect x="978" y="308" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="990" y="336" font-size="20" fill="#8a8378">14</text>
+<rect x="90" y="426" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="102" y="454" font-size="20" fill="#8a8378">15</text>
+<rect x="238" y="426" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="250" y="454" font-size="20" fill="#8a8378">16</text>
+<circle cx="309.0" cy="488" r="11" fill="#6E9E5E"/>
+<text x="309.0" y="524" font-size="20" fill="#6E9E5E" text-anchor="middle">빗질</text>
+<rect x="386" y="426" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="398" y="454" font-size="20" fill="#8a8378">17</text>
+<rect x="534" y="426" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="546" y="454" font-size="20" fill="#8a8378">18</text>
+<rect x="682" y="426" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="694" y="454" font-size="20" fill="#8a8378">19</text>
+<circle cx="753.0" cy="488" r="11" fill="#6E9E5E"/>
+<text x="753.0" y="524" font-size="20" fill="#6E9E5E" text-anchor="middle">빗질</text>
+<rect x="830" y="426" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="842" y="454" font-size="20" fill="#8a8378">20</text>
+<path d="M 901.0 472 Q 914.0 490 901.0 502 Q 888.0 490 901.0 472 Z" fill="#7FA7C2"/>
+<text x="901.0" y="526" font-size="19" fill="#7FA7C2" text-anchor="middle">발·엉덩이</text>
+<rect x="978" y="426" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="990" y="454" font-size="20" fill="#8a8378">21</text>
+<rect x="90" y="544" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="102" y="572" font-size="20" fill="#8a8378">22</text>
+<rect x="238" y="544" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="250" y="572" font-size="20" fill="#8a8378">23</text>
+<circle cx="309.0" cy="606" r="11" fill="#6E9E5E"/>
+<text x="309.0" y="642" font-size="20" fill="#6E9E5E" text-anchor="middle">빗질</text>
+<rect x="386" y="544" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="398" y="572" font-size="20" fill="#8a8378">24</text>
+<rect x="534" y="544" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="546" y="572" font-size="20" fill="#8a8378">25</text>
+<rect x="682" y="544" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="694" y="572" font-size="20" fill="#8a8378">26</text>
+<circle cx="753.0" cy="606" r="11" fill="#6E9E5E"/>
+<text x="753.0" y="642" font-size="20" fill="#6E9E5E" text-anchor="middle">빗질</text>
+<rect x="830" y="544" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="842" y="572" font-size="20" fill="#8a8378">27</text>
+<path d="M 901.0 590 Q 914.0 608 901.0 620 Q 888.0 608 901.0 590 Z" fill="#7FA7C2"/>
+<text x="901.0" y="644" font-size="19" fill="#7FA7C2" text-anchor="middle">발·엉덩이</text>
+<rect x="978" y="544" width="142" height="112" rx="12" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="990" y="572" font-size="20" fill="#8a8378">28</text>
+<circle cx="100" cy="698" r="11" fill="#C08A5E"/>
+<text x="120" y="706" font-size="23" fill="#4a4038">샴푸 목욕 · 3~4주에 한 번 안팎</text>
+<circle cx="460" cy="698" r="11" fill="#6E9E5E"/>
+<text x="480" y="706" font-size="23" fill="#4a4038">빗질 · 주 2~3회</text>
+<circle cx="820" cy="698" r="11" fill="#7FA7C2"/>
+<text x="840" y="706" font-size="23" fill="#4a4038">부분 세정 · 산책 뒤 필요할 때</text>
+</svg>
