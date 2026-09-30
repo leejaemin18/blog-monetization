@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" width="1200" height="760" font-family="Noto Sans KR, sans-serif">
+<rect width="1200" height="760" fill="#FBF8F2"/>
+<text x="60" y="80" font-size="44" font-weight="700" fill="#4a4038">인식표에 꼭 적을 세 가지</text>
+<text x="60" y="124" font-size="26" fill="#8a8378">앞면은 이름, 뒷면은 연락처와 동물등록번호</text>
+<text x="330" y="195" font-size="28" font-weight="700" fill="#8a8378" text-anchor="middle">앞면</text><circle cx="330" cy="240" r="20" fill="none" stroke="#BFB8AE" stroke-width="8"/><circle cx="330" cy="400" r="150" fill="#E9E6E1" stroke="#BFB8AE" stroke-width="6"/><circle cx="330" cy="278" r="12" fill="#FBF8F2" stroke="#BFB8AE" stroke-width="4"/><text x="330" y="422" font-size="64" font-weight="700" fill="#4a4038" text-anchor="middle">콩이</text>
+<text x="760" y="195" font-size="28" font-weight="700" fill="#8a8378" text-anchor="middle">뒷면</text><circle cx="760" cy="240" r="20" fill="none" stroke="#BFB8AE" stroke-width="8"/><circle cx="760" cy="400" r="150" fill="#E9E6E1" stroke="#BFB8AE" stroke-width="6"/><circle cx="760" cy="278" r="12" fill="#FBF8F2" stroke="#BFB8AE" stroke-width="4"/><text x="760" y="356" font-size="22" font-weight="400" fill="#4a4038" text-anchor="middle">보호자</text><text x="760" y="394" font-size="30" font-weight="700" fill="#4a4038" text-anchor="middle">010-0000-0000</text><text x="760" y="440" font-size="22" font-weight="400" fill="#4a4038" text-anchor="middle">등록번호</text><text x="760" y="476" font-size="25" font-weight="700" fill="#4a4038" text-anchor="middle">000000000000000</text>
+<circle cx="950" cy="300" r="22" fill="#C08A5E"/><text x="950" y="309" font-size="26" font-weight="700" fill="#fff" text-anchor="middle">1</text><text x="984" y="309" font-size="26" font-weight="700" fill="#4a4038">이름</text>
+<circle cx="950" cy="380" r="22" fill="#C08A5E"/><text x="950" y="389" font-size="26" font-weight="700" fill="#fff" text-anchor="middle">2</text><text x="984" y="389" font-size="26" font-weight="700" fill="#4a4038">보호자 연락처</text>
+<circle cx="950" cy="460" r="22" fill="#C08A5E"/><text x="950" y="469" font-size="26" font-weight="700" fill="#fff" text-anchor="middle">3</text><text x="984" y="469" font-size="26" font-weight="700" fill="#4a4038">동물등록번호</text>
+<line x1="480" y1="400" x2="560" y2="400" stroke="#E6DFD2" stroke-width="3" stroke-dasharray="8 8"/>
+<rect x="60" y="610" width="1080" height="96" rx="16" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="90" y="652" font-size="25" fill="#4a4038">연락처는 산책 중 바로 받을 수 있는 번호로 · 집 주소는 법정 항목이 아님</text>
+<text x="90" y="690" font-size="22" fill="#8a8378">※ 그림 속 번호는 모두 0으로 된 예시입니다</text>
+</svg>
