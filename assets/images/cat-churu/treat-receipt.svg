@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 920" width="1200" height="920" font-family="Noto Sans KR, sans-serif">
+<rect width="1200" height="920" fill="#FBF8F2"/>
+<polygon points="250,50 950,50 950.0,872 915.0,854 880.0,872 845.0,854 810.0,872 775.0,854 740.0,872 705.0,854 670.0,872 635.0,854 600.0,872 565.0,854 530.0,872 495.0,854 460.0,872 425.0,854 390.0,872 355.0,854 320.0,872 285.0,854 250.0,872" fill="#E6DFD2" transform="translate(6,8)"/>
+<polygon points="250,50 950,50 950.0,872 915.0,854 880.0,872 845.0,854 810.0,872 775.0,854 740.0,872 705.0,854 670.0,872 635.0,854 600.0,872 565.0,854 530.0,872 495.0,854 460.0,872 425.0,854 390.0,872 355.0,854 320.0,872 285.0,854 250.0,872" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<text x="600.0" y="120" font-size="40" font-weight="700" fill="#4a4038" text-anchor="middle">하루 간식 영수증</text>
+<text x="600.0" y="162" font-size="22" fill="#8a8378" text-anchor="middle">기본 맛 스틱 1개 ≈ 7kcal 기준</text>
+<line x1="290" y1="190" x2="910" y2="190" stroke="#BFB8AE" stroke-width="2" stroke-dasharray="8 8"/>
+<text x="310" y="235" font-size="22" font-weight="700" fill="#8a8378" text-anchor="start">체중</text>
+<text x="540" y="235" font-size="22" font-weight="700" fill="#8a8378" text-anchor="middle">간식 한도</text>
+<text x="890" y="235" font-size="22" font-weight="700" fill="#8a8378" text-anchor="end">하루 상한</text>
+<text x="310" y="305" font-size="34" font-weight="700" fill="#4a4038">3kg</text>
+<text x="540" y="305" font-size="30" fill="#4a4038" text-anchor="middle">20kcal</text>
+<rect x="653.0" y="257.0" width="20" height="58" rx="5" fill="#C08A5E"/><line x1="653.0" y1="267.0" x2="673.0" y2="267.0" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3 3"/>
+<rect x="697.0" y="257.0" width="20" height="58" rx="5" fill="#C08A5E"/><line x1="697.0" y1="267.0" x2="717.0" y2="267.0" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3 3"/>
+<text x="890" y="305" font-size="34" font-weight="700" fill="#C08A5E" text-anchor="end">2개</text>
+<text x="310" y="387" font-size="34" font-weight="700" fill="#4a4038">4kg</text>
+<text x="540" y="387" font-size="30" fill="#4a4038" text-anchor="middle">22kcal</text>
+<rect x="653.0" y="339.0" width="20" height="58" rx="5" fill="#C08A5E"/><line x1="653.0" y1="349.0" x2="673.0" y2="349.0" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3 3"/>
+<rect x="697.0" y="339.0" width="20" height="58" rx="5" fill="#C08A5E"/><line x1="697.0" y1="349.0" x2="717.0" y2="349.0" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3 3"/>
+<rect x="741.0" y="339.0" width="20" height="58" rx="5" fill="#C08A5E"/><line x1="741.0" y1="349.0" x2="761.0" y2="349.0" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3 3"/>
+<text x="890" y="387" font-size="34" font-weight="700" fill="#C08A5E" text-anchor="end">3개</text>
+<text x="310" y="469" font-size="34" font-weight="700" fill="#4a4038">5kg</text>
+<text x="540" y="469" font-size="30" fill="#4a4038" text-anchor="middle">25kcal</text>
+<rect x="653.0" y="421.0" width="20" height="58" rx="5" fill="#C08A5E"/><line x1="653.0" y1="431.0" x2="673.0" y2="431.0" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3 3"/>
+<rect x="697.0" y="421.0" width="20" height="58" rx="5" fill="#C08A5E"/><line x1="697.0" y1="431.0" x2="717.0" y2="431.0" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3 3"/>
+<rect x="741.0" y="421.0" width="20" height="58" rx="5" fill="#C08A5E"/><line x1="741.0" y1="431.0" x2="761.0" y2="431.0" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3 3"/>
+<text x="890" y="469" font-size="34" font-weight="700" fill="#C08A5E" text-anchor="end">3개</text>
+<text x="310" y="551" font-size="34" font-weight="700" fill="#4a4038">6kg</text>
+<text x="540" y="551" font-size="30" fill="#4a4038" text-anchor="middle">26kcal</text>
+<rect x="653.0" y="503.0" width="20" height="58" rx="5" fill="#C08A5E"/><line x1="653.0" y1="513.0" x2="673.0" y2="513.0" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3 3"/>
+<rect x="697.0" y="503.0" width="20" height="58" rx="5" fill="#C08A5E"/><line x1="697.0" y1="513.0" x2="717.0" y2="513.0" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3 3"/>
+<rect x="741.0" y="503.0" width="20" height="58" rx="5" fill="#C08A5E"/><line x1="741.0" y1="513.0" x2="761.0" y2="513.0" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3 3"/>
+<text x="890" y="551" font-size="34" font-weight="700" fill="#C08A5E" text-anchor="end">3개</text>
+<line x1="290" y1="603" x2="910" y2="603" stroke="#BFB8AE" stroke-width="2" stroke-dasharray="8 8"/>
+<text x="310" y="653" font-size="24" fill="#4a4038">− 다른 간식·토핑을 줬다면 그 열량만큼 뺀다</text>
+<text x="310" y="701" font-size="24" fill="#4a4038">− 주식용 스틱(≈13kcal)은 1개로 끝</text>
+<line x1="290" y1="741" x2="910" y2="741" stroke="#BFB8AE" stroke-width="2" stroke-dasharray="8 8"/>
+<text x="600.0" y="789" font-size="20" fill="#8a8378" text-anchor="middle">간식 한도 = 하루 열량의 10% · WSAVA 체중별 표</text>
+<text x="600.0" y="821" font-size="20" fill="#8a8378" text-anchor="middle">개수는 다른 간식이 없을 때의 상한입니다</text>
+</svg>
