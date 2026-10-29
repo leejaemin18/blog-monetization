@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 860" width="1200" height="860" font-family="Noto Sans KR, sans-serif">
+<rect width="1200" height="860" fill="#FBF8F2"/>
+<text x="60" y="80" font-size="42" font-weight="700" fill="#4a4038">노란 토와 공복 시간</text>
+<text x="60" y="122" font-size="24" fill="#8a8378">하루 두 끼(아침 8시·저녁 6시)일 때의 예시</text>
+<circle cx="450" cy="480" r="308" fill="#FFFFFF" stroke="#E6DFD2" stroke-width="2"/>
+<path d="M450,480 L671.7,352.0 A256,256 0 0 1 671.7,608.0 Z" fill="#F3D9C4"/>
+<path d="M172.0,480.0 A278,278 0 1 1 690.8,619.0" fill="none" stroke="#C08A5E" stroke-width="22" stroke-linecap="round"/>
+<line x1="450.0" y1="184.0" x2="450.0" y2="210.0" stroke="#BFB8AE" stroke-width="3"/>
+<line x1="526.6" y1="194.1" x2="523.0" y2="207.6" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="598.0" y1="223.7" x2="591.0" y2="235.8" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="659.3" y1="270.7" x2="640.9" y2="289.1" stroke="#BFB8AE" stroke-width="3"/>
+<line x1="706.3" y1="332.0" x2="694.2" y2="339.0" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="735.9" y1="403.4" x2="722.4" y2="407.0" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="746.0" y1="480.0" x2="720.0" y2="480.0" stroke="#BFB8AE" stroke-width="3"/>
+<line x1="735.9" y1="556.6" x2="722.4" y2="553.0" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="706.3" y1="628.0" x2="694.2" y2="621.0" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="659.3" y1="689.3" x2="640.9" y2="670.9" stroke="#BFB8AE" stroke-width="3"/>
+<line x1="598.0" y1="736.3" x2="591.0" y2="724.2" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="526.6" y1="765.9" x2="523.0" y2="752.4" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="450.0" y1="776.0" x2="450.0" y2="750.0" stroke="#BFB8AE" stroke-width="3"/>
+<line x1="373.4" y1="765.9" x2="377.0" y2="752.4" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="302.0" y1="736.3" x2="309.0" y2="724.2" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="240.7" y1="689.3" x2="259.1" y2="670.9" stroke="#BFB8AE" stroke-width="3"/>
+<line x1="193.7" y1="628.0" x2="205.8" y2="621.0" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="164.1" y1="556.6" x2="177.6" y2="553.0" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="154.0" y1="480.0" x2="180.0" y2="480.0" stroke="#BFB8AE" stroke-width="3"/>
+<line x1="164.1" y1="403.4" x2="177.6" y2="407.0" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="193.7" y1="332.0" x2="205.8" y2="339.0" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="240.7" y1="270.7" x2="259.1" y2="289.1" stroke="#BFB8AE" stroke-width="3"/>
+<line x1="302.0" y1="223.7" x2="309.0" y2="235.8" stroke="#BFB8AE" stroke-width="1.5"/>
+<line x1="373.4" y1="194.1" x2="377.0" y2="207.6" stroke="#BFB8AE" stroke-width="1.5"/>
+<text x="450.0" y="262.0" font-size="26" fill="#8a8378" text-anchor="middle">0시</text>
+<text x="611.2" y="328.8" font-size="26" fill="#8a8378" text-anchor="middle">3시</text>
+<text x="678.0" y="490.0" font-size="26" fill="#8a8378" text-anchor="middle">6시</text>
+<text x="611.2" y="651.2" font-size="26" fill="#8a8378" text-anchor="middle">9시</text>
+<text x="450.0" y="718.0" font-size="26" fill="#8a8378" text-anchor="middle">12시</text>
+<text x="288.8" y="651.2" font-size="26" fill="#8a8378" text-anchor="middle">15시</text>
+<text x="222.0" y="490.0" font-size="26" fill="#8a8378" text-anchor="middle">18시</text>
+<text x="288.8" y="328.8" font-size="26" fill="#8a8378" text-anchor="middle">21시</text>
+<circle cx="690.8" cy="619.0" r="18" fill="#4a4038"/>
+<text x="754.8" y="665.0" font-size="26" font-weight="700" fill="#4a4038" text-anchor="middle">아침밥</text>
+<circle cx="172.0" cy="480.0" r="18" fill="#4a4038"/>
+<text x="98.0" y="489.0" font-size="26" font-weight="700" fill="#4a4038" text-anchor="middle">저녁밥</text>
+<line x1="360.0" y1="324.1" x2="295.0" y2="211.5" stroke="#4a4038" stroke-width="4" stroke-dasharray="10 8"/>
+<text x="381.0" y="364.1" font-size="24" font-weight="700" fill="#4a4038" text-anchor="start">자기 전 한 줌</text>
+<text x="355" y="550" font-size="44" font-weight="700" fill="#C08A5E" text-anchor="middle">14시간</text>
+<text x="355" y="588" font-size="24" fill="#8a8378" text-anchor="middle">저녁밥 뒤 공복</text>
+<line x1="830" y1="302" x2="880" y2="302" stroke="#C08A5E" stroke-width="18" stroke-linecap="round"/>
+<text x="900" y="310" font-size="26" font-weight="700" fill="#4a4038">긴 공복</text>
+<text x="900" y="346" font-size="21" fill="#8a8378">저녁 6시 → 아침 8시</text>
+<rect x="830" y="404" width="50" height="36" rx="6" fill="#F3D9C4"/>
+<text x="900" y="430" font-size="26" font-weight="700" fill="#4a4038">노란 토가 잦은 때</text>
+<text x="900" y="466" font-size="21" fill="#8a8378">새벽 ~ 아침밥 전</text>
+<line x1="830" y1="542" x2="880" y2="542" stroke="#4a4038" stroke-width="4" stroke-dasharray="10 8"/>
+<text x="900" y="550" font-size="26" font-weight="700" fill="#4a4038">자기 전 한 줌</text>
+<text x="900" y="586" font-size="21" fill="#8a8378">공복이 4시간 + 10시간</text>
+<text x="830" y="676" font-size="20" fill="#8a8378">※ 시각은 예시입니다</text>
+<text x="830" y="706" font-size="20" fill="#8a8378">※ 한 줌은 하루 사료 양 안에서</text>
+</svg>
